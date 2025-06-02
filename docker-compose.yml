@@ -1,1 +1,25 @@
-# TODO
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: breezy_api.Dockerfile
+    container_name: node-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+    volumes:
+      - ./api:/app
+      - node_modules_api:/app/node_modules
+
+  mongo:
+    image: mongo:7
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
+  node_modules_api:
