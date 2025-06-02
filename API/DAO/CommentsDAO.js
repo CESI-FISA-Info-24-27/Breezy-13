@@ -7,7 +7,7 @@
  * Represents a User Data Access Object.
  * @class
  */
-export class UsersDAO {
+export class CommentsDAO {
     constructor() {}
 
     /**
@@ -15,7 +15,7 @@ export class UsersDAO {
      * @param {Object} filters - The filters to apply.
      * @returns {Array} - The list of users.
      */
-    getUsers(filters) {
+    getComments(filters) {
         throw new Error('Not implemented');
     }
 
@@ -24,7 +24,7 @@ export class UsersDAO {
      * @param {Object} user - The user object to create.
      * @returns {void}
      */
-    createUser(user) {
+    createComment(comment) {
         throw new Error('Not implemented');
     }
 
@@ -34,7 +34,7 @@ export class UsersDAO {
      * @param {Object} user - The updated user object.
      * @returns {void}
      */
-    updateUser(id, user) {
+    updateComment(id, comment) {
         throw new Error('Not implemented');
     }
 
@@ -43,7 +43,7 @@ export class UsersDAO {
      * @param {string} id - The ID of the user to delete.
      * @returns {void}
      */
-    deleteUser(id) {
+    deleteComment(id) {
         throw new Error('Not implemented');
     }
 }
