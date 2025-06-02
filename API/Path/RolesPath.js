@@ -1,0 +1,34 @@
+import express from 'express';
+import RoleController from '../Controller/RoleController.js';
+
+/**
+ * Représente un chemin pour les rôles
+ * @class RolePath
+ */
+const rolePath = express.Router();
+
+/**
+ * Obtenir les rôles
+ * @param {object} req - La requête
+ */
+rolePath.get('/', RoleController.getRoles);
+
+/**
+ * Créer des rôles
+ * @param {object} req - La requête
+ */
+rolePath.post('/', RoleController.createRoles);
+
+/**
+ * Mettre à jour des rôles
+ * @param {object} req - La requête
+ */
+rolePath.patch('/:id', RoleController.updateRoles);
+
+/**
+ * Supprimer des rôles
+ * @param {object} req - La requête
+ */
+rolePath.delete('/:id', RoleController.deleteRoles);
+
+export default rolePath;
