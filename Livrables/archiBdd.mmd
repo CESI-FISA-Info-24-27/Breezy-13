@@ -1,0 +1,43 @@
+erDiagram
+    USER {
+        ObjectId _id PK "Identifiant unique"
+        String username "Nom d'utilisateur"
+        String email "Email unique"
+        String password "Mot de passe hashé"
+        String avatar "URL de l'avatar"
+        String bio "Bio"
+        Date createdAt "Date de création"
+        Date updatedAt "Date de dernière mise à jour"
+    }
+
+    POST {
+        ObjectId _id PK "Identifiant unique"
+        ObjectId author FK "Référence à User"
+        String content "Contenu du post"
+        String image "URL de l'image"
+        ObjectId[] likes "Liste des utilisateurs qui ont liké"
+        Date createdAt "Date de création"
+        Date updatedAt "Date de dernière mise à jour"
+    }
+
+    COMMENT {
+        ObjectId _id PK "Identifiant unique"
+        ObjectId author FK "Référence à User"
+        ObjectId post FK "Référence à Post"
+        String content "Contenu du commentaire"
+        Date createdAt "Date de création"
+    }
+
+    FOLLOW {
+        ObjectId _id PK "Identifiant unique"
+        ObjectId follower FK "Utilisateur qui suit"
+        ObjectId following FK "Utilisateur suivi"
+        Date createdAt "Date de création de la relation"
+    }
+
+    USER ||--o{ POST : "a des"
+    USER ||--o{ COMMENT : "a des"
+    POST ||--o{ COMMENT : "a des"
+    USER ||--o{ FOLLOW : "suit"
+    USER ||--o{ FOLLOW : "est suivi par"
+    POST ||--o{ USER : "likes par"
