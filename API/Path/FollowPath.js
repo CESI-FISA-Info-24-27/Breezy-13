@@ -1,1 +1,25 @@
-// TODO
+import express from 'express';
+import FollowController from '../Controller/FollowController.js';
+
+/**
+ * Représente un chemin pour les abonnements (follows)
+ * @class FollowRoutes
+ */
+const followRoutes = express.Router();
+
+/**
+ * Obtenir tous les follows
+ */
+followRoutes.get('/', FollowController.getAllFollows);
+
+/**
+ * Créer un nouvel abonnement
+ */
+followRoutes.post('/', FollowController.createFollow);
+
+/**
+ * Supprimer un abonnement
+ */
+followRoutes.delete('/:id', FollowController.deleteFollow);
+
+export default followRoutes;

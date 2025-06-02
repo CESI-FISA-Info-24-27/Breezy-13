@@ -1,4 +1,4 @@
-import permissions from "./PermissionsParam.js";
+import permissions from "../Middlewares/PermissionsParam.js";
 
 /**
  * Vérifie si un utilisateur dispose des permissions requises pour un chemin et une méthode donnés.
