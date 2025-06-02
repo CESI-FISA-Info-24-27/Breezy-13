@@ -1,7 +1,6 @@
 import { MongoClient, ObjectId } from 'mongodb';
 import { PostsDAO } from './PostsDAO.js';
 import dotenv from 'dotenv'
-import { mongo } from 'mongoose';
 
 /**
  * User DAO for MongoDB.
