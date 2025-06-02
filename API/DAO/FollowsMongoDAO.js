@@ -3,13 +3,14 @@ import { FollowsDAO } from './FollowsDAO.js';
 import dotenv from 'dotenv'
 
 /**
- * User DAO for MongoDB.
+ * DAO pour la gestion des abonnements (follows) avec MongoDB.
  * @extends FollowsDAO
  * @class
  */
 export class FollowsMongoDAO extends FollowsDAO {
     /**
-     * @constructor
+     * Constructeur de la classe FollowsMongoDAO.
+     * Initialise la connexion à la base de données MongoDB.
      */
     constructor() {
         super();
@@ -21,6 +22,9 @@ export class FollowsMongoDAO extends FollowsDAO {
         this.dbName = dbName;
     }
 
+    /**
+     * Initialise la connexion à la base de données et à la collection.
+     */
     async init() {
         await this.client.connect();
         this.db = this.client.db(this.dbName);
@@ -28,9 +32,9 @@ export class FollowsMongoDAO extends FollowsDAO {
     }
 
     /**
-     * Retrieves users based on the specified filters.
-     * @param {object} filters
-     * @returns {Array}
+     * Récupère les abonnements selon les filtres spécifiés.
+     * @param {object} filters - Les filtres à appliquer (id, follower, following, createdAt).
+     * @returns {Array} - Liste des abonnements trouvés.
      */
     async getFollows(filters) {
         const mongoFilters = {};
@@ -43,10 +47,10 @@ export class FollowsMongoDAO extends FollowsDAO {
     }
 
     /**
-     * Updates an existing user.
-     * @param {string} id
-     * @param {object} user
-     * @returns {object}
+     * Met à jour un abonnement existant.
+     * @param {string} id - L'identifiant de l'abonnement à mettre à jour.
+     * @param {object} follow - Les nouvelles données de l'abonnement.
+     * @returns {object} - Résultat de la mise à jour.
      */
     async updateFollow(id, follow) {
         return await this.collection.updateOne(
@@ -56,18 +60,18 @@ export class FollowsMongoDAO extends FollowsDAO {
     }
 
     /**
-     * Deletes an existing user.
-     * @param {string} id
-     * @returns {object}
+     * Supprime un abonnement existant.
+     * @param {string} id - L'identifiant de l'abonnement à supprimer.
+     * @returns {object} - Résultat de la suppression.
      */
     async deleteFollow(id) {
         return await this.collection.deleteOne({ _id: new ObjectId(id) });
     }
 
     /**
-     * Creates a new user.
-     * @param {object} user
-     * @returns {object}
+     * Crée un nouvel abonnement.
+     * @param {object} follow - Les données de l'abonnement à créer.
+     * @returns {object} - Résultat de l'insertion.
      */
     async createFollow(follow) {
         return await this.collection.insertOne(follow);

@@ -3,13 +3,14 @@ import { UsersDAO } from './UsersDAO.js';
 import dotenv from 'dotenv'
 
 /**
- * User DAO for MongoDB.
+ * DAO pour la gestion des utilisateurs avec MongoDB.
  * @extends UsersDAO
  * @class
  */
 export class UsersMongoDAO extends UsersDAO {
     /**
-     * @constructor
+     * Constructeur de la classe UsersMongoDAO.
+     * Initialise la connexion à la base de données MongoDB.
      */
     constructor() {
         super();
@@ -21,6 +22,9 @@ export class UsersMongoDAO extends UsersDAO {
         this.dbName = dbName;
     }
 
+    /**
+     * Initialise la connexion à la base de données et à la collection.
+     */
     async init() {
         await this.client.connect();
         this.db = this.client.db(this.dbName);
@@ -28,9 +32,9 @@ export class UsersMongoDAO extends UsersDAO {
     }
 
     /**
-     * Retrieves users based on the specified filters.
-     * @param {object} filters
-     * @returns {Array}
+     * Récupère les utilisateurs selon les filtres spécifiés.
+     * @param {object} filters - Les filtres à appliquer (id, username, password, email, avatar, bio, createdAt, updatedAt).
+     * @returns {Array} - Liste des utilisateurs trouvés.
      */
     async getUsers(filters) {
         const mongoFilters = {};
@@ -47,10 +51,10 @@ export class UsersMongoDAO extends UsersDAO {
     }
 
     /**
-     * Updates an existing user.
-     * @param {string} id
-     * @param {object} user
-     * @returns {object}
+     * Met à jour un utilisateur existant.
+     * @param {string} id - L'identifiant de l'utilisateur à mettre à jour.
+     * @param {object} user - Les nouvelles données de l'utilisateur.
+     * @returns {object} - Résultat de la mise à jour.
      */
     async updateUser(id, user) {
         return await this.collection.updateOne(
@@ -60,18 +64,18 @@ export class UsersMongoDAO extends UsersDAO {
     }
 
     /**
-     * Deletes an existing user.
-     * @param {string} id
-     * @returns {object}
+     * Supprime un utilisateur existant.
+     * @param {string} id - L'identifiant de l'utilisateur à supprimer.
+     * @returns {object} - Résultat de la suppression.
      */
     async deleteUser(id) {
         return await this.collection.deleteOne({ _id: new ObjectId(id) });
     }
 
     /**
-     * Creates a new user.
-     * @param {object} user
-     * @returns {object}
+     * Crée un nouvel utilisateur.
+     * @param {object} user - Les données de l'utilisateur à créer.
+     * @returns {object} - Résultat de l'insertion.
      */
     async createUser(user) {
         return await this.collection.insertOne(user);

@@ -1,27 +1,23 @@
 /**
- * Class representing a user data access object.
+ * Classe représentant un objet d'accès aux données pour les utilisateurs.
  * @class
- * @classdesc This class manages the persistence of user data.
- */ 
-/**
- * Represents a User Data Access Object.
- * @class
+ * @classdesc Cette classe gère la persistance des données des utilisateurs.
  */
 export class UsersDAO {
     constructor() {}
 
     /**
-     * Get users based on the provided filters.
-     * @param {Object} filters - The filters to apply.
-     * @returns {Array} - The list of users.
+     * Récupère les utilisateurs selon les filtres fournis.
+     * @param {Object} filters - Les filtres à appliquer.
+     * @returns {Array} - La liste des utilisateurs.
      */
     getUsers(filters) {
         throw new Error('Not implemented');
     }
 
     /**
-     * Create a new user.
-     * @param {Object} user - The user object to create.
+     * Crée un nouvel utilisateur.
+     * @param {Object} user - L'objet utilisateur à créer.
      * @returns {void}
      */
     createUser(user) {
@@ -29,9 +25,9 @@ export class UsersDAO {
     }
 
     /**
-     * Update an existing user.
-     * @param {string} id - The ID of the user to update.
-     * @param {Object} user - The updated user object.
+     * Met à jour un utilisateur existant.
+     * @param {string} id - L'identifiant de l'utilisateur à mettre à jour.
+     * @param {Object} user - L'objet utilisateur mis à jour.
      * @returns {void}
      */
     updateUser(id, user) {
@@ -39,8 +35,8 @@ export class UsersDAO {
     }
 
     /**
-     * Delete a user.
-     * @param {string} id - The ID of the user to delete.
+     * Supprime un utilisateur.
+     * @param {string} id - L'identifiant de l'utilisateur à supprimer.
      * @returns {void}
      */
     deleteUser(id) {

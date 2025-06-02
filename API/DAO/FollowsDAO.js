@@ -1,27 +1,23 @@
 /**
- * Class representing a user data access object.
+ * Classe représentant un objet d'accès aux données pour les abonnements (follows).
  * @class
- * @classdesc This class manages the persistence of user data.
- */ 
-/**
- * Represents a User Data Access Object.
- * @class
+ * @classdesc Cette classe gère la persistance des données des abonnements.
  */
 export class FollowsDAO {
     constructor() {}
 
     /**
-     * Get users based on the provided filters.
-     * @param {Object} filters - The filters to apply.
-     * @returns {Array} - The list of users.
+     * Récupère les abonnements selon les filtres fournis.
+     * @param {Object} filters - Les filtres à appliquer.
+     * @returns {Array} - La liste des abonnements.
      */
     getFollows(filters) {
         throw new Error('Not implemented');
     }
 
     /**
-     * Create a new user.
-     * @param {Object} user - The user object to create.
+     * Crée un nouvel abonnement.
+     * @param {Object} follow - L'objet abonnement à créer.
      * @returns {void}
      */
     createFollow(follow) {
@@ -29,9 +25,9 @@ export class FollowsDAO {
     }
 
     /**
-     * Update an existing user.
-     * @param {string} id - The ID of the user to update.
-     * @param {Object} user - The updated user object.
+     * Met à jour un abonnement existant.
+     * @param {string} id - L'identifiant de l'abonnement à mettre à jour.
+     * @param {Object} follow - L'objet abonnement mis à jour.
      * @returns {void}
      */
     updateFollow(id, follow) {
@@ -39,8 +35,8 @@ export class FollowsDAO {
     }
 
     /**
-     * Delete a user.
-     * @param {string} id - The ID of the user to delete.
+     * Supprime un abonnement.
+     * @param {string} id - L'identifiant de l'abonnement à supprimer.
      * @returns {void}
      */
     deleteFollow(id) {

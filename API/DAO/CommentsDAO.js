@@ -1,27 +1,23 @@
 /**
- * Class representing a user data access object.
+ * Classe représentant un objet d'accès aux données pour les commentaires.
  * @class
- * @classdesc This class manages the persistence of user data.
- */ 
-/**
- * Represents a User Data Access Object.
- * @class
+ * @classdesc Cette classe gère la persistance des données des commentaires.
  */
 export class CommentsDAO {
     constructor() {}
 
     /**
-     * Get users based on the provided filters.
-     * @param {Object} filters - The filters to apply.
-     * @returns {Array} - The list of users.
+     * Récupère les commentaires selon les filtres fournis.
+     * @param {Object} filters - Les filtres à appliquer.
+     * @returns {Array} - La liste des commentaires.
      */
     getComments(filters) {
         throw new Error('Not implemented');
     }
 
     /**
-     * Create a new user.
-     * @param {Object} user - The user object to create.
+     * Crée un nouveau commentaire.
+     * @param {Object} comment - L'objet commentaire à créer.
      * @returns {void}
      */
     createComment(comment) {
@@ -29,9 +25,9 @@ export class CommentsDAO {
     }
 
     /**
-     * Update an existing user.
-     * @param {string} id - The ID of the user to update.
-     * @param {Object} user - The updated user object.
+     * Met à jour un commentaire existant.
+     * @param {string} id - L'identifiant du commentaire à mettre à jour.
+     * @param {Object} comment - L'objet commentaire mis à jour.
      * @returns {void}
      */
     updateComment(id, comment) {
@@ -39,8 +35,8 @@ export class CommentsDAO {
     }
 
     /**
-     * Delete a user.
-     * @param {string} id - The ID of the user to delete.
+     * Supprime un commentaire.
+     * @param {string} id - L'identifiant du commentaire à supprimer.
      * @returns {void}
      */
     deleteComment(id) {

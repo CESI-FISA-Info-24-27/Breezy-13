@@ -3,13 +3,14 @@ import { CommentsDAO } from './CommentsDAO.js';
 import dotenv from 'dotenv'
 
 /**
- * User DAO for MongoDB.
+ * DAO pour la gestion des commentaires avec MongoDB.
  * @extends CommentsDAO
  * @class
  */
 export class CommentsMongoDAO extends CommentsDAO {
     /**
-     * @constructor
+     * Constructeur de la classe CommentsMongoDAO.
+     * Initialise la connexion à la base de données MongoDB.
      */
     constructor() {
         super();
@@ -21,6 +22,9 @@ export class CommentsMongoDAO extends CommentsDAO {
         this.dbName = dbName;
     }
 
+    /**
+     * Initialise la connexion à la base de données et à la collection.
+     */
     async init() {
         await this.client.connect();
         this.db = this.client.db(this.dbName);
@@ -28,9 +32,9 @@ export class CommentsMongoDAO extends CommentsDAO {
     }
 
     /**
-     * Retrieves users based on the specified filters.
-     * @param {object} filters
-     * @returns {Array}
+     * Récupère les commentaires selon les filtres spécifiés.
+     * @param {object} filters - Les filtres à appliquer (id, author, post, content, createdAt).
+     * @returns {Array} - Liste des commentaires trouvés.
      */
     async getComments(filters) {
         const mongoFilters = {};
@@ -44,10 +48,10 @@ export class CommentsMongoDAO extends CommentsDAO {
     }
 
     /**
-     * Updates an existing user.
-     * @param {string} id
-     * @param {object} user
-     * @returns {object}
+     * Met à jour un commentaire existant.
+     * @param {string} id - L'identifiant du commentaire à mettre à jour.
+     * @param {object} comment - Les nouvelles données du commentaire.
+     * @returns {object} - Résultat de la mise à jour.
      */
     async updateComment(id, comment) {
         return await this.collection.updateOne(
@@ -57,18 +61,18 @@ export class CommentsMongoDAO extends CommentsDAO {
     }
 
     /**
-     * Deletes an existing user.
-     * @param {string} id
-     * @returns {object}
+     * Supprime un commentaire existant.
+     * @param {string} id - L'identifiant du commentaire à supprimer.
+     * @returns {object} - Résultat de la suppression.
      */
     async deleteComment(id) {
         return await this.collection.deleteOne({ _id: new ObjectId(id) });
     }
 
     /**
-     * Creates a new user.
-     * @param {object} user
-     * @returns {object}
+     * Crée un nouveau commentaire.
+     * @param {object} comment - Les données du commentaire à créer.
+     * @returns {object} - Résultat de l'insertion.
      */
     async createComment(comment) {
         return await this.collection.insertOne(comment);

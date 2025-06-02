@@ -1,27 +1,23 @@
 /**
- * Class representing a user data access object.
+ * Classe représentant un objet d'accès aux données pour les rôles.
  * @class
- * @classdesc This class manages the persistence of user data.
- */ 
-/**
- * Represents a User Data Access Object.
- * @class
+ * @classdesc Cette classe gère la persistance des données des rôles.
  */
 export class RolesDAO {
     constructor() {}
 
     /**
-     * Get users based on the provided filters.
-     * @param {Object} filters - The filters to apply.
-     * @returns {Array} - The list of users.
+     * Récupère les rôles selon les filtres fournis.
+     * @param {Object} filters - Les filtres à appliquer.
+     * @returns {Array} - La liste des rôles.
      */
     getRoles(filters) {
         throw new Error('Not implemented');
     }
 
     /**
-     * Create a new user.
-     * @param {Object} user - The user object to create.
+     * Crée un nouveau rôle.
+     * @param {Object} role - L'objet rôle à créer.
      * @returns {void}
      */
     createRole(role) {
@@ -29,9 +25,9 @@ export class RolesDAO {
     }
 
     /**
-     * Update an existing user.
-     * @param {string} id - The ID of the user to update.
-     * @param {Object} user - The updated user object.
+     * Met à jour un rôle existant.
+     * @param {string} id - L'identifiant du rôle à mettre à jour.
+     * @param {Object} role - L'objet rôle mis à jour.
      * @returns {void}
      */
     updateRole(id, role) {
@@ -39,8 +35,8 @@ export class RolesDAO {
     }
 
     /**
-     * Delete a user.
-     * @param {string} id - The ID of the user to delete.
+     * Supprime un rôle.
+     * @param {string} id - L'identifiant du rôle à supprimer.
      * @returns {void}
      */
     deleteRole(id) {

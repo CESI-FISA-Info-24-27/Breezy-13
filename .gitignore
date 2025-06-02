@@ -113,7 +113,7 @@ dist
 
 # Docusaurus cache and generated files
 .docusaurus
-
+/doc
 # Serverless directories
 .serverless/
 

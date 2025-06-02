@@ -3,13 +3,14 @@ import { RolesDAO } from './RolesDAO.js';
 import dotenv from 'dotenv'
 
 /**
- * User DAO for MongoDB.
+ * DAO pour la gestion des rôles avec MongoDB.
  * @extends RolesDAO
  * @class
  */
 export class RolesMongoDAO extends RolesDAO {
     /**
-     * @constructor
+     * Constructeur de la classe RolesMongoDAO.
+     * Initialise la connexion à la base de données MongoDB.
      */
     constructor() {
         super();
@@ -21,6 +22,9 @@ export class RolesMongoDAO extends RolesDAO {
         this.dbName = dbName;
     }
 
+    /**
+     * Initialise la connexion à la base de données et à la collection.
+     */
     async init() {
         await this.client.connect();
         this.db = this.client.db(this.dbName);
@@ -28,9 +32,9 @@ export class RolesMongoDAO extends RolesDAO {
     }
 
     /**
-     * Retrieves users based on the specified filters.
-     * @param {object} filters
-     * @returns {Array}
+     * Récupère les rôles selon les filtres spécifiés.
+     * @param {object} filters - Les filtres à appliquer (id, name).
+     * @returns {Array} - Liste des rôles trouvés.
      */
     async getRoles(filters) {
         const mongoFilters = {};
@@ -41,10 +45,10 @@ export class RolesMongoDAO extends RolesDAO {
     }
 
     /**
-     * Updates an existing user.
-     * @param {string} id
-     * @param {object} user
-     * @returns {object}
+     * Met à jour un rôle existant.
+     * @param {string} id - L'identifiant du rôle à mettre à jour.
+     * @param {object} role - Les nouvelles données du rôle.
+     * @returns {object} - Résultat de la mise à jour.
      */
     async updateRole(id, role) {
         return await this.collection.updateOne(
@@ -54,18 +58,18 @@ export class RolesMongoDAO extends RolesDAO {
     }
 
     /**
-     * Deletes an existing user.
-     * @param {string} id
-     * @returns {object}
+     * Supprime un rôle existant.
+     * @param {string} id - L'identifiant du rôle à supprimer.
+     * @returns {object} - Résultat de la suppression.
      */
     async deleteRole(id) {
         return await this.collection.deleteOne({ _id: new ObjectId(id) });
     }
 
     /**
-     * Creates a new user.
-     * @param {object} user
-     * @returns {object}
+     * Crée un nouveau rôle.
+     * @param {object} role - Les données du rôle à créer.
+     * @returns {object} - Résultat de l'insertion.
      */
     async createRole(role) {
         return await this.collection.insertOne(role);

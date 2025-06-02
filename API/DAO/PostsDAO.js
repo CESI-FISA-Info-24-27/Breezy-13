@@ -1,27 +1,23 @@
 /**
- * Class representing a user data access object.
+ * Classe représentant un objet d'accès aux données pour les posts.
  * @class
- * @classdesc This class manages the persistence of user data.
- */ 
-/**
- * Represents a User Data Access Object.
- * @class
+ * @classdesc Cette classe gère la persistance des données des posts.
  */
 export class PostsDAO {
     constructor() {}
 
     /**
-     * Get users based on the provided filters.
-     * @param {Object} filters - The filters to apply.
-     * @returns {Array} - The list of users.
+     * Récupère les posts selon les filtres fournis.
+     * @param {Object} filters - Les filtres à appliquer.
+     * @returns {Array} - La liste des posts.
      */
     getPosts(filters) {
         throw new Error('Not implemented');
     }
 
     /**
-     * Create a new user.
-     * @param {Object} user - The user object to create.
+     * Crée un nouveau post.
+     * @param {Object} post - L'objet post à créer.
      * @returns {void}
      */
     createPost(post) {
@@ -29,9 +25,9 @@ export class PostsDAO {
     }
 
     /**
-     * Update an existing user.
-     * @param {string} id - The ID of the user to update.
-     * @param {Object} user - The updated user object.
+     * Met à jour un post existant.
+     * @param {string} id - L'identifiant du post à mettre à jour.
+     * @param {Object} post - L'objet post mis à jour.
      * @returns {void}
      */
     updatePost(id, post) {
@@ -39,8 +35,8 @@ export class PostsDAO {
     }
 
     /**
-     * Delete a user.
-     * @param {string} id - The ID of the user to delete.
+     * Supprime un post.
+     * @param {string} id - L'identifiant du post à supprimer.
      * @returns {void}
      */
     deletePost(id) {
