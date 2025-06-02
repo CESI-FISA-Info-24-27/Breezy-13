@@ -1,3 +1,5 @@
+const db = db.getSiblingDB("breezy_bdd");
+
 db.createCollection("users", {
     validator: {
       $jsonSchema: {
