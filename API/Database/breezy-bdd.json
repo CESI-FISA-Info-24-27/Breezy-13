@@ -1,0 +1,19 @@
+{
+  "type": "Compass Connections",
+  "version": {
+    "$numberInt": "1"
+  },
+  "connections": [
+    {
+      "id": "f9fda772-f7ef-46a6-887c-5a3b9c981fea",
+      "favorite": {
+        "name": "breezy_bdd",
+        "color": "color5"
+      },
+      "savedConnectionType": "favorite",
+      "connectionOptions": {
+        "connectionString": "mongodb://localhost:27017/?directConnection=true"
+      }
+    }
+  ]
+}
