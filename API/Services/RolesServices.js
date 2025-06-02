@@ -16,33 +16,33 @@ const RolesServices = {
         return await RolesDAO.getRoles(filters);
     },
 
-    // /**
-    //  * Update roles
-    //  * @param {number} roleId - The id of the role to update
-    //  * @param {object} role - The role data to update
-    //  * @returns {object} - The role updated
-    //  */
-    // updateRoles: async (roleId, role) => {
-    //     return await RolesDAO.updateRole(roleId, role);
-    // },
+    /**
+     * Update roles
+     * @param {number} roleId - The id of the role to update
+     * @param {object} role - The role data to update
+     * @returns {object} - The role updated
+     */
+    updateRoles: async (roleId, role) => {
+        return await RolesDAO.updateRole(roleId, role);
+    },
 
-    // /**
-    //  * Delete roles
-    //  * @param {number} roleId - The id of the role to delete
-    //  * @returns {object} - The role deleted
-    //  */
-    // deleteRoles: async (roleId) => {
-    //     return await RolesDAO.deleteRole(roleId);
-    // },
+    /**
+     * Delete roles
+     * @param {number} roleId - The id of the role to delete
+     * @returns {object} - The role deleted
+     */
+    deleteRoles: async (roleId) => {
+        return await RolesDAO.deleteRole(roleId);
+    },
 
-    // /**
-    //  * Create roles
-    //  * @param {object} role - The role to create
-    //  * @returns {object} - The role created
-    //  */
-    // createRoles: async (role) => {
-    //     return await RolesDAO.createRole(role);
-    // }
+    /**
+     * Create roles
+     * @param {object} role - The role to create
+     * @returns {object} - The role created
+     */
+    createRoles: async (role) => {
+        return await RolesDAO.createRole(role);
+    }
 }
 
 export default RolesServices;

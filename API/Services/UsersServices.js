@@ -16,24 +16,24 @@ const UsersServices = {
         return await UsersDAO.getUsers(filters);
     },
 
-    // /**
-    //  * Update users
-    //  * @param {number} userId - The id of the user to update
-    //  * @param {object} user - The user data to update
-    //  * @returns {object} - The user updated
-    //  */
-    // updateUsers: async (userId, user) => {
-    //     return await UsersDAO.updateUser(userId, user);
-    // },
+    /**
+     * Update users
+     * @param {number} userId - The id of the user to update
+     * @param {object} user - The user data to update
+     * @returns {object} - The user updated
+     */
+    updateUsers: async (userId, user) => {
+        return await UsersDAO.updateUser(userId, user);
+    },
 
-    // /**
-    //  * Delete users
-    //  * @param {number} userId - The id of the user to delete
-    //  * @returns {object} - The user deleted
-    //  */
-    // deleteUsers: async (userId) => {
-    //     return await UsersDAO.deleteUser(userId);
-    // },
+    /**
+     * Delete users
+     * @param {number} userId - The id of the user to delete
+     * @returns {object} - The user deleted
+     */
+    deleteUsers: async (userId) => {
+        return await UsersDAO.deleteUser(userId);
+    },
 
     /**
      * Create users
@@ -74,15 +74,15 @@ const UsersServices = {
         return await UsersDAO.getRole(userId);
     },
 
-    // /**
-    //  * Get the permissions of a user
-    //  * @param {number} userId - The id of the user
-    //  * @returns {object} - The permissions of the user
-    //  * @async
-    //  */
-    // getPermissions: async (userId) => {
-    //     return await UsersDAO.getPermissions(userId);
-    // }
+    /**
+     * Get the permissions of a user
+     * @param {number} userId - The id of the user
+     * @returns {object} - The permissions of the user
+     * @async
+     */
+    getPermissions: async (userId) => {
+        return await UsersDAO.getPermissions(userId);
+    }
 }
 
 export default UsersServices;
