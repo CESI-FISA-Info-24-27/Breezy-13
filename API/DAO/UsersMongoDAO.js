@@ -26,9 +26,17 @@ export class UsersMongoDAO extends UsersDAO {
      * Initialise la connexion à la base de données et à la collection.
      */
     async init() {
-        await this.client.connect();
-        this.db = this.client.db(this.dbName);
-        this.collection = this.db.collection('users');
+        try {
+            console.log('Tentative de connexion à MongoDB...');
+            await this.client.connect();
+            this.db = this.client.db(this.dbName);
+            this.collection = this.db.collection('users');
+
+            console.log('Connexion à MongoDB réussie !');
+
+        } catch (error) {
+            console.error('Erreur lors de l\'initialisation de la connexion MongoDB:', error);
+        }
     }
 
     /**

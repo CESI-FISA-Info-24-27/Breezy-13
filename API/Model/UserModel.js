@@ -14,11 +14,11 @@
  * @param {Date} params.updatedAt - La date de dernière mise à jour.
  */
 export default class userModel {
-    constructor({_id, username, email, password, avatar, bio, createdAt, updatedAt}) {
+    constructor({_id, username, password, email, password, avatar, bio, createdAt, updatedAt}) {
         this._id = _id;
         this.username = username;
-        this.email = email;
         this.password = password;
+        this.email = email;
         this.avatar = avatar;
         this.bio = bio;
         this.createdAt = createdAt;
