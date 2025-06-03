@@ -61,7 +61,7 @@ app.use(async (req, res, next) => {
 
     // Vérifie les permissions si nécessaire
     const user = await userService.getUserByUsername(decoded.username);
-    const userRoles = await userService.getRoles(user.role_id);
+    const userRoles = await userService.getRole(user.role_id);
 
     if (!hasRequiredPermissions(userRoles, req.path, req.method)) {
       return res.status(403).json({ error: 'Forbidden' });
