@@ -24,32 +24,39 @@ loginPath.post('/', async (req, res) => {
     let user = [];
     try {
         // Récupère l'utilisateur depuis la base de données
-        user = UsersServices.getUsers({ username: req.body.username });
+        user = await UsersServices.getUsers({ username: req.body.username });
+
         // Si l'utilisateur n'existe pas
         if (user.length === 0) {
             return res.status(401).send('Utilisateur non trouvé');
         }
+
+        // Vérifie si le mot de passe est correct
+        // if (!bcrypt.compareSync(req.body.password, user[0].password)) {
+        if (req.body.password !== user[0].password) {
+            return res.status(401).send('Mot de passe incorrect');
+        }
+
+        // Génère les permissions de l'utilisateur
+        const permissions = await UsersServices.getPermissions(user[0]._id);
+
+        // Génère un token d'accès et un token de rafraîchissement
+        const token = Jwt.sign(
+            { id: user[0]._id, username: user[0].username, permissions },
+            process.env.JWT_SECRET,
+            { expiresIn: '2h' }
+        );
+
+        const refreshToken = Jwt.sign(
+            { id: user[0]._id, username: user[0].username, permissions },
+            process.env.JWT_SECRET_REFRESH,
+            { expiresIn: '14d' }
+        );
+
+        // Retourne les tokens
+        return res.status(200).json({ token, refreshToken });
     } catch (error) {
         return res.status(500).json({ message: error.message });
-    }
-
-    // Vérifie si l'utilisateur existe
-    if (UsersServices.getUsers({ username: req.body.username }).length === 0) {
-        return res.status(401).send('Utilisateur non trouvé');
-    }
-
-    // Vérifie si le mot de passe est correct
-    if (!bcrypt.compareSync(req.body.password, user[0].password)) {
-        return res.status(401).send('Mot de passe incorrect');
-    }
-    else {
-        // Attribue des permissions dans le token
-        const permissions = await UsersServices.getPermissions(user[0].user_id);
-
-        // Retourne un token et un token de rafraîchissement
-        const token = Jwt.sign({ id: user[0].user_id, username: user[0].username, permissions }, process.env.JWT_SECRET, { expiresIn: '2h' });
-        const refreshToken = Jwt.sign({ id: user[0].user_id, username: user[0].username, permissions }, process.env.JWT_SECRET_REFRESH, { expiresIn: '14d' });
-        return res.status(200).json({ token: token, refreshToken: refreshToken });
     }
 });
 

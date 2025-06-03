@@ -88,4 +88,28 @@ export class UsersMongoDAO extends UsersDAO {
     async createUser(user) {
         return await this.collection.insertOne(user);
     }
+
+    /**
+     * Récupère les permissions d'un utilisateur en fonction de son rôle.
+     * @param {string} userId - L'identifiant de l'utilisateur.
+     * @returns {object} - Les permissions de l'utilisateur.
+     */
+    async getPermissions(userId) {
+        // Récupère l'utilisateur
+        const user = await this.collection.findOne({ _id: new ObjectId(userId) });
+
+        if (!user || !user.role_id) {
+            throw new Error('Utilisateur ou rôle non trouvé');
+        }
+
+        // Récupère les permissions du rôle depuis la collection "roles"
+        const rolesCollection = this.db.collection('roles');
+        const role = await rolesCollection.findOne({ role_id: user.role_id });
+
+        if (!role) {
+            throw new Error('Rôle non trouvé');
+        }
+
+        return role.permissions;
+    }
 }

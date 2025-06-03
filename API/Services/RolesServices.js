@@ -42,6 +42,19 @@ const RolesServices = {
      */
     createRoles: async (role) => {
         return await RolesDAO.createRole(role);
+    },
+    
+    /**
+     * Récupère les permissions d'un rôle
+     * @param {number} roleId - L'identifiant du rôle
+     * @returns {object} - Les permissions du rôle
+     */
+    getRolePermissions: async (roleId) => {
+        const roles = await RolesDAO.getRoles({ role_id: roleId });
+        if (roles.length === 0) {
+            throw new Error('Rôle non trouvé');
+        }
+        return roles[0].permissions;
     }
 }
 

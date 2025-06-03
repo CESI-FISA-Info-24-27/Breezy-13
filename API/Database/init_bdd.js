@@ -1,98 +1,109 @@
-const db = db.getSiblingDB("breezy_bdd");
+import { MongoClient } from 'mongodb';
 
-db.createCollection("users", {
-    validator: {
-      $jsonSchema: {
-        bsonType: "object",
-        required: ["username", "email", "password"],
-        properties: {
-          username: { bsonType: "string", description: "must be a string and is required" },
-          email: { bsonType: "string", description: "must be a string and is required" },
-          password: { bsonType: "string", description: "hashed password, required" },
-          avatar: { bsonType: "string" },
-          bio: { bsonType: "string" },
-          createdAt: { bsonType: "date" },
-          updatedAt: { bsonType: "date" }
-        }
-      }
-    }
-  });
-  
-  db.createCollection("posts", {
-    validator: {
-      $jsonSchema: {
-        bsonType: "object",
-        required: ["author", "content"],
-        properties: {
-          author: { bsonType: "objectId", description: "User ID" },
-          content: { bsonType: "string", description: "Post content" },
-          image: { bsonType: "string" },
-          likes: { bsonType: "array", items: { bsonType: "objectId" } },
-          createdAt: { bsonType: "date" },
-          updatedAt: { bsonType: "date" }
-        }
-      }
-    }
-  });
+async function initDatabase() {
+    const uri = 'mongodb://localhost:27017'; // Exemple pour une base locale
+    const dbName = 'breezy_bdd'; // Nom de la base de données
 
-  db.createCollection("comments", {
-    validator: {
-      $jsonSchema: {
-        bsonType: "object",
-        required: ["author", "post", "content"],
-        properties: {
-          author: { bsonType: "objectId", description: "User ID" },
-          post: { bsonType: "objectId", description: "Post ID" },
-          content: { bsonType: "string" },
-          createdAt: { bsonType: "date" }
-        }
-      }
-    }
-  });
+    const client = new MongoClient(uri);
 
-  db.createCollection("follows", {
-    validator: {
-      $jsonSchema: {
-        bsonType: "object",
-        required: ["follower", "following"],
-        properties: {
-          follower: { bsonType: "objectId", description: "User who follows" },
-          following: { bsonType: "objectId", description: "User being followed" },
-          createdAt: { bsonType: "date" }
-        }
-      }
-    }
-  });
+    try {
+        console.log('Tentative de connexion à MongoDB...');
+        await client.connect();
+        console.log('Connexion réussie !');
 
-  const userId = ObjectId();
-  db.users.insertOne({
-    _id: userId,
-    username: "breezy_dev",
-    email: "dev@breezy.com",
-    password: "hashedpassword",
-    createdAt: new Date(),
-    updatedAt: new Date()
-  });
-  
-  const postId = ObjectId();
-  db.posts.insertOne({
-    _id: postId,
-    author: userId,
-    content: "Premier post sur Breezy !",
-    createdAt: new Date(),
-    updatedAt: new Date()
-  });
-  
-  db.comments.insertOne({
-    author: userId,
-    post: postId,
-    content: "Super post !",
-    createdAt: new Date()
-  });
-  
-  db.follows.insertOne({
-    follower: userId,
-    following: userId,
-    createdAt: new Date()
-  });
-  
+        const db = client.db(dbName);
+
+        // Initialisation des collections avec des exemples de données
+        console.log('Initialisation des collections...');
+
+        // Collection "roles" avec permissions
+        const roles = [
+            {
+                role_id: 1,
+                name: 'Administrator',
+                permissions: 'all' // L'administrateur a tous les droits
+            },
+            {
+                role_id: 2,
+                name: 'User',
+                permissions: {
+                    '/roles': { GET: false, POST: false, PUT: false, DELETE: false },
+                    '/users': { GET: true, POST: false, PUT: true, DELETE: false },
+                    '/posts': { GET: true, POST: true, PUT: true, DELETE: true },
+                    '/comments': { GET: true, POST: true, PUT: true, DELETE: true },
+                    '/follows': { GET: true, POST: true, DELETE: true },
+                    '/auth': { POST: true },
+                }
+            },
+            {
+                role_id: 3,
+                name: 'Guest',
+                permissions: {
+                    '/roles': { GET: false, POST: false, PUT: false, DELETE: false },
+                    '/users': { GET: false, POST: true, PUT: false, DELETE: false },
+                    '/posts': { GET: true, POST: false, PUT: false, DELETE: false },
+                    '/comments': { GET: true, POST: false, PUT: false, DELETE: false },
+                    '/follows': { GET: false, POST: false, DELETE: false },
+                    '/auth': { POST: true },
+                }
+            }
+        ];
+        await db.collection('roles').insertMany(roles);
+
+        // Collection "users"
+        const users = [
+            {
+                username: 'admin',
+                email: 'admin@example.com',
+                password: 'choucroute', // Remplacez par un mot de passe hashé
+                avatar: 'https://example.com/avatar1.png',
+                bio: 'Admin user',
+                role_id: 1, // Ajout du rôle Administrator
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                username: 'user1',
+                email: 'user1@example.com',
+                password: 'choucroute', // Remplacez par un mot de passe hashé
+                avatar: 'https://example.com/avatar2.png',
+                bio: 'First user',
+                role_id: 2, // Ajout du rôle User
+                createdAt: new Date(),
+                updatedAt: new Date()
+            }
+        ];
+        await db.collection('users').insertMany(users);
+
+        // Collection "comments"
+        const comments = [
+            { author: 'user1', post: 'post1', content: 'Great post!', createdAt: new Date() },
+            { author: 'user1', post: 'post2', content: 'Interesting read.', createdAt: new Date() }
+        ];
+        await db.collection('comments').insertMany(comments);
+
+        // Collection "follows"
+        const follows = [
+            { follower: 'user1', following: 'admin', createdAt: new Date() },
+            { follower: 'admin', following: 'user1', createdAt: new Date() }
+        ];
+        await db.collection('follows').insertMany(follows);
+
+        // Collection "posts"
+        const posts = [
+            { author: 'admin', content: 'Welcome to Breezy!', image: 'https://example.com/image1.png', likes: ['user1'], createdAt: new Date(), updatedAt: new Date() },
+            { author: 'user1', content: 'Hello everyone!', image: 'https://example.com/image2.png', likes: ['admin'], createdAt: new Date(), updatedAt: new Date() }
+        ];
+        await db.collection('posts').insertMany(posts);
+
+        console.log('Base de données initialisée avec succès !');
+
+    } catch (error) {
+        console.error('Erreur lors de l\'initialisation de la base de données :', error);
+    } finally {
+        await client.close();
+        console.log('Connexion fermée.');
+    }
+}
+
+initDatabase();
