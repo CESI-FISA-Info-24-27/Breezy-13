@@ -10,7 +10,7 @@ const followRoutes = express.Router();
 /**
  * Obtenir tous les follows
  */
-followRoutes.get('/', FollowController.getAllFollows);
+followRoutes.get('/', FollowController.getFollows);
 
 /**
  * Créer un nouvel abonnement

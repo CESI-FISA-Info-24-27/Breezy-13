@@ -12,7 +12,7 @@ import followPath from './Path/FollowPath.js';
 import authPath from './Path/LoginPath.js';
 
 // Services
-import userService from './services/UsersServices.js';
+import userService from './Services/UsersServices.js';
 import hasRequiredPermissions from './Middlewares/Permissions.js';
 
 dotenv.config();

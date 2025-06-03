@@ -10,7 +10,7 @@ const commentRoutes = express.Router();
 /**
  * Obtenir tous les commentaires
  */
-commentRoutes.get('/', CommentController.getAllComments);
+commentRoutes.get('/', CommentController.getComments);
 
 /**
  * Créer un nouveau commentaire

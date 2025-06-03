@@ -14,7 +14,7 @@ const postRoutes = express.Router();
 /**
  * Obtenir tous les posts
  */
-postRoutes.get('/', PostController.getAllPosts);
+postRoutes.get('/', PostController.getPosts);
 
 /**
  * Créer un nouveau post
