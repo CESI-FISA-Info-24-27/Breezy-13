@@ -112,4 +112,23 @@ export class UsersMongoDAO extends UsersDAO {
 
         return role.permissions;
     }
+
+    /**
+     * Vérifie si un token est révoqué.
+     * @param {string} token - Le token à vérifier.
+     * @returns {boolean} - True si le token est révoqué, sinon false.
+     */
+    async isTokenRevoked(token) {
+        const revokedToken = await this.db.collection('revokedTokens').findOne({ token });
+        return !!revokedToken; // Retourne true si le token est trouvé, sinon false
+    }
+
+    /**
+     * Ajoute un token révoqué dans la base de données.
+     * @param {string} token - Le token à révoquer.
+     * @returns {object} - Résultat de l'insertion.
+     */
+    async addRevokedToken(token) {
+        return await this.db.collection('revokedTokens').insertOne({ token, revokedAt: new Date() });
+    }
 }

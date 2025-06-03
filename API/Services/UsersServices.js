@@ -84,6 +84,24 @@ const UsersServices = {
      */
     getPermissions: async (userId) => {
         return await UsersDAO.getPermissions(userId);
+    },
+
+    /**
+     * Vérifie si un token est révoqué.
+     * @param {string} token - Le token à vérifier.
+     * @returns {boolean} - True si le token est révoqué, sinon false.
+     */
+    isTokenRevoked: async (token) => {
+        return await UsersDAO.isTokenRevoked(token);
+    },
+
+    /**
+     * Ajoute un token révoqué dans la base de données.
+     * @param {string} token - Le token à révoquer.
+     * @returns {object} - Résultat de l'insertion.
+     */
+    addRevokedToken: async (token) => {
+        return await UsersDAO.addRevokedToken(token);
     }
 }
 

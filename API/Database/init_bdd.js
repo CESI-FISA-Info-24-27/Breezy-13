@@ -96,6 +96,13 @@ async function initDatabase() {
         ];
         await db.collection('posts').insertMany(posts);
 
+        // Collection "revokedTokens"
+        const revokedTokens = [
+            { token: 'exampleRevokedToken1', reason: 'User logged out', revokedAt: new Date() },
+            { token: 'exampleRevokedToken2', reason: 'Security issue', revokedAt: new Date() }
+        ];
+        await db.collection('revokedTokens').insertMany(revokedTokens);
+
         console.log('Base de données initialisée avec succès !');
 
     } catch (error) {

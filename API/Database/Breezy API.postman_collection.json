@@ -1,0 +1,728 @@
+{
+	"info": {
+		"_postman_id": "e9403734-8622-4bae-a726-278b77450a6f",
+		"name": "Breezy API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30523697"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Vérifie si la réponse contient un token\r",
+									"if (pm.response.code === 200) {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    if (jsonData.token) {\r",
+									"        // Enregistre le token dans une variable d'environnement\r",
+									"        pm.environment.set(\"token\", jsonData.token);\r",
+									"        console.log(\"Token enregistré :\", jsonData.token);\r",
+									"    } else {\r",
+									"        console.log(\"Aucun token trouvé dans la réponse.\");\r",
+									"    }\r",
+									"} else {\r",
+									"    console.log(\"Erreur lors de la connexion :\", pm.response.code);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"choucroute\"\n}"
+						},
+						"url": {
+							"raw": "{{localhost}}/auth",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/refresh",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Disconnect",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/disconnect",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"disconnect"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/users",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"newuser\",\n  \"password\": \"password123\",\n  \"email\": \"newuser@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{localhost}}/users",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"updateduser@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{localhost}}/users/:id",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/users/:id",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Roles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/roles",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Roles",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"newuser\",\n  \"password\": \"password123\",\n  \"email\": \"newuser@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{localhost}}/roles",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Roles",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"updateduser@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{localhost}}/roles/:id",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"roles",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Roles",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/roles/:id",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"roles",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Comments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/comment",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comments",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"newuser\",\n  \"password\": \"password123\",\n  \"email\": \"newuser@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{localhost}}/comment",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comments",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"updateduser@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{localhost}}/comment/:id",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"comment",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comments",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/comment/:id",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"comment",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Follows",
+			"item": [
+				{
+					"name": "Follows",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/follows",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"follows"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Follows",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"newuser\",\n  \"password\": \"password123\",\n  \"email\": \"newuser@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{localhost}}/follows",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"follows"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Follows",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"updateduser@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{localhost}}/follows/:id",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"follows",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Follows",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/follows/:id",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"follows",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Posts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/posts",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Posts",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"newuser\",\n  \"password\": \"password123\",\n  \"email\": \"newuser@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{localhost}}/posts",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Posts",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"updateduser@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{localhost}}/posts/:id",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"posts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Posts",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/posts/:id",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"posts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		},
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2VmNzViMzBmZmIzNjA5ZWZlMjkyMCIsInVzZXJuYW1lIjoiYWRtaW4iLCJwZXJtaXNzaW9ucyI6ImFsbCIsImlhdCI6MTc0ODk1OTYyMSwiZXhwIjoxNzQ4OTY2ODIxfQ.88WU-pLstdukDL-iGzawFxEL5stdMiurnx9kJ2Uj-ns"
+		}
+	]
+}

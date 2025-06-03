@@ -42,22 +42,21 @@ app.use(async (req, res, next) => {
   const token = req.headers['authorization'];
 
   if (!token) {
-    return res.status(401).json({ error: 'No token provided' });
+      return res.status(401).json({ error: 'No token provided' });
   }
 
   // Vérifie si le token est révoqué
   if (await userService.isTokenRevoked(token)) {
-    return res.status(401).json({ error: 'Token revoked' });
+      return res.status(401).json({ error: 'Token revoked' });
   }
 
   Jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ error: 'Invalid token' });
-    }
+      if (err) {
+          return res.status(401).json({ error: 'Invalid token' });
+      }
 
-    // Ajoute l'utilisateur décodé dans la requête
-    req.user = decoded;
-    next();
+      req.user = decoded;
+      next();
   });
 });
 
