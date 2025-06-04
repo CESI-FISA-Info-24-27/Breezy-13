@@ -32,8 +32,7 @@ loginPath.post('/', async (req, res) => {
         }
 
         // Vérifie si le mot de passe est correct
-        // if (!bcrypt.compareSync(req.body.password, user[0].password)) {
-        if (req.body.password !== user[0].password) {
+        if (!bcrypt.compareSync(req.body.password, user[0].password)) {
             return res.status(401).send('Mot de passe incorrect');
         }
 

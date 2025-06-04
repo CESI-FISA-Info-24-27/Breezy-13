@@ -1,4 +1,5 @@
 import UsersServices from '../Services/UsersServices.js';
+import RolesServices from '../Services/RolesServices.js';
 import bcrypt from 'bcrypt';
 import env from 'dotenv';
 env.config();
@@ -71,30 +72,51 @@ class UserController {
                 return res.status(404).json({ error: 'Id non trouvé' });
             }
 
-            // Vérifie que le nom est valide
-            if (req.body.name && typeof req.body.name !== 'string') {
-                return res.status(400).json({ error: 'Le nom doit être une chaîne de caractères' });
-            }
-
             // Vérifie que le rôle existe
             if (req.body.role_id) {
-                const role = await UsersServices.getUsers({ id: req.body.role_id });
+                const role = await RolesServices.getRoles({ role_id: req.body.role_id });
                 if (role.length === 0) {
                     return res.status(404).json({ error: 'Rôle non trouvé' });
                 }
             }
 
-            // Hacher le mot de passe
+            // Hacher le mot de passe si présent
             if (req.body.password) {
                 const saltRounds = parseInt(process.env.BCRYPT_SALT); // Convertir BCRYPT_SALT en nombre
                 const salt = bcrypt.genSaltSync(saltRounds);
                 req.body.password = bcrypt.hashSync(req.body.password, salt);
             }
 
-            const updatedUser = await UsersServices.updateUsers(req.params.id, req.body);
-            res.json(updatedUser);
-        }
-        catch (error) {
+            // Ajouter la date de mise à jour
+            req.body.updatedAt = new Date();
+
+            // Met à jour l'utilisateur
+            const updateResult = await UsersServices.updateUsers(req.params.id, req.body);
+
+            if (updateResult.modifiedCount === 0) {
+                return res.status(400).json({ error: 'Aucune modification effectuée' });
+            }
+
+            // Récupère les informations mises à jour de l'utilisateur
+            const updatedUser = await UsersServices.getUsers({ id: req.params.id });
+
+            // Exclure le mot de passe de la réponse
+            const userInfo = {
+                id: updatedUser[0]._id,
+                username: updatedUser[0].username,
+                email: updatedUser[0].email,
+                avatar: updatedUser[0].avatar,
+                bio: updatedUser[0].bio,
+                role_id: updatedUser[0].role_id,
+                createdAt: updatedUser[0].createdAt,
+                updatedAt: updatedUser[0].updatedAt
+            };
+
+            res.status(200).json({
+                message: 'Utilisateur mis à jour avec succès',
+                user: userInfo
+            });
+        } catch (error) {
             res.status(500).json({ error: error.toString() });
         }
     }
@@ -134,17 +156,15 @@ class UserController {
      */
     async createUsers(req, res) {
         try {
-            // Vérifie que le nom est valide
-            if (req.body.name && typeof req.body.name !== 'string') {
-                return res.status(400).json({ error: 'Le nom doit être une chaîne de caractères' });
+            // Vérifie que le nom d'utilisateur est valide
+            if (!req.body.username || typeof req.body.username !== 'string') {
+                return res.status(400).json({ error: 'Le nom d\'utilisateur doit être une chaîne de caractères' });
             }
 
             // Vérifie que le nom d'utilisateur n'existe pas déjà
-            if (req.body.username) {
-                const userbdd = await UsersServices.getUsers({ username: req.body.username });
-                if (userbdd.length > 0) {
-                    return res.status(400).json({ error: 'Le nom d\'utilisateur existe déjà' });
-                }
+            const userbdd = await UsersServices.getUsers({ username: req.body.username });
+            if (userbdd.length > 0) {
+                return res.status(400).json({ error: 'Le nom d\'utilisateur existe déjà' });
             }
 
             const newUser = req.body;
@@ -156,9 +176,27 @@ class UserController {
                 newUser.password = bcrypt.hashSync(newUser.password, salt);
             }
 
-            res.json(UsersServices.createUsers(newUser));
-        }
-        catch (error) {
+            // Ajouter la date de création et de mise à jour
+            newUser.createdAt = new Date();
+            newUser.updatedAt = new Date();
+
+            // Crée l'utilisateur
+            const createdUser = await UsersServices.createUsers(newUser);
+
+            // Récupère les informations de l'utilisateur créé
+            const userInfo = {
+                id: createdUser.insertedId,
+                username: newUser.username,
+                email: newUser.email,
+                avatar: newUser.avatar,
+                bio: newUser.bio,
+                role_id: newUser.role_id,
+                createdAt: newUser.createdAt,
+                updatedAt: newUser.updatedAt
+            };
+
+            res.status(201).json({ message: 'Utilisateur créé avec succès', user: userInfo });
+        } catch (error) {
             res.status(500).json({ error: error.toString() });
         }
     }

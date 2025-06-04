@@ -3,6 +3,8 @@ import { DAOMongoDbFactory } from "../Factory/DAOMongoDbFactory.js";
 const Factory = new DAOMongoDbFactory();
 const CommentsDAO = Factory.createCommentsDAO();
 
+CommentsDAO.init();
+
 /**
  * Represents a service for handling comments requests
  */

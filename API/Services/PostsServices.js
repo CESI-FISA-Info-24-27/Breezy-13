@@ -3,6 +3,8 @@ import { DAOMongoDbFactory } from "../Factory/DAOMongoDbFactory.js";
 const Factory = new DAOMongoDbFactory();
 const PostsDAO = Factory.createPostsDAO();
 
+PostsDAO.init();
+
 /**
  * Represents a service for handling posts requests
  */
