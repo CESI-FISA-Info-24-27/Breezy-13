@@ -5,26 +5,34 @@ services:
       dockerfile: breezy_api.Dockerfile
     container_name: node-api
     ports:
-      - "8080:8080"
+      - "3000:3000"
     environment:
-      - MONGO_URI=mongodb://mongo:27017/breezy_bdd
+      - MONGO_URI=mongodb://mongodb:27017/breezy_bdd
     depends_on:
-      - mongo
+      - mongodb
     volumes:
       - ./api:/app
       - node_modules_api:/app/node_modules
+    networks:
+      - backend
+    command: ["./wait-for-it.sh", "mongodb", "27017", "npm", "start"]
 
-  mongo:
+  mongodb:
     image: mongo:7
     container_name: mongodb
     ports:
       - "27017:27017"
     environment:
-      - MONGO_URI=mongodb://mongo:27017/breezy_bdd
+      - MONGO_URI=mongodb://mongodb:27017/breezy_bdd
     volumes:
       - mongo_data:/data/db
-      - ./api/Database/init_bdd.js:/docker-entrypoint-initdb.d/init_bdd.js:ro
+      - ./api/Database/init_bdd_mongo_shell.js:/docker-entrypoint-initdb.d/init_bdd.js:ro
+    networks:
+      - backend
 
 volumes:
   mongo_data:
   node_modules_api:
+
+networks:
+  backend:

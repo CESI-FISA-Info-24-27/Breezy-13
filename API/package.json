@@ -23,7 +23,7 @@
     "comments",
     "follows"
   ],
-  "author": "Loïc SERRE",
+  "author": "Groupe 3",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^6.0.0",
