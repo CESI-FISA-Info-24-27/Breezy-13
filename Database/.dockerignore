@@ -1,0 +1,5 @@
+# On ignore tout par défaut
+**
+
+# Mais on réautoriser le fichier d'initialisation
+!init_bdd_mongo_shell.js

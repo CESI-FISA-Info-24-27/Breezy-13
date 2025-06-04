@@ -18,7 +18,9 @@ services:
     command: ["./wait-for-it.sh", "mongodb", "27017", "npm", "start"]
 
   mongodb:
-    image: mongo:7
+    build:
+      context: ./Database
+      dockerfile: mongodb.Dockerfile
     container_name: mongodb
     ports:
       - "27017:27017"
@@ -26,7 +28,6 @@ services:
       - MONGO_URI=mongodb://mongodb:27017/breezy_bdd
     volumes:
       - mongo_data:/data/db
-      - ./api/Database/init_bdd_mongo_shell.js:/docker-entrypoint-initdb.d/init_bdd.js:ro
     networks:
       - backend
 
