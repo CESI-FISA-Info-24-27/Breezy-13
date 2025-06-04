@@ -1,5 +1,6 @@
 import express from 'express';
 import RoleController from '../Controller/RoleController.js';
+import fieldsRequired from '../Middlewares/RequiredFields.js';
 
 /**
  * Représente un chemin pour les rôles
@@ -17,13 +18,13 @@ rolePath.get('/', RoleController.getRoles);
  * Créer des rôles
  * @param {object} req - La requête
  */
-rolePath.post('/', RoleController.createRoles);
+rolePath.post('/', fieldsRequired(["name"]), RoleController.createRoles);
 
 /**
  * Mettre à jour des rôles
  * @param {object} req - La requête
  */
-rolePath.patch('/:id', RoleController.updateRoles);
+rolePath.patch('/:id', fieldsRequired(["name"]), RoleController.updateRoles);
 
 /**
  * Supprimer des rôles

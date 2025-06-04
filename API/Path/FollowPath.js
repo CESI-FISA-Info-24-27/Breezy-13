@@ -1,5 +1,6 @@
 import express from 'express';
 import FollowController from '../Controller/FollowController.js';
+import fieldsRequired from '../Middlewares/RequiredFields.js';
 
 /**
  * Représente un chemin pour les abonnements (follows)
@@ -15,7 +16,7 @@ followRoutes.get('/', FollowController.getFollows);
 /**
  * Créer un nouvel abonnement
  */
-followRoutes.post('/', FollowController.createFollow);
+followRoutes.post('/', fieldsRequired(["follower", "following"]), FollowController.createFollow);
 
 /**
  * Supprimer un abonnement

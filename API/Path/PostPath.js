@@ -1,5 +1,6 @@
 import express from 'express';
 import PostController from '../Controller/PostController.js';
+import fieldsRequired from '../Middlewares/RequiredFields.js';
 
 /**
  * Représente un chemin pour les posts
@@ -19,12 +20,12 @@ postRoutes.get('/', PostController.getPosts);
 /**
  * Créer un nouveau post
  */
-postRoutes.post('/', PostController.createPost);
+postRoutes.post('/', fieldsRequired(["author", "content", "image", "likes" ]), PostController.createPost);
 
 /**
  * Mettre à jour un post
  */
-postRoutes.patch('/:id', PostController.updatePost);
+postRoutes.patch('/:id', fieldsRequired(["content", "image", "likes"]), PostController.updatePost);
 
 /**
  * Supprimer un post

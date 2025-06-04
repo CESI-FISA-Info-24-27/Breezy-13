@@ -1,5 +1,6 @@
 import express from 'express';
 import CommentController from '../Controller/CommentController.js';
+import fieldsRequired from '../Middlewares/RequiredFields.js';
 
 /**
  * Représente un chemin pour les commentaires
@@ -15,12 +16,12 @@ commentRoutes.get('/', CommentController.getComments);
 /**
  * Créer un nouveau commentaire
  */
-commentRoutes.post('/', CommentController.createComment);
+commentRoutes.post('/', fieldsRequired(["author", "post", "content"]), CommentController.createComment);
 
 /**
  * Mettre à jour un commentaire
  */
-commentRoutes.patch('/:id', CommentController.updateComment);
+commentRoutes.patch('/:id', fieldsRequired(["post", "content"]), CommentController.updateComment);
 
 /**
  * Supprimer un commentaire
