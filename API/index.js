@@ -10,6 +10,8 @@ import postPath from './Path/PostPath.js';
 import commentPath from './Path/CommentPath.js';
 import followPath from './Path/FollowPath.js';
 import authPath from './Path/LoginPath.js';
+import disconnectPath from './Path/DisconnectPath.js';
+import refreshTokenPath from './Path/RefreshTokenPath.js';
 
 // Services
 import userService from './Services/UsersServices.js';
@@ -37,6 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Auth Path (login, logout, refresh)
 app.use('/auth', authPath);
+app.use('/refresh-token', refreshTokenPath);
 
 // Middleware de vérification du token
 app.use(async (req, res, next) => {
@@ -67,6 +70,7 @@ app.use('/posts', postPath);
 app.use('/comments', commentPath);
 app.use('/follows', followPath);
 app.use('/roles', rolePath);
+app.use('/disconnect', disconnectPath);
 
 app.listen(port, () => {
   console.log(`🚀 Server running at ${process.env.WEBAPP_ORIGIN}:${port}`);

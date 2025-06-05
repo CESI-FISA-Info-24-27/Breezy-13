@@ -1,11 +1,10 @@
 import express from 'express';
 import Jwt from 'jsonwebtoken';
 import UsersServices from '../Services/UsersServices.js';
-import bcrypt from 'bcrypt';
 
 /**
  * Représente un chemin pour la déconnexion
- * @class LoginPath
+ * @class DisconnectPath
  */
 const disconnectPath = express.Router();
 
@@ -16,19 +15,21 @@ const disconnectPath = express.Router();
 disconnectPath.post('/', async (req, res) => {
     const token = req.headers['authorization'];
 
-    // Vérifie le token
+    if (!token) {
+        return res.status(401).json({ error: 'Token manquant' });
+    }
+
     Jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
         if (err) {
             return res.status(401).json({ error: 'Token invalide' });
         }
 
         try {
-            await UsersServices.addrevokedtoken(token);
+            await UsersServices.addRevokedToken(token); // Ajoute le token à la liste des tokens révoqués
+            return res.status(200).json({ message: 'Déconnecté avec succès' });
         } catch (error) {
             return res.status(500).json({ error: 'Erreur lors de la révocation du token' });
         }
-
-        return res.status(200).json({ message: 'Déconnecté' });
     });
 });
 

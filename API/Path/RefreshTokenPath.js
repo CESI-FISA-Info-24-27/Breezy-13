@@ -1,29 +1,44 @@
-import Jwt from 'jsonwebtoken';
 import express from 'express';
+import Jwt from 'jsonwebtoken';
 import UsersServices from '../Services/UsersServices.js';
 
-const router = express.Router();
+const refreshTokenPath = express.Router();
 
-router.use('/', async (req, res) => {
+/**
+ * Rafraîchir le token
+ * @param {object} req - La requête
+ */
+refreshTokenPath.post('/', async (req, res) => {
     const refreshToken = req.headers['x-refresh-token'];
 
     if (!refreshToken) {
-        return res.status(401).json({ error: 'No refresh token provided' });
+        return res.status(401).json({ error: 'Token de rafraîchissement manquant' });
     }
 
     Jwt.verify(refreshToken, process.env.JWT_SECRET_REFRESH, async (err, decoded) => {
         if (err) {
-            return res.status(401).json({ error: 'Invalid refresh token' });
+            return res.status(401).json({ error: 'Token de rafraîchissement invalide' });
         }
 
-        // récupérer l'utilisateur depuis la base de données
-        const user = UsersServices.getUsers({ username: decoded.username });
+        try {
+            // Vérifie si l'utilisateur existe
+            const user = await UsersServices.getUsers({ id: decoded.id });
+            if (user.length === 0) {
+                return res.status(404).json({ error: 'Utilisateur non trouvé' });
+            }
 
-        // retourner un nouveau token
-        const token = Jwt.sign({ id: user[0].id, username: user[0].username }, process.env.JWT_SECRET, { expiresIn: '2h' });
+            // Génère un nouveau token
+            const newToken = Jwt.sign(
+                { id: user[0]._id, username: user[0].username },
+                process.env.JWT_SECRET,
+                { expiresIn: '2h' }
+            );
 
-        return res.status(200).json({ token: token });
+            return res.status(200).json({ token: newToken });
+        } catch (error) {
+            return res.status(500).json({ error: 'Erreur lors du rafraîchissement du token' });
+        }
     });
 });
 
-export default router;
+export default refreshTokenPath;
