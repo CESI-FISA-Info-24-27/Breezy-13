@@ -16,7 +16,7 @@ followRoutes.get('/', FollowController.getFollows);
 /**
  * Créer un nouvel abonnement
  */
-followRoutes.post('/', fieldsRequired(["follower", "following"]), FollowController.createFollow);
+followRoutes.post('/', fieldsRequired(["follower_id", "following_id"]), FollowController.createFollow);
 
 /**
  * Supprimer un abonnement

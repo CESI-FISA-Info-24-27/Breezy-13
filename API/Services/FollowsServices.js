@@ -1,4 +1,5 @@
 import { DAOMongoDbFactory } from "../Factory/DAOMongoDbFactory.js";
+import UsersServices from '../Services/UsersServices.js';
 
 const Factory = new DAOMongoDbFactory();
 const FollowsDAO = Factory.createFollowsDAO();
@@ -19,12 +20,32 @@ const FollowsServices = {
     },
 
     /**
-     * Create follows
-     * @param {object} follow - The follow relationship to create
-     * @returns {object} - The follow relationship created
+     * Crée un nouvel abonnement.
+     * @param {object} follow - Les données de l'abonnement à créer.
+     * @returns {object} - L'objet complet de l'abonnement créé.
      */
-    createFollows: async (follow) => {
-        return await FollowsDAO.createFollow(follow);
+    createFollow: async (follow) => {
+        const { follower_id, following_id, createdAt } = follow;
+
+        // Vérifie que les utilisateurs existent
+        const followerExists = await UsersServices.getUsers({ _id: follower_id });
+        if (followerExists.length === 0) {
+            throw new Error(`L'utilisateur follower "${follower_id}" n'existe pas`);
+        }
+
+        const followingExists = await UsersServices.getUsers({ _id: following_id });
+        if (followingExists.length === 0) {
+            throw new Error(`L'utilisateur following "${following_id}" n'existe pas`);
+        }
+
+        // Crée l'abonnement
+        const newFollow = {
+            follower_id,
+            following_id,
+            createdAt: createdAt || new Date(),
+        };
+
+        return await FollowsDAO.createFollow(newFollow);
     },
 
     /**
@@ -32,7 +53,7 @@ const FollowsServices = {
      * @param {object} follow - The follow relationship to delete
      * @returns {object} - The follow relationship deleted
      */
-    deleteFollows: async (follow) => {
+    deleteFollow: async (follow) => {
         return await FollowsDAO.deleteFollow(follow);
     },
 }
