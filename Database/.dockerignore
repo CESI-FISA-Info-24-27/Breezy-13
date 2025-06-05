@@ -1,0 +1,6 @@
+# On ignore tout par défaut
+**
+
+# Mais on réautoriser le fichier d'initialisation
+!init_bdd.js
+!dumps/data_dump.js
