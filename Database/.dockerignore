@@ -2,4 +2,5 @@
 **
 
 # Mais on réautoriser le fichier d'initialisation
-!init_bdd_mongo_shell.js
+!init_bdd.js
+!dumps/data_dump.js

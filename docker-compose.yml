@@ -15,7 +15,7 @@ services:
       - node_modules_api:/app/node_modules
     networks:
       - backend
-    command: ["./wait-for-it.sh", "mongodb", "27017", "npm", "start"]
+    command: ["./wait-for-it.sh", "mongodb", "27017", "npm", "run", "dev"]
 
   mongodb:
     build:
