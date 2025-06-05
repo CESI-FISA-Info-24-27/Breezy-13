@@ -35,7 +35,7 @@ class PostController {
             if (!req.body.content || typeof req.body.content !== 'string') {
                 return res.status(400).json({ error: 'Le contenu doit être une chaîne de caractères' });
             }
-
+    
             const newPost = await PostsServices.createPost(req.body);
             res.status(201).json(newPost);
         } catch (error) {
@@ -56,9 +56,9 @@ class PostController {
             if (post.length === 0) {
                 return res.status(404).json({ error: 'Post non trouvé' });
             }
-
-            const updated = await PostsServices.updatePost(req.params.id, req.body);
-            res.json(updated);
+    
+            const updatedPost = await PostsServices.updatePost(req.params.id, req.body);
+            res.json(updatedPost);
         } catch (error) {
             res.status(500).json({ error: error.toString() });
         }

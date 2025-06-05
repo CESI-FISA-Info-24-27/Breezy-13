@@ -23,8 +23,44 @@ const PostsServices = {
      * @param {object} post - The post to create
      * @returns {object} - The post created
      */
-    createPosts: async (post) => {
-        return await PostsDAO.createPost(post);
+    createPost: async (post) => {
+        const newPost = {
+            ...post,
+            createdAt: new Date(), // Ajoute la date de création
+            updatedAt: new Date(), // Initialise également updatedAt
+        };
+        return await PostsDAO.createPost(newPost);
+    },
+
+    updatePost: async (postId, post) => {
+        const updatedPost = {
+            ...post,
+            updatedAt: new Date(), // Met à jour la date de modification
+        };
+    
+        // Effectue la mise à jour
+        const updateResult = await PostsDAO.updatePost(postId, updatedPost);
+    
+        // Vérifie si la mise à jour a été effectuée
+        if (updateResult.matchedCount === 0) {
+            throw new Error('Post not found');
+        }
+    
+        // Récupère l'objet mis à jour
+        const postAfterUpdate = await PostsDAO.getPosts({ id: postId });
+        if (postAfterUpdate.length === 0) {
+            throw new Error('Failed to retrieve updated post');
+        }
+    
+        return postAfterUpdate[0]; // Retourne l'objet mis à jour
+    },
+
+    deletePost: async (postId) => {
+        const post = await PostsDAO.getPosts({ id: postId });
+        if (post.length === 0) {
+            throw new Error('Post not found');
+        }
+        return await PostsDAO.deletePost(postId);
     },
 
     /**

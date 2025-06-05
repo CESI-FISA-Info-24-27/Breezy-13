@@ -58,7 +58,7 @@ export class PostsMongoDAO extends PostsDAO {
     async updatePost(id, post) {
         return await this.collection.updateOne(
             { _id: new ObjectId(id) },
-            { $set: { author: post.author, content: post.content, image: post.image, likes: post.likes, updatedAt: post.updatedAt } }
+            { $set: { ...post } } 
         );
     }
 
@@ -77,6 +77,7 @@ export class PostsMongoDAO extends PostsDAO {
      * @returns {object} - Résultat de l'insertion.
      */
     async createPost(post) {
-        return await this.collection.insertOne(post);
+        const result = await this.collection.insertOne(post);
+        return { _id: result.insertedId, ...post }; // Retourne l'objet complet avec l'_id
     }
 }
