@@ -1,0 +1,747 @@
+{
+	"info": {
+		"_postman_id": "e9403734-8622-4bae-a726-278b77450a6f",
+		"name": "Breezy API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30523697"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Vérifie si la réponse contient un token et un refreshToken\r",
+									"if (pm.response.code === 200) {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    if (jsonData.token) {\r",
+									"        // Enregistre le token d'accès dans une variable d'environnement\r",
+									"        pm.environment.set(\"token\", jsonData.token);\r",
+									"        console.log(\"Token enregistré :\", jsonData.token);\r",
+									"    } else {\r",
+									"        console.log(\"Aucun token trouvé dans la réponse.\");\r",
+									"    }\r",
+									"\r",
+									"    if (jsonData.refreshToken) {\r",
+									"        // Enregistre le token de rafraîchissement dans une variable d'environnement\r",
+									"        pm.environment.set(\"refreshToken\", jsonData.refreshToken);\r",
+									"        console.log(\"Refresh token enregistré :\", jsonData.refreshToken);\r",
+									"    } else {\r",
+									"        console.log(\"Aucun refresh token trouvé dans la réponse.\");\r",
+									"    }\r",
+									"} else {\r",
+									"    console.log(\"Erreur lors du rafraîchissement du token :\", pm.response.code);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"choucroute\"\n}"
+						},
+						"url": {
+							"raw": "{{localhost}}/auth",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Disconnect",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/disconnect",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"disconnect"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-refresh-token",
+								"value": "{{refreshToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/refresh-token",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-refresh-token",
+								"value": "{{refreshToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/refresh-token",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/users",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "admin",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"test23\",\n    \"password\": \"choucroute\",\n    \"email\": \"loic@example.com\",\n    \"avatar\": \"https://example.com/avatar.png\",\n    \"bio\": \"This is a new user 2\",\n    \"role_id\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/users",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "_id",
+									"value": "68403c7eac31e0d022fb522c",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"test35\",\r\n    \"password\": \"choucroute\",\r\n    \"email\": \"patchloic@example.com\",\r\n    \"avatar\": \"https://patch.com/avatar.png\",\r\n    \"bio\": \"This is a PATCH\",\r\n    \"role_id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/users/:id",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68413ff861aa931e0f35205d"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/users/:id",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68413ff861aa931e0f35205d"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Roles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/roles",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Roles",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"UserTest\",\n    \"permissions\": {\n        \"/roles\": {\n            \"GET\": false,\n            \"POST\": false,\n            \"PUT\": false,\n            \"DELETE\": false\n        },\n        \"/users\": {\n            \"GET\": true,\n            \"POST\": false,\n            \"PUT\": true,\n            \"DELETE\": false\n        },\n        \"/posts\": {\n            \"GET\": true,\n            \"POST\": true,\n            \"PUT\": true,\n            \"DELETE\": true\n        },\n        \"/comments\": {\n            \"GET\": true,\n            \"POST\": true,\n            \"PUT\": true,\n            \"DELETE\": true\n        },\n        \"/follows\": {\n            \"GET\": true,\n            \"POST\": true,\n            \"DELETE\": true\n        },\n        \"/auth\": {\n            \"POST\": true\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/roles",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Roles",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"UserTest134\",\n    \"permissions\": {\n        \"/roles\": {\n            \"GET\": false,\n            \"POST\": false,\n            \"PUT\": false,\n            \"DELETE\": false\n        },\n        \"/users\": {\n            \"GET\": true,\n            \"POST\": false,\n            \"PUT\": true,\n            \"DELETE\": false\n        },\n        \"/posts\": {\n            \"GET\": true,\n            \"POST\": true,\n            \"PUT\": true,\n            \"DELETE\": true\n        },\n        \"/comments\": {\n            \"GET\": true,\n            \"POST\": true,\n            \"PUT\": true,\n            \"DELETE\": true\n        },\n        \"/follows\": {\n            \"GET\": true,\n            \"POST\": true,\n            \"DELETE\": true\n        },\n        \"/auth\": {\n            \"POST\": true\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/roles/:id",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"roles",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6841401f61aa931e0f35205e"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Roles",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/roles/:id",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"roles",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6841401f61aa931e0f35205e"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Comments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/comments",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comments",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"author\": \"user1\",\n    \"post\": \"post2\",\n    \"parentCommentId\": \"parentcommentIs1309U0USQDJ\",\n    \"content\": \"Interesting read.\",\n    \"likes\": [\"68404a5bed924f14a393ce4e\"],\n    \"createdAt\": \"2025-06-03T14:26:31.710Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/comments",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comments",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/comments/:id",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"comments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "683f0617f06f273b1b7b4599"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Follows",
+			"item": [
+				{
+					"name": "Follows",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/follows",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"follows"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Follows",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"follower_id\": \"68404a5bed924f14a393ce4e\",\n    \"following_id\": \"68404a94ed924f14a393ce4f\",\n    \"createdAt\": \"2025-06-03T14:26:31.723Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/follows",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"follows"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Follows",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/follows/:id",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"follows",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68416453560577f6e78017a0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Posts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/posts",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Posts",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"author\": \"admin\",\n    \"content\": \"INSERT TEST\",\n    \"image\": \"https://example.com/image1.png\",\n    \"likes\": [\n        \"user1\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/posts",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Posts",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"author\": \"admin\",\n    \"content\": \"INSERT TEST UPDATE\",\n    \"image\": \"https://example.com/image1.png\",\n    \"likes\": [\n        \"user1\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/posts/:id",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"posts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68416f6a9e4ad9611ddcb969"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Posts",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/posts/:id",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"posts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68416d222bd11c52b4edcb06"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		},
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2VmNzViMzBmZmIzNjA5ZWZlMjkyMCIsInVzZXJuYW1lIjoiYWRtaW4iLCJwZXJtaXNzaW9ucyI6ImFsbCIsImlhdCI6MTc0ODk1OTYyMSwiZXhwIjoxNzQ4OTY2ODIxfQ.88WU-pLstdukDL-iGzawFxEL5stdMiurnx9kJ2Uj-ns"
+		}
+	]
+}
