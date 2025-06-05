@@ -18,13 +18,13 @@ rolePath.get('/', RoleController.getRoles);
  * Créer des rôles
  * @param {object} req - La requête
  */
-rolePath.post('/', fieldsRequired(["name"]), RoleController.createRoles);
+rolePath.post('/', fieldsRequired(["name", "permissions"]), RoleController.createRoles);
 
 /**
  * Mettre à jour des rôles
  * @param {object} req - La requête
  */
-rolePath.patch('/:id', fieldsRequired(["name"]), RoleController.updateRoles);
+rolePath.patch('/:id', fieldsRequired(["name", "permissions"]), RoleController.updateRoles);
 
 /**
  * Supprimer des rôles

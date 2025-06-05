@@ -3,7 +3,7 @@ import { DAOMongoDbFactory } from "../Factory/DAOMongoDbFactory.js";
 const Factory = new DAOMongoDbFactory();
 const RolesDAO = Factory.createRolesDAO();
 
-RolesDAO.init();
+await RolesDAO.init();
 
 /**
  * Represents a service for handling roles requests
@@ -51,8 +51,8 @@ const RolesServices = {
      * @param {number} roleId - L'identifiant du rôle
      * @returns {object} - Les permissions du rôle
      */
-    getRolePermissions: async (roleId) => {
-        const roles = await RolesDAO.getRoles({ role_id: roleId });
+    getRolePermissions: async (id) => {
+        const roles = await RolesDAO.getRoles({ _id: id });
         if (roles.length === 0) {
             throw new Error('Rôle non trouvé');
         }

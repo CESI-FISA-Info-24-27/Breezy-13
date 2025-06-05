@@ -3,7 +3,7 @@ import { DAOMongoDbFactory } from "../Factory/DAOMongoDbFactory.js";
 const Factory = new DAOMongoDbFactory();
 const FollowsDAO = Factory.createFollowsDAO();
 
-FollowsDAO.init();
+await FollowsDAO.init();
 
 /**
  * Represents a service for handling follows requests

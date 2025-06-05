@@ -1,5 +1,6 @@
 import { MongoClient, ObjectId } from 'mongodb';
 import { RolesDAO } from './RolesDAO.js';
+import RoleModel from '../Model/RoleModel.js';
 import dotenv from 'dotenv'
 
 /**
@@ -38,10 +39,11 @@ export class RolesMongoDAO extends RolesDAO {
      */
     async getRoles(filters) {
         const mongoFilters = {};
-        if (filters.id) mongoFilters._id = new ObjectId(filters.id);
+        if (filters._id) mongoFilters._id = new ObjectId(filters._id); // Utilisation correcte de _id
         if (filters.name) mongoFilters.name = filters.name;
-
-        return await this.collection.find(mongoFilters).toArray();
+    
+        const roles = await this.collection.find(mongoFilters).toArray();
+        return roles.map(role => new RoleModel(role)); // Instancie chaque rôle avec le modèle
     }
 
     /**
@@ -52,8 +54,8 @@ export class RolesMongoDAO extends RolesDAO {
      */
     async updateRole(id, role) {
         return await this.collection.updateOne(
-            { _id: new ObjectId(id) },
-            { $set: { name: role.name } }
+            { _id: new ObjectId(id) }, // Utilisation de _id
+            { $set: { name: role.name, permissions: role.permissions } }
         );
     }
 
@@ -72,6 +74,7 @@ export class RolesMongoDAO extends RolesDAO {
      * @returns {object} - Résultat de l'insertion.
      */
     async createRole(role) {
-        return await this.collection.insertOne(role);
+        const result = await this.collection.insertOne(role);
+        return { _id: result.insertedId, ...role }; // Retourne le rôle avec son _id
     }
 }

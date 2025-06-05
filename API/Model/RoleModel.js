@@ -2,14 +2,15 @@
  * Modèle représentant un rôle.
  * 
  * @export
- * @class rolesModel
+ * @class RoleModel
  * @param {Object} params - Les paramètres pour initialiser le modèle.
- * @param {number} params.role_id - L'identifiant unique du rôle.
  * @param {string} params.name - Le nom du rôle.
+ * @param {string|Object} params.permissions - Les permissions du rôle (peut être "all" ou un objet détaillé).
  */
-export default class rolesModel {
-    constructor({role_id, name}) {
-        this.role_id = role_id;
+export default class RoleModel {
+    constructor({_id, name, permissions }) {
+        this._id = _id;
         this.name = name;
+        this.permissions = permissions;
     }
 }

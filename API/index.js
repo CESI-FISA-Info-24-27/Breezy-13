@@ -13,6 +13,7 @@ import authPath from './Path/LoginPath.js';
 
 // Services
 import userService from './Services/UsersServices.js';
+import rolePath from './Path/RolesPath.js';
 
 dotenv.config();
 
@@ -65,6 +66,7 @@ app.use('/users', userPath);
 app.use('/posts', postPath);
 app.use('/comments', commentPath);
 app.use('/follows', followPath);
+app.use('/roles', rolePath);
 
 app.listen(port, () => {
   console.log(`🚀 Server running at ${process.env.WEBAPP_ORIGIN}:${port}`);
