@@ -41,9 +41,10 @@ export class CommentsMongoDAO extends CommentsDAO {
         if (filters.id) mongoFilters._id = new ObjectId(filters.id);
         if (filters.author) mongoFilters.author = filters.author;
         if (filters.post) mongoFilters.post = filters.post;
+        if (filters.parentCommentId) mongoFilters.parentCommentId = filters.parentCommentId;
         if (filters.content) mongoFilters.content = filters.content;
         if (filters.createdAt) mongoFilters.createdAt = filters.createdAt;
-
+    
         return await this.collection.find(mongoFilters).toArray();
     }
 
@@ -75,6 +76,11 @@ export class CommentsMongoDAO extends CommentsDAO {
      * @returns {object} - Résultat de l'insertion.
      */
     async createComment(comment) {
-        return await this.collection.insertOne(comment);
+        const newComment = {
+            ...comment,
+            createdAt: new Date(),
+        };
+        const result = await this.collection.insertOne(newComment);
+        return { _id: result.insertedId, ...newComment };
     }
 }

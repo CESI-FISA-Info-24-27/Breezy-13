@@ -25,10 +25,25 @@ const CommentsServices = {
      * @param {number} [parentCommentId] - The id of the parent comment (optional)
      * @returns {object} - The comment created
      */
-    createComments: async (comment, postId, parentCommentId = null) => {
-        const newComment = { ...comment, postId, parentCommentId };
-        return await CommentsDAO.createComments(newComment);
+    createComment: async (comment) => {
+        const { author, post, content, parentCommentId = null } = comment;
+
+        // Valide les champs requis
+        if (!author || !post || !content) {
+            throw new Error('Les champs author, post et content sont requis');
+        }
+
+        const newComment = { author, post, content, parentCommentId };
+        return await CommentsDAO.createComment(newComment);
     },
+
+    deleteComment: async (id) => {
+        const comment = await CommentsDAO.getComments({ id });
+        if (comment.length === 0) {
+            throw new Error('Comment not found');
+        }
+        return await CommentsDAO.deleteComment(id);
+    }
 }
 
 export default CommentsServices;
