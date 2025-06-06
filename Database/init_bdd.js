@@ -60,7 +60,7 @@ if (db.users.countDocuments() === 0)
   ]);
 
   db.comments.insertMany([
-    { author: 'user1', post: 'post1', content: 'Great post!', createdAt: new Date() },
+    { author: 'admin', post: 'post1', content: 'Great post!', createdAt: new Date() },
     { author: 'user1', post: 'post2', content: 'Interesting read.', createdAt: new Date() }
   ]);
 
