@@ -4,22 +4,13 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import Jwt from 'jsonwebtoken';
 
-// Path
-<<<<<<< Updated upstream
-import userPath from './Path/UsersPath.js';
-import postPath from './Path/PostPath.js';
-import commentPath from './Path/CommentPath.js';
-import followPath from './Path/FollowPath.js';
-import authPath from './Path/LoginPath.js';
-import disconnectPath from './Path/DisconnectPath.js';
-import refreshTokenPath from './Path/RefreshTokenPath.js';
-=======
 import userPath from './App/Path/UsersPath.js';
 import postPath from './App/Path/PostPath.js';
 import commentPath from './App/Path/CommentPath.js';
 import followPath from './App/Path/FollowPath.js';
 import authPath from './App/Path/LoginPath.js';
->>>>>>> Stashed changes
+import disconnectPath from './App/Path/DisconnectPath.js';
+import refreshTokenPath from './App/Path/RefreshTokenPath.js';
 
 // Services
 import userService from './App/Services/UsersServices.js';
