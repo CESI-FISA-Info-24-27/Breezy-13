@@ -47,6 +47,20 @@ services:
       - backend
     depends_on:
       - api
+    
+  webapp:
+    build:
+      context: ./webapp
+      dockerfile: breezy_webapp.Dockerfile
+    container_name: breezy-webapp
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - backend
+    depends_on:
+      - api
 
 volumes:
   mongo_data:
