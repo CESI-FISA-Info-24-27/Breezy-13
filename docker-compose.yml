@@ -31,9 +31,27 @@ services:
     networks:
       - backend
 
+  fileserver:
+    build:
+      context: ./FileServer
+      dockerfile: file_server_api.Dockerfile
+    container_name: fileserver
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+    volumes:
+      - ./FileServer:/app
+      - fileserver_uploads:/app/uploads
+    networks:
+      - backend
+    depends_on:
+      - api
+
 volumes:
   mongo_data:
   node_modules_api:
+  fileserver_uploads:
 
 networks:
   backend:
