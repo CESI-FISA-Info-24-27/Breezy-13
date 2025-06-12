@@ -29,18 +29,6 @@ export default function MyNavbar() {
         aria-label="Default sidebar example"
         theme={customSidebarTheme}
       >
-        {/* <div className="flex items-center justify-center my-6 space-x-3">
-          <Image
-            src="/logo.png"
-            alt="Logo"
-            width={40}
-            height={40}
-            className="rounded-full border-4 border-seasalt shadow"
-          />
-          <span className="text-2xl font-bold text-seasalt tracking-wide drop-shadow">
-            TwiX
-          </span>
-        </div> */}
         <SidebarLogo href="#" img="/logo.png" imgAlt="TwiX logo">
           TwiX
         </SidebarLogo>

@@ -1,7 +1,37 @@
 import Link from "next/link";
 import Image from "next/image";
+import Cookies from 'js-cookie';
+import { useState } from 'react';
+import { login } from '@/services/authService'; // adapte le chemin si nécessaire
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
+    const router = useRouter();
+
+    const handleSubmit = async (e) => {
+    e.preventDefault(); // empêche le rechargement de la page
+    try {
+        const data = await login(email, password, rememberMe);
+        console.log('Connexion réussie', data);
+        // Rediriger l'utilisateur ou stocker les données selon le contexte
+
+        Cookies.set('token', data.token, {
+        secure: true, // true si HTTPS
+        sameSite: 'Lax', // ou 'Strict' ou 'None'
+        path: '/', // disponible sur tout le site
+        });
+
+        router.push('/homePage'); // par exemple
+    } catch (error) {
+        console.error('Erreur de connexion:', error);
+        alert(error.message || "Échec de la connexion");
+    }
+    };
+
     return (
         <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-celestial-blue via-sea-green to-folly animate-fade-in">
             <div className="w-full max-w-md bg-seasalt/90 rounded-2xl shadow-2xl p-8 flex flex-col items-center gap-6 backdrop-blur-md">
@@ -21,7 +51,7 @@ export default function Login() {
                 <h1 className="text-2xl md:text-3xl font-bold text-rich-black text-center animate-slide-down">
                     Connectez-vous à votre compte
                 </h1>
-                <form className="w-full flex flex-col gap-5 animate-fade-in-slow">
+                <form onSubmit={handleSubmit} className="w-full flex flex-col gap-5 animate-fade-in-slow">
                     <div>
                         <label htmlFor="email" className="block mb-1 text-sm font-medium text-rich-black">
                             Email
@@ -30,6 +60,8 @@ export default function Login() {
                             type="email"
                             name="email"
                             id="email"
+                            value={email} 
+                            onChange={(e) => setEmail(e.target.value)}
                             className="w-full p-3 rounded-lg border border-sea-green/40 bg-seasalt text-rich-black placeholder:text-rich-black/40 focus:ring-2 focus:ring-sea-green transition-all duration-200 outline-none"
                             placeholder="nom@entreprise.com"
                             required
@@ -43,6 +75,8 @@ export default function Login() {
                             type="password"
                             name="password"
                             id="password"
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)}
                             className="w-full p-3 rounded-lg border border-sea-green/40 bg-seasalt text-rich-black placeholder:text-rich-black/40 focus:ring-2 focus:ring-sea-green transition-all duration-200 outline-none"
                             placeholder="••••••••"
                             required
@@ -52,6 +86,8 @@ export default function Login() {
                         <label className="flex items-center gap-2 text-sm text-rich-black/70">
                             <input
                                 type="checkbox"
+                                checked={rememberMe} 
+                                onChange={(e) => setRememberMe(e.target.checked)}
                                 className="accent-sea-green w-4 h-4 rounded border border-sea-green/30 focus:ring-2 focus:ring-sea-green/30 transition"
                             />
                             Se souvenir de moi
