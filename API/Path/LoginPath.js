@@ -17,14 +17,14 @@ const loginPath = express.Router();
  */
 loginPath.post('/', async (req, res) => {
     // Vérifie que le nom d'utilisateur et le mot de passe sont présents
-    if (!req.body.username || !req.body.password) {
-        return res.status(400).send('Nom d’utilisateur ou mot de passe manquant');
+    if (!req.body.email || !req.body.password) {
+        return res.status(400).send('Email ou mot de passe manquant');
     }
 
     let user = [];
     try {
         // Récupère l'utilisateur depuis la base de données
-        user = await UsersServices.getUsers({ username: req.body.username });
+        user = await UsersServices.getUsers({ email: req.body.email });
 
         // Si l'utilisateur n'existe pas
         if (user.length === 0) {
@@ -52,8 +52,18 @@ loginPath.post('/', async (req, res) => {
             { expiresIn: '14d' }
         );
 
+        if(req.body.rememberMe == true) {
+            res.cookie('refreshToken', refreshToken, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'Strict',
+                path: '/refresh-token',
+                maxAge: 14 * 24 * 60 * 60 * 1000 // 14 jours
+            });
+        }
+
         // Retourne les tokens
-        return res.status(200).json({ token, refreshToken });
+        return res.status(200).json({ token });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
