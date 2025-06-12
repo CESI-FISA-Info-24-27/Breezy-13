@@ -76,6 +76,13 @@ export default function MyNavbar() {
               Messages
             </SidebarItem>
           </SidebarItemGroup>
+          <SidebarItemGroup>
+            <SidebarItem
+              className="hover:bg-accent/80"
+            >
+              Deconnexion
+            </SidebarItem>
+          </SidebarItemGroup>
         </SidebarItems>
       </Sidebar>
     </div>
