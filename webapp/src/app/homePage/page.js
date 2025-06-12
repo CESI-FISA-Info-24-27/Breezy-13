@@ -1,5 +1,5 @@
 import React from "react";
-import MyNavbar from "../comp/navbar";
+import Navbar from "../comp/navbar";
 import Post from "../comp/post";
 import SideBarFollow from "../comp/sidebarFollow";
 import Footer from "../comp/footer";
@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <div className="relative min-h-screen flex flex-col">
       <div className="fixed left-0 top-0 h-screen w-64 z-40">
-        <MyNavbar />
+        <Navbar />
       </div>
       <div className="fixed right-0 top-0 h-screen w-64 z-40">
         <SideBarFollow />

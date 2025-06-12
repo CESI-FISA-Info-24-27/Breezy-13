@@ -16,12 +16,12 @@ const customSidebarTheme = {
   },
 }
 
-export default function MyNavbar() {
+export default function Navbar() {
   const pathname = usePathname();
-  const isHome = pathname === "/" || pathname === "/homePage";
-  const isProfile = pathname === "/profilPage";
-  const isNotifiations = pathname === "/notifiationsPage";
-  const isMessages = pathname === "/messagesPage";
+  const isHome = pathname === "/" || pathname === "/homepage";
+  const isProfile = pathname === "/profilpage";
+  const isNotifiations = pathname === "/notifiationspage";
+  const isMessages = pathname === "/messagespage";
 
   return (
     <div className="h-screen">
@@ -35,21 +35,21 @@ export default function MyNavbar() {
         <SidebarItems>
           <SidebarItemGroup>
             <SidebarItem
-              href="/homePage"
+              href="/homepage"
               icon={isHome ? HiOutlineHome : HiHome}
               className={isHome ? "bg-accent text-seasalt" : "hover:bg-accent/80"}
             >
               Page d'accueil
             </SidebarItem>
             <SidebarItem
-              href="/profilPage"
+              href="/profilpage"
               icon={isProfile ? HiOutlineUserCircle : HiUserCircle}
               className={isProfile ? "bg-accent text-seasalt" : "hover:bg-accent/80"}
             >
               Profil
             </SidebarItem>
             <SidebarItem
-              href="/notifiationsPage"
+              href="/notifiationspage"
               icon={isNotifiations ? HiOutlineBell : HiBell}
               label="3"
               className={isNotifiations ? "bg-accent text-seasalt" : "hover:bg-accent/80"}
@@ -57,7 +57,7 @@ export default function MyNavbar() {
               Notifications
             </SidebarItem>
             <SidebarItem
-              href="/messagesPage"
+              href="/messagespage"
               icon={isMessages ? HiOutlineChat : HiChat}
               className={isMessages ? "bg-accent text-seasalt" : "hover:bg-accent/80"}
             >
