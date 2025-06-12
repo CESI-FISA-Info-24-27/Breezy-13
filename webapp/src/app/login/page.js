@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import Cookies from 'js-cookie';
@@ -112,30 +110,6 @@ export default function Login() {
                     </p>
                 </form>
             </div>
-            {/* Animations Tailwind personnalisées */}
-            <style jsx global>{`
-        @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        .animate-fade-in {
-          animation: fade-in 0.8s cubic-bezier(.4,0,.2,1) both;
-        }
-        @keyframes fade-in-slow {
-          from { opacity: 0; transform: translateY(20px);}
-          to { opacity: 1; transform: translateY(0);}
-        }
-        .animate-fade-in-slow {
-          animation: fade-in-slow 1.2s cubic-bezier(.4,0,.2,1) both;
-        }
-        @keyframes slide-down {
-          from { opacity: 0; transform: translateY(-20px);}
-          to { opacity: 1; transform: translateY(0);}
-        }
-        .animate-slide-down {
-          animation: slide-down 0.8s cubic-bezier(.4,0,.2,1) both;
-        }
-      `}</style>
         </section>
     );
 }

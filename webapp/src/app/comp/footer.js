@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Footer() {
 
     const year = new Date().getFullYear();
@@ -7,7 +9,9 @@ export default function Footer() {
             <div className="w-full max-w-screen-xl mx-auto p-4 md:py-6">
                 <div className="sm:flex sm:items-center sm:justify-between">
                     <a href="/#" className="flex items-center mb-2 sm:mb-0 space-x-2 rtl:space-x-reverse">
-                        <Image src="/logo.png" className="h-8" alt="TwiX Logo" />
+      
+                        <Image src="/logo.png" className="h-8" alt="TwiX Logo" width={20} height={32} />
+
                         <span className="self-center text-lg font-semibold whitespace-nowrap dark:text-white">TwiX</span>
                     </a>
                     <ul className="flex flex-wrap items-center mb-2 text-xs font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
