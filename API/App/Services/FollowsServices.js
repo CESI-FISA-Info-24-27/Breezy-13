@@ -3,7 +3,7 @@ import { DAOMongoDbFactory } from "../Factory/DAOMongoDbFactory.js";
 const Factory = new DAOMongoDbFactory();
 const FollowsDAO = Factory.createFollowsDAO();
 
-await FollowsDAO.init();
+(async () => await FollowsDAO.init())();
 
 /**
  * Represents a service for handling follows requests
@@ -23,7 +23,7 @@ const FollowsServices = {
      * @param {object} follow - The follow relationship to create
      * @returns {object} - The follow relationship created
      */
-    createFollows: async (follow) => {
+    createFollow: async (follow) => {
         return await FollowsDAO.createFollow(follow);
     },
 
@@ -32,7 +32,7 @@ const FollowsServices = {
      * @param {object} follow - The follow relationship to delete
      * @returns {object} - The follow relationship deleted
      */
-    deleteFollows: async (follow) => {
+    deleteFollow: async (follow) => {
         return await FollowsDAO.deleteFollow(follow);
     },
 }

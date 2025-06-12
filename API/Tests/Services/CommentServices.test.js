@@ -1,4 +1,4 @@
-import CommentsServices from '../../App/Services/CommentsServices.js';
+let CommentsServices;
 
 const mockCommentsDAO = {
     init: jest.fn(),
@@ -7,7 +7,7 @@ const mockCommentsDAO = {
     deleteComment: jest.fn()
 };
 
-// On mocke la factory pour injecter notre DAO simulé
+// On mocke la factory avant d'importer le service
 jest.mock('../../App/Factory/DAOMongoDbFactory.js', () => {
     return {
         DAOMongoDbFactory: jest.fn().mockImplementation(() => {
@@ -19,6 +19,17 @@ jest.mock('../../App/Factory/DAOMongoDbFactory.js', () => {
 });
 
 describe('CommentsServices', () => {
+    beforeAll(async () => {
+        // Importation dynamique APRÈS avoir mocké
+
+        const module = await import('../../App/Services/CommentsServices.js');
+        CommentsServices = module.default;
+
+        // Appelle init() si elle existe
+        if (CommentsServices.init) {
+            await CommentsServices.init();
+        }
+    });
 
     beforeEach(() => {
         jest.clearAllMocks();

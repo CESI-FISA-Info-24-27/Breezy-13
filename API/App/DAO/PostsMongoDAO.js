@@ -29,6 +29,7 @@ export class PostsMongoDAO extends PostsDAO {
         await this.client.connect();
         this.db = this.client.db(this.dbName);
         this.collection = this.db.collection('posts');
+        this.commentsCollection = this.db.collection('comments');
     }
 
     /**
@@ -60,6 +61,15 @@ export class PostsMongoDAO extends PostsDAO {
             { _id: new ObjectId(id) },
             { $set: { author: post.author, content: post.content, image: post.image, likes: post.likes, updatedAt: post.updatedAt } }
         );
+    }
+
+    /**
+     * Récupère l'ensemble des commentaires d'un poste.
+     * @param {string} id - L'identifiant du post.
+     * @returns {Array} - Liste des commentaires trouvés.
+     */
+    async getComments(id) {
+        return await this.commentsCollection.find({post: id}).toArray();
     }
 
     /**
