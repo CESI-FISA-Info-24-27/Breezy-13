@@ -40,7 +40,7 @@ if (db.users.countDocuments() === 0)
     {
       username: 'admin',
       email: 'admin@example.com',
-      password: 'choucroute',
+      password: '$2b$10$np5ZM6bsJzb89CrBJdD7mO2jKZhk9Y2kEPy.mwF9FtTL5k2P4tnKy',
       avatar: 'https://example.com/avatar1.png',
       bio: 'Admin user',
       role_id: 1,
@@ -50,7 +50,7 @@ if (db.users.countDocuments() === 0)
     {
       username: 'user1',
       email: 'user1@example.com',
-      password: 'choucroute',
+      password: '$2b$10$np5ZM6bsJzb89CrBJdD7mO2jKZhk9Y2kEPy.mwF9FtTL5k2P4tnKy',
       avatar: 'https://example.com/avatar2.png',
       bio: 'First user',
       role_id: 2,
@@ -60,7 +60,7 @@ if (db.users.countDocuments() === 0)
   ]);
 
   db.comments.insertMany([
-    { author: 'user1', post: 'post1', content: 'Great post!', createdAt: new Date() },
+    { author: 'admin', post: 'post1', content: 'Great post!', createdAt: new Date() },
     { author: 'user1', post: 'post2', content: 'Interesting read.', createdAt: new Date() }
   ]);
 

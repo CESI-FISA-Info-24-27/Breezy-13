@@ -34,6 +34,16 @@ export class PostsDAO {
         throw new Error('Not implemented');
     }
 
+     /**
+     * Récupère l'ensemble des commentaires d'un poste.
+     * @param {string} id - L'identifiant du post.
+     * @returns {Array} - Liste des commentaires trouvés.
+     */
+    getComments(id) 
+    {
+        throw new Error('Not implemented');
+    }
+
     /**
      * Supprime un post.
      * @param {string} id - L'identifiant du post à supprimer.

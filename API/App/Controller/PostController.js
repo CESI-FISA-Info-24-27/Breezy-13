@@ -35,7 +35,7 @@ class PostController {
             if (!req.body.content || typeof req.body.content !== 'string') {
                 return res.status(400).json({ error: 'Le contenu doit être une chaîne de caractères' });
             }
-    
+
             const newPost = await PostsServices.createPost(req.body);
             res.status(201).json(newPost);
         } catch (error) {
@@ -56,9 +56,30 @@ class PostController {
             if (post.length === 0) {
                 return res.status(404).json({ error: 'Post non trouvé' });
             }
-    
-            const updatedPost = await PostsServices.updatePost(req.params.id, req.body);
-            res.json(updatedPost);
+
+            const updated = await PostsServices.updatePost(req.params.id, req.body);
+            res.json(updated);
+        } catch (error) {
+            res.status(500).json({ error: error.toString() });
+        }
+    }
+
+    /**
+     * Récupérer les commentaires de la publication.
+     * Cette méthode permet de récupérer une liste de publications en fonction des critères passés en requête.
+     * @param {object} req - L'objet de requête HTTP, contenant les paramètres de recherche dans `req.query`.
+     * @param {object} res - L'objet de réponse HTTP.
+     * @returns {void} - Retourne une réponse JSON contenant les publications ou une erreur.
+     */
+    async getPostComments(req, res) {
+        try {
+            const post = await PostsServices.getPosts({ _id: req.params.id });
+            if (post.length === 0) {
+                return res.status(404).json({ error: 'Post non trouvé' });
+            }
+
+            const comments = await PostsServices.getComments(req.params.id);
+            res.json(comments);
         } catch (error) {
             res.status(500).json({ error: error.toString() });
         }

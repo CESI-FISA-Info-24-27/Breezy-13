@@ -3,7 +3,7 @@ import { DAOMongoDbFactory } from "../Factory/DAOMongoDbFactory.js";
 const Factory = new DAOMongoDbFactory();
 const UsersDAO = Factory.createUsersDAO();
 
-await UsersDAO.init();
+(async () => await UsersDAO.init())();
 
 /**
  * Represents a service for handling users requests

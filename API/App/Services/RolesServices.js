@@ -3,7 +3,7 @@ import { DAOMongoDbFactory } from "../Factory/DAOMongoDbFactory.js";
 const Factory = new DAOMongoDbFactory();
 const RolesDAO = Factory.createRolesDAO();
 
-await RolesDAO.init();
+(async () => await RolesDAO.init())();
 
 /**
  * Represents a service for handling roles requests

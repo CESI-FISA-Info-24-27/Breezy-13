@@ -18,6 +18,11 @@ const postRoutes = express.Router();
 postRoutes.get('/', PostController.getPosts);
 
 /**
+ * Obtenir tous les posts
+ */
+postRoutes.get('/:id', PostController.getPostComments);
+
+/**
  * Créer un nouveau post
  */
 postRoutes.post('/', fieldsRequired(["author", "content", "image", "likes" ]), PostController.createPost);

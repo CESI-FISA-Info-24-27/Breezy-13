@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "e9403734-8622-4bae-a726-278b77450a6f",
+		"_postman_id": "2c2f3916-2849-4e2c-9b7c-dc3265b9d9d9",
 		"name": "Breezy API",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "30523697"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "33359847"
 	},
 	"item": [
 		{
@@ -65,15 +65,7 @@
 							"mode": "raw",
 							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"choucroute\"\n}"
 						},
-						"url": {
-							"raw": "{{localhost}}/auth",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"auth"
-							]
-						}
+						"url": "{{localhost}}/auth"
 					},
 					"response": []
 				},
@@ -87,15 +79,7 @@
 								"value": "{{token}}"
 							}
 						],
-						"url": {
-							"raw": "{{localhost}}/disconnect",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"disconnect"
-							]
-						}
+						"url": "{{localhost}}/disconnect"
 					},
 					"response": []
 				},
@@ -110,15 +94,7 @@
 								"type": "text"
 							}
 						],
-						"url": {
-							"raw": "{{localhost}}/refresh-token",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"refresh-token"
-							]
-						}
+						"url": "{{localhost}}/refresh-token"
 					},
 					"response": []
 				},
@@ -133,15 +109,7 @@
 								"type": "text"
 							}
 						],
-						"url": {
-							"raw": "{{localhost}}/refresh-token",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"refresh-token"
-							]
-						}
+						"url": "{{localhost}}/refresh-token"
 					},
 					"response": []
 				}
@@ -300,15 +268,7 @@
 								"value": "{{token}}"
 							}
 						],
-						"url": {
-							"raw": "{{localhost}}/roles",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"roles"
-							]
-						}
+						"url": "{{localhost}}/roles"
 					},
 					"response": []
 				},
@@ -331,15 +291,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{localhost}}/roles",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"roles"
-							]
-						}
+						"url": "{{localhost}}/roles"
 					},
 					"response": []
 				},
@@ -425,15 +377,7 @@
 								"value": "{{token}}"
 							}
 						],
-						"url": {
-							"raw": "{{localhost}}/comments",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"comments"
-							]
-						}
+						"url": "{{localhost}}/comments"
 					},
 					"response": []
 				},
@@ -456,15 +400,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{localhost}}/comments",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"comments"
-							]
-						}
+						"url": "{{localhost}}/comments"
 					},
 					"response": []
 				},
@@ -512,15 +448,7 @@
 								"value": "{{token}}"
 							}
 						],
-						"url": {
-							"raw": "{{localhost}}/follows",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"follows"
-							]
-						}
+						"url": "{{localhost}}/follows"
 					},
 					"response": []
 				},
@@ -543,15 +471,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{localhost}}/follows",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"follows"
-							]
-						}
+						"url": "{{localhost}}/follows"
 					},
 					"response": []
 				},
@@ -599,15 +519,15 @@
 								"value": "{{token}}"
 							}
 						],
-						"url": {
-							"raw": "{{localhost}}/posts",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"posts"
-							]
-						}
+						"url": "{{localhost}}/posts"
+					},
+					"response": []
+				},
+				{
+					"name": "GetComments",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				},
@@ -630,15 +550,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{localhost}}/posts",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"posts"
-							]
-						}
+						"url": "{{localhost}}/posts"
 					},
 					"response": []
 				},

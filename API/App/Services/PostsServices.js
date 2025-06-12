@@ -3,7 +3,7 @@ import { DAOMongoDbFactory } from "../Factory/DAOMongoDbFactory.js";
 const Factory = new DAOMongoDbFactory();
 const PostsDAO = Factory.createPostsDAO();
 
-await PostsDAO.init();
+(async () => await PostsDAO.init())();
 
 /**
  * Represents a service for handling posts requests
@@ -26,8 +26,8 @@ const PostsServices = {
     createPost: async (post) => {
         const newPost = {
             ...post,
-            createdAt: new Date(), // Ajoute la date de création
-            updatedAt: new Date(), // Initialise également updatedAt
+            createdAt: new Date(),
+            updatedAt: new Date(),
         };
         return await PostsDAO.createPost(newPost);
     },
@@ -70,10 +70,9 @@ const PostsServices = {
      * @async
      */
     getComments: async (postId) => {
-        return await UsersDAO.getComments(postId);
+        return await PostsDAO.getComments(postId);
     },
 
-    
     /**
      * Get the comments of a post
      * @param {number} postId - The id of the post

@@ -24,23 +24,22 @@ class FollowController {
     }
 
     /**
-     * Crée un nouvel abonnement.
-     * @param {object} req - L'objet de requête HTTP, contenant les données de l'abonnement dans `req.body`.
+     * Créer une relation de suivi.
+     * Cette méthode permet de créer une relation de suivi entre deux utilisateurs à partir des données fournies dans le corps de la requête.
+     * @param {object} req - L'objet de requête HTTP, contenant les identifiants `follower_id` et `following_id` dans `req.body`.
      * @param {object} res - L'objet de réponse HTTP.
-     * @returns {void} - Retourne une réponse JSON contenant l'abonnement créé ou une erreur.
+     * @returns {void} - Retourne une réponse JSON contenant la relation de suivi créée ou une erreur.
      */
     async createFollow(req, res) {
         try {
-            const { follower_id, following_id, createdAt } = req.body;
-
-            if (!follower_id || !following_id) {
-                return res.status(400).json({ error: 'Les champs follower_id et following_id sont requis' });
+            if (!req.body.follower_id || !req.body.following_id) {
+                return res.status(400).json({ error: 'Les identifiants follower_id et following_id sont requis' });
             }
 
-            const newFollow = await FollowsServices.createFollow({ follower_id, following_id, createdAt });
+            const newFollow = await FollowsServices.createFollow(req.body);
             res.status(201).json(newFollow);
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(500).json({ error: error.toString() });
         }
     }
 

@@ -33,14 +33,14 @@ export class FollowsMongoDAO extends FollowsDAO {
 
     /**
      * Récupère les abonnements selon les filtres spécifiés.
-     * @param {object} filters - Les filtres à appliquer (id, follower_id, following_id, createdAt).
+     * @param {object} filters - Les filtres à appliquer (id, follower, following, createdAt).
      * @returns {Array} - Liste des abonnements trouvés.
      */
     async getFollows(filters) {
         const mongoFilters = {};
         if (filters.id) mongoFilters._id = new ObjectId(filters.id);
-        if (filters.follower_id) mongoFilters.follower_id = filters.follower_id;
-        if (filters.following_id) mongoFilters.following_id = filters.following_id;
+        if (filters.follower) mongoFilters.follower = filters.follower;
+        if (filters.following) mongoFilters.following = filters.following;
         if (filters.createdAt) mongoFilters.createdAt = filters.createdAt;
 
         return await this.collection.find(mongoFilters).toArray();
@@ -55,7 +55,7 @@ export class FollowsMongoDAO extends FollowsDAO {
     async updateFollow(id, follow) {
         return await this.collection.updateOne(
             { _id: new ObjectId(id) },
-            { $set: { follower_id: follow.follower_id, following_id: follow.following_id } }
+            { $set: { follower: follow.follower, following: follow.following } }
         );
     }
 
@@ -69,12 +69,11 @@ export class FollowsMongoDAO extends FollowsDAO {
     }
 
     /**
- * Crée un nouvel abonnement.
- * @param {object} follow - Les données de l'abonnement à créer.
- * @returns {object} - L'objet complet de l'abonnement créé.
- */
+     * Crée un nouvel abonnement.
+     * @param {object} follow - Les données de l'abonnement à créer.
+     * @returns {object} - Résultat de l'insertion.
+     */
     async createFollow(follow) {
-        const result = await this.collection.insertOne(follow);
-        return { _id: result.insertedId, ...follow }; // Retourne l'objet complet avec l'_id
+        return await this.collection.insertOne(follow);
     }
 }
