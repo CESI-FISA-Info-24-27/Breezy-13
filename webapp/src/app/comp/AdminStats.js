@@ -1,18 +1,28 @@
 import { HiUserGroup, HiDocumentText, HiChatAlt2 } from "react-icons/hi";
 import dynamic from "next/dynamic";
 import { useRef, useEffect, useState } from "react";
+<<<<<<< HEAD
 import { getUsers } from "../../services/UsersServices";
 import { getPosts } from "../../services/PostsServices";
 import { getComments } from "../../services/CommentsServices";
 import { getFollows } from "../../services/FollowsServices";
+=======
+import { getUsers } from "../../services/usersServices";
+import { getPosts } from "../../services/postsServices";
+import { getComments } from "../../services/commentsServices";
+import { getFollows } from "../../services/followsServices";
+>>>>>>> bbfb259 (Component pour la page admin #22)
 
 const ForceGraph2D = dynamic(
   () => import('react-force-graph-2d').then(mod => mod.default),
   { ssr: false }
 );
 
+<<<<<<< HEAD
 const MAX_USERS_DISPLAYED = 100; // Limite d'utilisateurs affichés sur le graphe
 
+=======
+>>>>>>> bbfb259 (Component pour la page admin #22)
 export default function AdminStats() {
   const [userCount, setUserCount] = useState(0);
   const [postCount, setPostCount] = useState(0);
@@ -21,6 +31,7 @@ export default function AdminStats() {
   const [userLinks, setUserLinks] = useState([]);
   const [loading, setLoading] = useState(true);
 
+<<<<<<< HEAD
   const [selectedUser, setSelectedUser] = useState(null);
 
   // Pour filtrage dynamique complet
@@ -34,6 +45,10 @@ export default function AdminStats() {
   const graphRef = useRef(null);
   // Hauteur augmentée et responsive
   const [dimensions, setDimensions] = useState({ width: 600, height: 450 });
+=======
+  const graphRef = useRef(null);
+  const [dimensions, setDimensions] = useState({ width: 600, height: 350 });
+>>>>>>> bbfb259 (Component pour la page admin #22)
 
   useEffect(() => {
     async function fetchAll() {
@@ -47,6 +62,7 @@ export default function AdminStats() {
       setUserCount(users.length);
       setPostCount(posts.length);
       setCommentCount(comments.length);
+<<<<<<< HEAD
 
       setAllUsers(users);
       setAllFollows(follows);
@@ -56,14 +72,25 @@ export default function AdminStats() {
       const displayedIds = new Set(displayedUsers.map(u => u._id));
 
       setUserNodes(displayedUsers.map(u => ({
+=======
+  
+      const userIds = new Set(users.map(u => u._id));
+      setUserNodes(users.map(u => ({
+>>>>>>> bbfb259 (Component pour la page admin #22)
         id: u._id,
         label: u.username || u.email || u._id,
         group: u.role_id || 1
       })));
+<<<<<<< HEAD
 
       setUserLinks(
         follows
           .filter(f => displayedIds.has(f.follower) && displayedIds.has(f.following))
+=======
+      setUserLinks(
+        follows
+          .filter(f => userIds.has(f.follower) && userIds.has(f.following))
+>>>>>>> bbfb259 (Component pour la page admin #22)
           .map(f => ({
             source: f.follower,
             target: f.following
@@ -79,7 +106,11 @@ export default function AdminStats() {
       if (graphRef.current) {
         setDimensions({
           width: graphRef.current.offsetWidth,
+<<<<<<< HEAD
           height: Math.max(graphRef.current.offsetHeight, 600),
+=======
+          height: graphRef.current.offsetHeight,
+>>>>>>> bbfb259 (Component pour la page admin #22)
         });
       }
     }
@@ -88,6 +119,7 @@ export default function AdminStats() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+<<<<<<< HEAD
   // Recherche utilisateur
   useEffect(() => {
     if (search.trim().length === 0) {
@@ -139,6 +171,11 @@ export default function AdminStats() {
   const userGraph = {
     nodes: filteredNodes,
     links: filteredLinks
+=======
+  const userGraph = {
+    nodes: userNodes,
+    links: userLinks
+>>>>>>> bbfb259 (Component pour la page admin #22)
   };
 
   return (
@@ -167,6 +204,7 @@ export default function AdminStats() {
         />
       </div>
       <div className="bg-white rounded-2xl shadow p-6 border-t-4 border-celestial-blue">
+<<<<<<< HEAD
         <h3 className="text-lg font-bold text-celestial-blue mb-4">
           Réseau des utilisateurs
           <span className="ml-2 text-xs text-gray-400">
@@ -200,12 +238,17 @@ export default function AdminStats() {
           )}
         </div>
         <div ref={graphRef} className="w-full min-h-[500px] relative">
+=======
+        <h3 className="text-lg font-bold text-celestial-blue mb-4">Réseau des utilisateurs</h3>
+        <div ref={graphRef} className="w-full h-96 relative">
+>>>>>>> bbfb259 (Component pour la page admin #22)
           <ForceGraph2D
             graphData={userGraph}
             nodeAutoColorBy="group"
             nodeLabel="label"
             width={dimensions.width}
             height={dimensions.height}
+<<<<<<< HEAD
             linkDirectionalArrowLength={3}
             linkDirectionalArrowRelPos={1}
             linkCurvature={0.2}
@@ -221,6 +264,17 @@ export default function AdminStats() {
             Utilisateur sélectionné : <b>{selectedUser.label}</b> (<button className="underline" onClick={() => setSelectedUser(null)}>réinitialiser</button>)
           </div>
         )}
+=======
+            linkDirectionalArrowLength={3} // longueur de la flèche
+            linkDirectionalArrowRelPos={1} // position de la flèche (1 = extrémité)
+            linkCurvature={0.2} // courbure des liens
+            linkWidth={2} // épaisseur des liens
+            linkDistance={50} // distance minimale entre les liens
+            // Zoom pour ajuster la vue
+            d3VelocityDecay={0.4} // vitesse de décélération pour le zoom
+          />
+        </div>
+>>>>>>> bbfb259 (Component pour la page admin #22)
       </div>
     </div>
   );

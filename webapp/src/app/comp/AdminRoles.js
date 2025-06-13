@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+<<<<<<< HEAD
 import { HiSearch, HiPencil, HiPlus, HiTrash } from "react-icons/hi";
 import { getRoles, createRole, updateRole, deleteRole } from "../../services/RolesServices";
 
@@ -131,12 +132,17 @@ function RoleModal({ open, onClose, onSave, initialRole }) {
 }
 
 const ROLES_PER_PAGE = 10;
+=======
+import { HiSearch, HiPencil, HiPlus } from "react-icons/hi";
+import { getRoles } from "../../services/rolesServices";
+>>>>>>> bbfb259 (Component pour la page admin #22)
 
 export default function AdminRoles() {
   const [search, setSearch] = useState("");
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
 
+<<<<<<< HEAD
   // Pagination
   const [page, setPage] = useState(1);
 
@@ -147,6 +153,8 @@ export default function AdminRoles() {
   const [roleModalOpen, setRoleModalOpen] = useState(false);
   const [roleToEdit, setRoleToEdit] = useState(null);
 
+=======
+>>>>>>> bbfb259 (Component pour la page admin #22)
   useEffect(() => {
     getRoles().then(data => {
       setRoles(data);
@@ -154,6 +162,7 @@ export default function AdminRoles() {
     });
   }, []);
 
+<<<<<<< HEAD
   const handleDelete = async (id) => {
     await deleteRole(id);
     const data = await getRoles();
@@ -213,6 +222,17 @@ export default function AdminRoles() {
           title="Ajouter un rôle"
           onClick={() => { setRoleModalOpen(true); setRoleToEdit(null); }}
         >
+=======
+  const filteredRoles = roles.filter(r =>
+    r.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col gap-4 border-t-4 border-folly">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-bold text-folly">Rôles</h2>
+        <button className="flex items-center gap-1 px-3 py-1 rounded bg-folly hover:bg-celestial-blue text-seasalt transition text-sm font-semibold" title="Ajouter un rôle">
+>>>>>>> bbfb259 (Component pour la page admin #22)
           <HiPlus /> Ajouter
         </button>
       </div>
@@ -227,6 +247,7 @@ export default function AdminRoles() {
       </div>
       <ul className="flex-1 overflow-y-auto divide-y divide-seasalt">
         {loading && <li>Chargement...</li>}
+<<<<<<< HEAD
         {!loading && paginatedRoles.length === 0 && (
           <li className="text-xs text-folly py-2">Aucun rôle trouvé.</li>
         )}
@@ -276,6 +297,22 @@ export default function AdminRoles() {
           </button>
         </div>
       )}
+=======
+        {!loading && filteredRoles.length === 0 && (
+          <li className="text-xs text-folly py-2">Aucun rôle trouvé.</li>
+        )}
+        {!loading &&
+          filteredRoles.length > 0 &&
+          filteredRoles.map(r => (
+            <li key={r._id} className="flex justify-between items-center py-2">
+              <span className="font-semibold text-rich-black">{r.name}</span>
+              <button className="p-2 rounded-full bg-folly hover:bg-celestial-blue transition" title="Modifier">
+                <HiPencil className="text-white" />
+              </button>
+            </li>
+          ))}
+      </ul>
+>>>>>>> bbfb259 (Component pour la page admin #22)
     </div>
   );
 }

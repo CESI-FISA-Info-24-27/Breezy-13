@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { HiSearch, HiTrash, HiPencil } from "react-icons/hi";
+<<<<<<< HEAD
 import { getPosts, updatePost, deletePost } from "../../services/PostsServices";
 import Image from "next/image";
 import Cookies from "js-cookie";
@@ -127,12 +128,16 @@ function PostModal({ open, onClose, onSave, initialPost }) {
 }
 
 const POSTS_PER_PAGE = 4;
+=======
+import { getPosts, deletePost } from "../../services/postsServices";
+>>>>>>> bbfb259 (Component pour la page admin #22)
 
 export default function AdminPosts() {
   const [search, setSearch] = useState("");
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+<<<<<<< HEAD
   // Pagination
   const [page, setPage] = useState(1);
 
@@ -143,6 +148,8 @@ export default function AdminPosts() {
   const [postModalOpen, setPostModalOpen] = useState(false);
   const [postToEdit, setPostToEdit] = useState(null);
 
+=======
+>>>>>>> bbfb259 (Component pour la page admin #22)
   useEffect(() => {
     getPosts().then(data => {
       setPosts(data);
@@ -152,6 +159,7 @@ export default function AdminPosts() {
 
   const handleDelete = async (id) => {
     await deletePost(id);
+<<<<<<< HEAD
     const data = await getPosts();
     setPosts(data);
     setConfirmModalOpen(false);
@@ -197,6 +205,18 @@ export default function AdminPosts() {
         onSave={handleSavePost}
         initialPost={postToEdit}
       />
+=======
+    setPosts(posts => posts.filter(p => p._id !== id));
+  };
+
+  const filteredPosts = posts.filter(p =>
+    p.content?.toLowerCase().includes(search.toLowerCase()) ||
+    p.author?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col gap-4 border-t-4 border-celestial-blue">
+>>>>>>> bbfb259 (Component pour la page admin #22)
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold text-celestial-blue">Posts</h2>
       </div>
@@ -210,6 +230,7 @@ export default function AdminPosts() {
         />
       </div>
       <ul className="flex-1 overflow-y-auto divide-y divide-seasalt">
+<<<<<<< HEAD
         {loading && <li>Chargement...</li>}
         {!loading && paginatedPosts.length === 0 && (
           <li className="text-xs text-folly py-2">Aucun post trouvé.</li>
@@ -217,10 +238,21 @@ export default function AdminPosts() {
         {!loading &&
           paginatedPosts.length > 0 &&
           paginatedPosts.map(p => (
+=======
+        {(() => {
+          if (loading) {
+            return <li>Chargement...</li>;
+          }
+          if (filteredPosts.length === 0) {
+            return <li className="text-xs text-folly py-2">Aucun post trouvé.</li>;
+          }
+          return filteredPosts.map(p => (
+>>>>>>> bbfb259 (Component pour la page admin #22)
             <li key={p._id} className="flex justify-between items-center py-2">
               <div>
                 <span className="font-semibold text-rich-black">{p.content}</span>
                 <span className="block text-xs text-sea-green">{p.author}</span>
+<<<<<<< HEAD
                 {p.image && (
                   <SecureImage src={p.image} alt="post" className="mt-1 max-h-16 rounded" />
                 )}
@@ -231,17 +263,27 @@ export default function AdminPosts() {
                   title="Modifier"
                   onClick={() => { setPostModalOpen(true); setPostToEdit(p); }}
                 >
+=======
+              </div>
+              <div className="flex gap-2">
+                <button className="p-2 rounded-full bg-celestial-blue hover:bg-sea-green transition" title="Modifier">
+>>>>>>> bbfb259 (Component pour la page admin #22)
                   <HiPencil className="text-white" />
                 </button>
                 <button
                   className="p-2 rounded-full bg-folly hover:bg-rich-black transition"
                   title="Supprimer"
+<<<<<<< HEAD
                   onClick={() => { setPostToDelete(p); setConfirmModalOpen(true); }}
+=======
+                  onClick={() => handleDelete(p._id)}
+>>>>>>> bbfb259 (Component pour la page admin #22)
                 >
                   <HiTrash className="text-white" />
                 </button>
               </div>
             </li>
+<<<<<<< HEAD
           ))}
       </ul>
       {/* Pagination */}
@@ -266,6 +308,11 @@ export default function AdminPosts() {
           </button>
         </div>
       )}
+=======
+          ));
+        })()}
+      </ul>
+>>>>>>> bbfb259 (Component pour la page admin #22)
     </div>
   );
 }
