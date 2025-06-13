@@ -1,6 +1,10 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+<<<<<<< HEAD
 import { refreshToken } from "./authServices";
+=======
+import { refreshToken } from "./authService";
+>>>>>>> 8f8223d (Ajout des services pour les requetes http à l'API)
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/users`;
 
@@ -21,6 +25,7 @@ async function withAuthRetry(requestFn) {
   }
 }
 
+<<<<<<< HEAD
 export async function getUsers(filters = {}) {
   // Nettoie les filtres pour ne garder que les valeurs définies et non vides
   const params = Object.fromEntries(
@@ -31,6 +36,11 @@ export async function getUsers(filters = {}) {
 
   return withAuthRetry(headers =>
     axios.get(API_URL, { headers, params }).then(res => res.data)
+=======
+export async function getUsers() {
+  return withAuthRetry(headers =>
+    axios.get(API_URL, { headers }).then(res => res.data)
+>>>>>>> 8f8223d (Ajout des services pour les requetes http à l'API)
   );
 }
 
