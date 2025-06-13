@@ -36,7 +36,7 @@ jobs:
         run: docker compose up -d --build mongodb api
 
       - name: Run API tests
-        run: docker compose exec -T api npm run test
+        run: docker compose exec -T api ./wait-for-it.sh mongodb 27017 npm run test
 
       - name: Tear down
         if: always()
