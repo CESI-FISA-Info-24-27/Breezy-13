@@ -2,7 +2,11 @@ import Image from "next/image";
 
 export default function Post() {
   return (
+<<<<<<< HEAD
     <div className="w-full max-w-full bg-[var(--color-seasalt)] rounded-lg shadow p-6 border-2 border-[var(--color-celestial-blue)]">
+=======
+    <div className="w-full max-w-full bg-[var(--color-celestial-blue)] dark:bg-[var(--color-rich-black)] rounded-lg shadow p-6">
+>>>>>>> b2fa2f6 (Debut de suppression de flowbite)
       <form className="flex flex-col gap-4 w-full">
         <div className="flex items-center mb-2">
           <Image
@@ -12,7 +16,11 @@ export default function Post() {
             height={40}
             className="rounded-full mr-3"
           />
+<<<<<<< HEAD
           <label htmlFor="description" className="mb-0 w-full text-lg font-extrabold text-rich-black">
+=======
+          <label htmlFor="description" className="mb-0 w-full text-lg text-[var(--color-seasalt)]">
+>>>>>>> b2fa2f6 (Debut de suppression de flowbite)
             Comment ça va ?
           </label>
         </div>
@@ -22,7 +30,11 @@ export default function Post() {
             required
             placeholder="Écrire ici"
             rows={3}
+<<<<<<< HEAD
             className="w-full resize-y rounded-md border border-gray-300 p-2 bg-grey text-[var(--color-rich-black)]"
+=======
+            className="w-full resize-y rounded-md border border-gray-300 p-2 bg-[var(--color-seasalt)] text-[var(--color-rich-black)]"
+>>>>>>> b2fa2f6 (Debut de suppression de flowbite)
           />
         </div>
         <div className="flex justify-end pt-3">

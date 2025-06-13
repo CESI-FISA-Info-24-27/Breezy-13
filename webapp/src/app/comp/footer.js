@@ -6,7 +6,11 @@ export default function Footer() {
     const year = new Date().getFullYear();
 
     return (
+<<<<<<< HEAD
         <footer className="bg-celestial-blue rounded-lg shadow-sm m-2">
+=======
+        <footer className="bg-rich-black rounded-lg shadow-sm m-2">
+>>>>>>> b2fa2f6 (Debut de suppression de flowbite)
             <div className="w-full max-w-screen-xl mx-auto p-4 md:py-6">
                 <div className="sm:flex sm:items-center sm:justify-between">
                     <Link href="/home-page" className="flex items-center mb-2 sm:mb-0 space-x-2 rtl:space-x-reverse">
