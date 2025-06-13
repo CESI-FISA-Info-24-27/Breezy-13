@@ -17,7 +17,7 @@ export default function SideBarFollow() {
     <div className="fixed right-0 top-0 h-screen z-50 w-64">
       <Sidebar>
         <SidebarItems>
-          <div className="font-bold mb-2">Comptes suivis</div>
+          <div className="font-bold mb-2 text-seasalt">Comptes suivis</div>
           
           {//Fonction pour récupérer les followers d'un compte utilisateur, à garder jusqu'à implémentation
           /* <SidebarItemGroup>

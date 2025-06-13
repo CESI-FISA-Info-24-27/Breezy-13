@@ -1,4 +1,4 @@
-import { Button, Card, Label, TextInput } from "flowbite-react";
+import { Button, Card, Label } from "flowbite-react";
 import Image from "next/image";
 
 export default function Post() {
@@ -13,20 +13,19 @@ export default function Post() {
             height={40}
             className="rounded-full mr-3"
           />
-          <Label htmlFor="description" className="mb-0 w-full text-lg">Comment ça va ?</Label>
+          <Label htmlFor="description" className="mb-0 w-full text-lg text-seasalt">Comment ça va ?</Label>
         </div>
         <div>
           <textarea
             id="description"
             required
             placeholder="Écrire ici"
-            rows={4}
-            className="w-full resize-y rounded-md border border-gray-300 p-2 bg-seasalt text-black"
-            // Passer en rich_black
+            rows={3}
+            className="w-full resize-y rounded-md border border-gray-300 p-2 bg-seasalt text-rich_black"
             />
         </div>
         <div className="flex justify-end pt-3">
-          <Button type="submit" className="bg-seasalt border border-gray-400">Envoyer</Button>
+          <Button type="submit" className="bg-seasalt border border-gray-400 text-rich_black">Envoyer</Button>
         </div>
       </form>
     </Card>
