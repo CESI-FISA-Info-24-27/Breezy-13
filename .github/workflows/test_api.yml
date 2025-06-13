@@ -27,12 +27,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Check repo structure
-        run: |
-          pwd
-          ls -la
-          ls -la api
-
       - name: Check Docker and Docker Compose versions
         run: |
           docker --version
