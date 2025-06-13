@@ -12,11 +12,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Beak",
-  description: "Beak est un réseau social minimaliste et rapide, conçu pour une expérience utilisateur fluide et agréable.",
+  title: "TwiX",
+  description: "TwiX est un réseau social minimaliste et rapide, conçu pour une expérience utilisateur fluide et agréable.",
   openGraph: {
-    title: "Beak",
-    description: "Beak est un réseau social minimaliste et rapide, conçu pour une expérience utilisateur fluide et agréable."
+    title: "TwiX",
+    description: "TwiX est un réseau social minimaliste et rapide, conçu pour une expérience utilisateur fluide et agréable."
   }
 };
 
