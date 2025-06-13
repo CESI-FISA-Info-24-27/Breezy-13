@@ -6,14 +6,14 @@ on:
     branches:
         - "**"
     paths:
-      - "api/**"
+      - "API/**"
       - "Database/**"
       - ".github/workflows/test-api.yml"
   pull_request:
     branches:
         - "**"
     paths:
-      - "api/**"
+      - "API/**"
       - "Database/**"
 
 jobs:
