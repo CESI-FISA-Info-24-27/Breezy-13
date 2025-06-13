@@ -3,6 +3,7 @@ import multer from 'multer';
 import path from 'path';
 import dotenv from 'dotenv';
 import Jwt from 'jsonwebtoken';
+import cors from 'cors';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -12,6 +13,11 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT; 
+
+app.use(cors({
+    origin: "http://localhost:3001", // autorise ton front
+    credentials: true
+}));
 
 // Middleware d'authentification
 const authenticateUser = (req, res, next) => {
