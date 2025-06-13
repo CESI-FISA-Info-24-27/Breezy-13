@@ -1,9 +1,8 @@
-import { Button, Card, Label } from "flowbite-react";
 import Image from "next/image";
 
 export default function Post() {
-    return (
-    <Card className="w-full max-w-full">
+  return (
+    <div className="w-full max-w-full bg-[var(--color-celestial-blue)] dark:bg-[var(--color-rich-black)] rounded-lg shadow p-6">
       <form className="flex flex-col gap-4 w-full">
         <div className="flex items-center mb-2">
           <Image
@@ -13,7 +12,9 @@ export default function Post() {
             height={40}
             className="rounded-full mr-3"
           />
-          <Label htmlFor="description" className="mb-0 w-full text-lg text-seasalt">Comment ça va ?</Label>
+          <label htmlFor="description" className="mb-0 w-full text-lg text-[var(--color-seasalt)]">
+            Comment ça va ?
+          </label>
         </div>
         <div>
           <textarea
@@ -21,13 +22,18 @@ export default function Post() {
             required
             placeholder="Écrire ici"
             rows={3}
-            className="w-full resize-y rounded-md border border-gray-300 p-2 bg-seasalt text-rich_black"
-            />
+            className="w-full resize-y rounded-md border border-gray-300 p-2 bg-[var(--color-seasalt)] text-[var(--color-rich-black)]"
+          />
         </div>
         <div className="flex justify-end pt-3">
-          <Button type="submit" className="bg-seasalt border border-gray-400 text-rich_black">Envoyer</Button>
+          <button
+            type="submit"
+            className="bg-[var(--color-folly)] text-[var(--color-seasalt)] px-4 py-2 rounded hover:bg-[var(--color-sea-green)] transition"
+          >
+            Envoyer
+          </button>
         </div>
       </form>
-    </Card>
+    </div>
   );
 }
