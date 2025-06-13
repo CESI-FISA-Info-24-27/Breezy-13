@@ -19,6 +19,11 @@ app.use(cors({
     credentials: true
 }));
 
+app.use(cors({
+    origin: "http://localhost:3001", // autorise ton front
+    credentials: true
+}));
+
 // Middleware d'authentification
 const authenticateUser = (req, res, next) => {
     const token = req.headers['authorization']?.split(' ')[1]; // Utilisez 'authorization' en minuscules
