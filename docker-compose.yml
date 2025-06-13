@@ -11,7 +11,7 @@ services:
     depends_on:
       - mongodb
     volumes:
-      - ./api:/app
+      - ./API:/app
       - node_modules_api:/app/node_modules
     networks:
       - backend
