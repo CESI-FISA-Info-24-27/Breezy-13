@@ -1,0 +1,30 @@
+name: Test API
+
+on:
+  push:
+    paths:
+      - "api/**"
+      - "Database/**"
+      - ".github/workflows/test-api.yml"
+  pull_request:
+    paths:
+      - "api/**"
+      - "Database/**"
+
+jobs:
+  test-api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build and Start API + MongoDB
+        run: docker-compose up -d --build mongodb api
+
+      - name: Run API tests
+        run: docker-compose exec -T node-api npm test
+
+      - name: Tear down
+        if: always()
+        run: docker-compose down --volumes
