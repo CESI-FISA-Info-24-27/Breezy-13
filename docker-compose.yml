@@ -11,7 +11,7 @@ services:
       - MONGODB_URI=mongodb://mongodb:27017/breezy_bdd
       - PORT=3000
     volumes:
-      - ./api:/app
+      - ./API:/app
       - node_modules_api:/app/node_modules
     networks:
       - backend
