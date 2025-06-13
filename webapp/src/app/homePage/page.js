@@ -3,11 +3,10 @@ import Navbar from "../comp/navbar";
 import Post from "../comp/post";
 import SideBarFollow from "../comp/sidebarFollow";
 import Footer from "../comp/footer";
-//import PostsList from "../comp/postsList";
 
 export default function HomePage() {
   return (
-    <div className="relative min-h-screen flex flex-col">
+    <div className="relative min-h-screen flex flex-col bg-seasalt">
       <div className="fixed left-0 top-0 h-screen w-64 z-40">
         <Navbar />
       </div>
@@ -22,7 +21,9 @@ export default function HomePage() {
         </div>
       </main>
       <div className="ml-64 mr-64">
-        <Footer />
+        <Footer>
+          <span>© {new Date().getFullYear()} Mon Footer Personnalisé</span>
+        </Footer>
       </div>
     </div>
   );
