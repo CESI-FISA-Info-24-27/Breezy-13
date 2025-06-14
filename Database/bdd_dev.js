@@ -2,12 +2,11 @@ import { MongoClient } from "mongodb";
 import { faker } from "@faker-js/faker";
 import { hash } from "bcryptjs";
 
-const MONGO_URI = "mongodb://localhost:27017"; // adapte si besoin
-const DB_NAME = "breezy_bdd"; // adapte si besoin
-const USERS_COUNT = 150; // nombre d'utilisateurs à générer
-const FOLLOWS_PER_USER = 30; // nombre de follows par utilisateur
-const POSTS_PER_USER = 13; // nombre de posts par utilisateur
-const COMMENTS_PER_USER = 43; // nombre de commentaires par utilisateur
+const MONGO_URI = "mongodb://localhost:27017";
+const DB_NAME = "breezy_bdd";
+const USERS_COUNT = 337;
+const POSTS_PER_USER = 7;
+const COMMENTS_PER_USER = 20;
 
 const ROLE_USER = "6849efc6bd8dc2e321172c79";
 const AVATAR_URLS = [
@@ -36,7 +35,6 @@ async function main() {
 
   // Génération des utilisateurs
   for (let i = 0; i < USERS_COUNT; i++) {
-    //const password = await hash("password" + i, 10);
     const password = 'choucroute';
     users.push({
       username: faker.internet.userName() + i,
@@ -54,21 +52,67 @@ async function main() {
   const result = await db.collection("users").insertMany(users);
   const userIds = Object.values(result.insertedIds);
 
-  // Génération des liens de follow
+  // --- Génération des groupes et des liens de follow réalistes ---
+  const GROUP_COUNT = 5;
+  const GROUP_SIZE = Math.floor(USERS_COUNT / GROUP_COUNT);
   const follows = [];
-  for (let i = 0; i < userIds.length; i++) {
-    const followerId = userIds[i];
-    let possible = userIds.filter((id, idx) => idx !== i);
-    faker.helpers.shuffle(possible);
-    const followingIds = possible.slice(0, Math.min(FOLLOWS_PER_USER, possible.length));
-    for (const followingId of followingIds) {
+
+  // 1. Groupes fermés : chaque groupe est une "bulle" où les membres se suivent beaucoup entre eux
+  for (let g = 0; g < GROUP_COUNT; g++) {
+    const start = g * GROUP_SIZE;
+    const end = g === GROUP_COUNT - 1 ? userIds.length : (g + 1) * GROUP_SIZE;
+    const groupUserIds = userIds.slice(start, end);
+
+    for (let i = 0; i < groupUserIds.length; i++) {
+      const followerId = groupUserIds[i];
+      // Chaque membre suit 60-90% des autres membres de son groupe (hors lui-même)
+      let possible = groupUserIds.filter((id, idx) => idx !== i);
+      faker.helpers.shuffle(possible);
+      const nbFollows = Math.floor(possible.length * faker.number.float({ min: 0.6, max: 0.9 }));
+      const followingIds = possible.slice(0, nbFollows);
+      for (const followingId of followingIds) {
+        follows.push({
+          follower: followerId,
+          following: followingId,
+          createdAt: new Date(),
+        });
+      }
+    }
+  }
+
+  // 2. Quelques liens inter-groupes pour la connectivité globale (faible proportion)
+  for (let i = 0; i < GROUP_COUNT * 8; i++) {
+    let groupA = Math.floor(Math.random() * GROUP_COUNT);
+    let groupB = (groupA + 1 + Math.floor(Math.random() * (GROUP_COUNT - 1))) % GROUP_COUNT;
+    let userA = userIds[groupA * GROUP_SIZE + Math.floor(Math.random() * GROUP_SIZE)];
+    let userB = userIds[groupB * GROUP_SIZE + Math.floor(Math.random() * GROUP_SIZE)];
+    if (userA && userB && userA !== userB) {
       follows.push({
-        follower: followerId,
-        following: followingId,
+        follower: userA,
+        following: userB,
         createdAt: new Date(),
       });
     }
   }
+
+  // 3. Quelques "influenceurs" : certains utilisateurs sont suivis par beaucoup d'autres, même hors groupe
+  const influencerCount = Math.floor(GROUP_COUNT * 1.5);
+  const influencerIndexes = faker.helpers.shuffle([...Array(userIds.length).keys()]).slice(0, influencerCount);
+  for (const idx of influencerIndexes) {
+    const influencerId = userIds[idx];
+    // 10 à 30 followers aléatoires (hors lui-même)
+    const possibleFollowers = userIds.filter(id => id !== influencerId);
+    faker.helpers.shuffle(possibleFollowers);
+    const nbFollowers = faker.number.int({ min: 10, max: 30 });
+    for (let i = 0; i < nbFollowers; i++) {
+      follows.push({
+        follower: possibleFollowers[i],
+        following: influencerId,
+        createdAt: new Date(),
+      });
+    }
+  }
+
   if (follows.length > 0) {
     await db.collection("follows").insertMany(follows);
     console.log(`${follows.length} liens de follow insérés.`);
@@ -79,7 +123,6 @@ async function main() {
   for (let i = 0; i < userIds.length; i++) {
     const authorId = userIds[i];
     for (let j = 0; j < POSTS_PER_USER; j++) {
-      // Génère des likes aléatoires (0 à 10 likes par post)
       const likesCount = faker.number.int({ min: 0, max: 10 });
       const shuffled = faker.helpers.shuffle(userIds.filter((id) => id !== authorId));
       const likes = shuffled.slice(0, likesCount);
@@ -102,13 +145,11 @@ async function main() {
 
   // Génération des commentaires
   const comments = [];
-  // On récupère tous les _id des posts insérés
   const postsFromDb = await db.collection("posts").find({}, { projection: { _id: 1 } }).toArray();
   const postIds = postsFromDb.map(p => p._id);
 
   for (let i = 0; i < userIds.length; i++) {
     const authorId = userIds[i];
-    // Pour chaque utilisateur, il commente sur des posts aléatoires
     const shuffledPosts = faker.helpers.shuffle(postIds);
     for (let j = 0; j < Math.min(COMMENTS_PER_USER, postIds.length); j++) {
       comments.push({
