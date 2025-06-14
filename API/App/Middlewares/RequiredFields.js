@@ -3,23 +3,28 @@ const fieldsRequired = (requiredFields) => {
         const missingFields = [];
 
         try {
-            // Vérifie chaque champ requis
             requiredFields.forEach((field) => {
+                // Exception : password n'est requis que pour POST (création)
+                if (
+                    field === "password" &&
+                    req.method !== "POST" // PATCH ou PUT : password optionnel
+                ) {
+                    return;
+                }
                 if (!req.body[field]) {
-                    missingFields.push(field); // Ajoute le champ manquant au tableau
+                    missingFields.push(field);
                 }
             });
 
-            // Si des champs sont manquants, renvoie une erreur 400
             if (missingFields.length > 0) {
                 return res.status(400).json({
                     error: `Les champs suivants sont requis : ${missingFields.join(', ')}`
                 });
             }
 
-            next(); // Passe au middleware suivant si aucun champ n'est manquant
+            next();
         } catch (err) {
-            console.error(err); // Affiche l'erreur dans la console
+            console.error(err);
             return res.status(500).json({ error: 'Erreur interne du serveur' });
         }
     };
