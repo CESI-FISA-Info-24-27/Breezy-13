@@ -3,6 +3,7 @@ import Navbar from "../comp/navbar";
 import Post from "../comp/post";
 import SideBarFollow from "../comp/sidebarFollow";
 import Footer from "../comp/footer";
+import { PostsList } from "../comp/postsList";
 
 export default function HomePage() {
   return (
@@ -17,7 +18,9 @@ export default function HomePage() {
         <h1 className="text-2xl font-bold pb-5">Page d'accueil</h1>
         <hr className="text-2xl font-bold pb-5"></hr>
         <Post />
+        <hr className="mt-7 text-rich-black"></hr>
         <div className="mt-8 mb-4">
+          <PostsList />
         </div>
       </main>
       <div className="ml-64 mr-64">
