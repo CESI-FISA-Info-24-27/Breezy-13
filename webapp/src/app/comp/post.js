@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Post() {
   return (
-    <div className="w-full max-w-full bg-[var(--color-celestial-blue)] rounded-lg shadow p-6">
+    <div className="w-full max-w-full bg-[var(--color-seasalt)] rounded-lg shadow p-6 border-2 border-[var(--color-celestial-blue)]">
       <form className="flex flex-col gap-4 w-full">
         <div className="flex items-center mb-2">
           <Image
@@ -12,7 +12,7 @@ export default function Post() {
             height={40}
             className="rounded-full mr-3"
           />
-          <label htmlFor="description" className="mb-0 w-full text-lg font-extrabold text-[var(--color-seasalt)]">
+          <label htmlFor="description" className="mb-0 w-full text-lg font-extrabold text-rich-black">
             Comment ça va ?
           </label>
         </div>
@@ -22,7 +22,7 @@ export default function Post() {
             required
             placeholder="Écrire ici"
             rows={3}
-            className="w-full resize-y rounded-md border border-gray-300 p-2 bg-[var(--color-seasalt)] text-[var(--color-rich-black)]"
+            className="w-full resize-y rounded-md border border-gray-300 p-2 bg-grey text-[var(--color-rich-black)]"
           />
         </div>
         <div className="flex justify-end pt-3">
