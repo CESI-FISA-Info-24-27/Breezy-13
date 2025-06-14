@@ -1,39 +1,6 @@
 import { useState, useEffect } from "react";
-import { HiSearch, HiTrash, HiPencil } from "react-icons/hi";
-import { getComments, deleteComment, updateComment } from "../../services/commentsServices";
-
-function EditModal({ open, comment, onClose, onSave }) {
-  const [content, setContent] = useState(comment?.content || "");
-
-  useEffect(() => {
-    setContent(comment?.content || "");
-  }, [comment]);
-
-  if (!open) return null;
-  return (
-    <div className="fixed inset-0 bg-opacity-5 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 min-w-[320px] shadow-lg flex flex-col gap-4 animate-fade-in">
-        <h3 className="font-bold text-lg">Éditer le commentaire</h3>
-        <textarea
-          className="border rounded p-2 w-full"
-          rows={4}
-          value={content}
-          onChange={e => setContent(e.target.value)}
-        />
-        <div className="flex justify-end gap-2">
-          <button className="px-3 py-1 rounded bg-gray-200" onClick={onClose}>Annuler</button>
-          <button
-            className="px-3 py-1 rounded bg-sea-green text-white transition-transform duration-150 hover:scale-110 hover:bg-sea-green/80"
-            onClick={() => onSave({ ...comment, content })}
-            disabled={content.trim() === ""}
-          >
-            Sauvegarder
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
+import { HiSearch, HiTrash } from "react-icons/hi";
+import { getComments, deleteComment } from "../../services/commentsServices";
 
 function ConfirmModal({ open, onConfirm, onCancel, message }) {
   if (!open) return null;
@@ -56,14 +23,15 @@ function ConfirmModal({ open, onConfirm, onCancel, message }) {
   );
 }
 
+const COMMENTS_PER_PAGE = 8;
+
 export default function AdminComments() {
   const [search, setSearch] = useState("");
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Modale édition
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [commentToEdit, setCommentToEdit] = useState(null);
+  // Pagination
+  const [page, setPage] = useState(1);
 
   // Modale suppression
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
@@ -82,28 +50,26 @@ export default function AdminComments() {
     setConfirmModalOpen(false);
   };
 
-  const handleEdit = async (updatedComment) => {
-    await updateComment(updatedComment._id, { content: updatedComment.content });
-    setComments(comments =>
-      comments.map(c => c._id === updatedComment._id ? { ...c, content: updatedComment.content } : c)
-    );
-    setEditModalOpen(false);
-  };
-
   const filteredComments = comments.filter(c =>
     (c.content?.toLowerCase() || "").includes(search.toLowerCase()) ||
     (c.author?.toLowerCase() || "").includes(search.toLowerCase()) ||
     (c.post?.toLowerCase() || "").includes(search.toLowerCase())
   );
 
+  // Pagination calcul
+  const totalPages = Math.ceil(filteredComments.length / COMMENTS_PER_PAGE);
+  const paginatedComments = filteredComments.slice(
+    (page - 1) * COMMENTS_PER_PAGE,
+    page * COMMENTS_PER_PAGE
+  );
+
+  // Remettre à la page 1 si la recherche change
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
+
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col gap-4 border-t-4 border-celestial-blue">
-      <EditModal
-        open={editModalOpen}
-        comment={commentToEdit}
-        onClose={() => setEditModalOpen(false)}
-        onSave={handleEdit}
-      />
       <ConfirmModal
         open={confirmModalOpen}
         message="Voulez-vous vraiment supprimer ce commentaire ?"
@@ -123,27 +89,19 @@ export default function AdminComments() {
         />
       </div>
       <ul className="flex-1 overflow-y-auto divide-y divide-seasalt">
-        {(() => {
-          if (loading) {
-            return <li>Chargement...</li>;
-          }
-          if (filteredComments.length === 0) {
-            return <li className="text-xs text-folly py-2">Aucun commentaire trouvé.</li>;
-          }
-          return filteredComments.map(c => (
+        {loading && <li>Chargement...</li>}
+        {!loading && paginatedComments.length === 0 && (
+          <li className="text-xs text-folly py-2">Aucun commentaire trouvé.</li>
+        )}
+        {!loading &&
+          paginatedComments.length > 0 &&
+          paginatedComments.map(c => (
             <li key={c._id} className="flex justify-between items-center py-2">
               <div>
                 <span className="font-semibold text-rich-black">{c.content}</span>
                 <span className="block text-xs text-sea-green">{c.author} sur "{c.post}"</span>
               </div>
               <div className="flex gap-2">
-                <button
-                  className="p-2 rounded-full bg-celestial-blue hover:bg-sea-green transition"
-                  title="Modifier"
-                  onClick={() => { setCommentToEdit(c); setEditModalOpen(true); }}
-                >
-                  <HiPencil className="text-white" />
-                </button>
                 <button
                   className="p-2 rounded-full bg-folly hover:bg-rich-black transition"
                   title="Supprimer"
@@ -153,9 +111,30 @@ export default function AdminComments() {
                 </button>
               </div>
             </li>
-          ));
-        })()}
+          ))}
       </ul>
+      {/* Pagination */}
+      {!loading && totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 mt-4">
+          <button
+            className="px-2 py-1 rounded bg-gray-200"
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
+            Précédent
+          </button>
+          <span className="text-sm">
+            Page {page} / {totalPages}
+          </span>
+          <button
+            className="px-2 py-1 rounded bg-gray-200"
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+          >
+            Suivant
+          </button>
+        </div>
+      )}
     </div>
   );
 }
