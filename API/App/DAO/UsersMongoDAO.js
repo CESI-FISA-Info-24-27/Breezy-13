@@ -65,9 +65,20 @@ export class UsersMongoDAO extends UsersDAO {
      * @returns {object} - Résultat de la mise à jour.
      */
     async updateUser(id, user) {
+        const updateFields = {
+            username: user.username,
+            email: user.email,
+            avatar: user.avatar,
+            bio: user.bio,
+            role_id: user.role_id,
+            updatedAt: user.updatedAt
+        };
+        if (user.password) {
+            updateFields.password = user.password;
+        }
         return await this.collection.updateOne(
             { _id: new ObjectId(id) },
-            { $set: { username: user.username, password: user.password, email: user.email, avatar: user.avatar, bio: user.bio, role_id: user.role_id, updatedAt: user.updatedAt } }
+            { $set: updateFields }
         );
     }
 
