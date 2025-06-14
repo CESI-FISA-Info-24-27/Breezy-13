@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { HiSearch, HiPencil, HiPlus, HiTrash } from "react-icons/hi";
 import { getRoles, createRole, updateRole, deleteRole } from "../../services/RolesServices";
+=======
+import { HiSearch, HiPencil, HiPlus, HiTrash } from "react-icons/hi";
+import { getRoles, createRole, updateRole, deleteRole } from "../../services/rolesServices";
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
 
 // Fonction utilitaire pour compléter les permissions manquantes
 function buildCompletePermissions(partialPermissions) {
@@ -132,10 +137,13 @@ function RoleModal({ open, onClose, onSave, initialRole }) {
 }
 
 const ROLES_PER_PAGE = 10;
+<<<<<<< HEAD
 =======
 import { HiSearch, HiPencil, HiPlus } from "react-icons/hi";
 import { getRoles } from "../../services/rolesServices";
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
 
 export default function AdminRoles() {
   const [search, setSearch] = useState("");
@@ -143,6 +151,9 @@ export default function AdminRoles() {
   const [loading, setLoading] = useState(true);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
   // Pagination
   const [page, setPage] = useState(1);
 
@@ -153,8 +164,11 @@ export default function AdminRoles() {
   const [roleModalOpen, setRoleModalOpen] = useState(false);
   const [roleToEdit, setRoleToEdit] = useState(null);
 
+<<<<<<< HEAD
 =======
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
   useEffect(() => {
     getRoles().then(data => {
       setRoles(data);
@@ -163,6 +177,9 @@ export default function AdminRoles() {
   }, []);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
   const handleDelete = async (id) => {
     await deleteRole(id);
     const data = await getRoles();
@@ -184,6 +201,7 @@ export default function AdminRoles() {
   };
 
   // Correction ici : on vérifie que r.name est bien une string avant d'appeler toLowerCase()
+<<<<<<< HEAD
   const filteredRoles = roles.filter(r =>
     typeof r?.name === "string" && r.name && r.name.toLowerCase().includes(search.toLowerCase()) ||
     typeof r?._id === "string" && r._id.toLowerCase().includes(search.toLowerCase())
@@ -223,16 +241,50 @@ export default function AdminRoles() {
           onClick={() => { setRoleModalOpen(true); setRoleToEdit(null); }}
         >
 =======
+=======
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
   const filteredRoles = roles.filter(r =>
-    r.name.toLowerCase().includes(search.toLowerCase())
+    typeof r?.name === "string" && r.name && r.name.toLowerCase().includes(search.toLowerCase())
   );
+
+  // Pagination calcul
+  const totalPages = Math.ceil(filteredRoles.length / ROLES_PER_PAGE);
+  const paginatedRoles = filteredRoles.slice(
+    (page - 1) * ROLES_PER_PAGE,
+    page * ROLES_PER_PAGE
+  );
+
+  // Remettre à la page 1 si la recherche change
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col gap-4 border-t-4 border-folly">
+      <ConfirmModal
+        open={confirmModalOpen}
+        message="Voulez-vous vraiment supprimer ce rôle ?"
+        onCancel={() => setConfirmModalOpen(false)}
+        onConfirm={() => handleDelete(roleToDelete?._id)}
+      />
+      <RoleModal
+        open={roleModalOpen}
+        onClose={() => { setRoleModalOpen(false); setRoleToEdit(null); }}
+        onSave={handleSaveRole}
+        initialRole={roleToEdit}
+      />
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold text-folly">Rôles</h2>
+<<<<<<< HEAD
         <button className="flex items-center gap-1 px-3 py-1 rounded bg-folly hover:bg-celestial-blue text-seasalt transition text-sm font-semibold" title="Ajouter un rôle">
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+        <button
+          className="flex items-center gap-1 px-3 py-1 rounded bg-folly hover:bg-celestial-blue text-seasalt transition text-sm font-semibold"
+          title="Ajouter un rôle"
+          onClick={() => { setRoleModalOpen(true); setRoleToEdit(null); }}
+        >
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
           <HiPlus /> Ajouter
         </button>
       </div>
@@ -247,6 +299,7 @@ export default function AdminRoles() {
       </div>
       <ul className="flex-1 overflow-y-auto divide-y divide-seasalt">
         {loading && <li>Chargement...</li>}
+<<<<<<< HEAD
 <<<<<<< HEAD
         {!loading && paginatedRoles.length === 0 && (
           <li className="text-xs text-folly py-2">Aucun rôle trouvé.</li>
@@ -299,20 +352,61 @@ export default function AdminRoles() {
       )}
 =======
         {!loading && filteredRoles.length === 0 && (
+=======
+        {!loading && paginatedRoles.length === 0 && (
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
           <li className="text-xs text-folly py-2">Aucun rôle trouvé.</li>
         )}
         {!loading &&
-          filteredRoles.length > 0 &&
-          filteredRoles.map(r => (
+          paginatedRoles.length > 0 &&
+          paginatedRoles.map(r => (
             <li key={r._id} className="flex justify-between items-center py-2">
               <span className="font-semibold text-rich-black">{r.name}</span>
-              <button className="p-2 rounded-full bg-folly hover:bg-celestial-blue transition" title="Modifier">
-                <HiPencil className="text-white" />
-              </button>
+              <div className="flex gap-2">
+                <button
+                  className="p-2 rounded-full bg-folly hover:bg-celestial-blue transition"
+                  title="Modifier"
+                  onClick={() => { setRoleModalOpen(true); setRoleToEdit(r); }}
+                >
+                  <HiPencil className="text-white" />
+                </button>
+                <button
+                  className="p-2 rounded-full bg-folly hover:bg-rich-black transition"
+                  title="Supprimer"
+                  onClick={() => { setRoleToDelete(r); setConfirmModalOpen(true); }}
+                >
+                  <HiTrash className="text-white" />
+                </button>
+              </div>
             </li>
           ))}
       </ul>
+<<<<<<< HEAD
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+      {/* Pagination */}
+      {!loading && totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 mt-4">
+          <button
+            className="px-2 py-1 rounded bg-gray-200"
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
+            Précédent
+          </button>
+          <span className="text-sm">
+            Page {page} / {totalPages}
+          </span>
+          <button
+            className="px-2 py-1 rounded bg-gray-200"
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+          >
+            Suivant
+          </button>
+        </div>
+      )}
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
     </div>
   );
 }

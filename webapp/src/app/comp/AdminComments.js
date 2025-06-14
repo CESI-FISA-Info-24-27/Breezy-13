@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { HiSearch, HiTrash } from "react-icons/hi";
 import { getComments, deleteComment } from "../../services/CommentsServices";
 =======
@@ -39,6 +40,10 @@ function EditModal({ open, comment, onClose, onSave }) {
   );
 }
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+import { HiSearch, HiTrash } from "react-icons/hi";
+import { getComments, deleteComment } from "../../services/commentsServices";
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
 
 function ConfirmModal({ open, onConfirm, onCancel, message }) {
   if (!open) return null;
@@ -62,15 +67,21 @@ function ConfirmModal({ open, onConfirm, onCancel, message }) {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const COMMENTS_PER_PAGE = 8;
 
 =======
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+const COMMENTS_PER_PAGE = 8;
+
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
 export default function AdminComments() {
   const [search, setSearch] = useState("");
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   // Pagination
   const [page, setPage] = useState(1);
@@ -79,6 +90,10 @@ export default function AdminComments() {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [commentToEdit, setCommentToEdit] = useState(null);
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+  // Pagination
+  const [page, setPage] = useState(1);
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
 
   // Modale suppression
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
@@ -97,6 +112,7 @@ export default function AdminComments() {
     setConfirmModalOpen(false);
   };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   const filteredComments = comments.filter(c =>
     (c.content?.toLowerCase() || "").includes(search.toLowerCase()) ||
@@ -128,14 +144,29 @@ export default function AdminComments() {
     setEditModalOpen(false);
   };
 
+=======
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
   const filteredComments = comments.filter(c =>
     (c.content?.toLowerCase() || "").includes(search.toLowerCase()) ||
     (c.author?.toLowerCase() || "").includes(search.toLowerCase()) ||
     (c.post?.toLowerCase() || "").includes(search.toLowerCase())
   );
 
+  // Pagination calcul
+  const totalPages = Math.ceil(filteredComments.length / COMMENTS_PER_PAGE);
+  const paginatedComments = filteredComments.slice(
+    (page - 1) * COMMENTS_PER_PAGE,
+    page * COMMENTS_PER_PAGE
+  );
+
+  // Remettre à la page 1 si la recherche change
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
+
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col gap-4 border-t-4 border-celestial-blue">
+<<<<<<< HEAD
       <EditModal
         open={editModalOpen}
         comment={commentToEdit}
@@ -143,6 +174,8 @@ export default function AdminComments() {
         onSave={handleEdit}
       />
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
       <ConfirmModal
         open={confirmModalOpen}
         message="Voulez-vous vraiment supprimer ce commentaire ?"
@@ -163,6 +196,9 @@ export default function AdminComments() {
       </div>
       <ul className="flex-1 overflow-y-auto divide-y divide-seasalt">
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
         {loading && <li>Chargement...</li>}
         {!loading && paginatedComments.length === 0 && (
           <li className="text-xs text-folly py-2">Aucun commentaire trouvé.</li>
@@ -170,6 +206,7 @@ export default function AdminComments() {
         {!loading &&
           paginatedComments.length > 0 &&
           paginatedComments.map(c => (
+<<<<<<< HEAD
             <li key={c._id} className="flex justify-between items-center py-2">
               <div>
                 <span className="font-semibold text-rich-black">{c.content}</span>
@@ -186,6 +223,8 @@ export default function AdminComments() {
             return <li className="text-xs text-folly py-2">Aucun commentaire trouvé.</li>;
           }
           return filteredComments.map(c => (
+=======
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
             <li key={c._id} className="flex justify-between items-center py-2">
               <div>
                 <span className="font-semibold text-rich-black">{c.content}</span>
@@ -193,6 +232,7 @@ export default function AdminComments() {
               </div>
               <div className="flex gap-2">
                 <button
+<<<<<<< HEAD
                   className="p-2 rounded-full bg-celestial-blue hover:bg-sea-green transition"
                   title="Modifier"
                   onClick={() => { setCommentToEdit(c); setEditModalOpen(true); }}
@@ -201,6 +241,8 @@ export default function AdminComments() {
                 </button>
                 <button
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
                   className="p-2 rounded-full bg-folly hover:bg-rich-black transition"
                   title="Supprimer"
                   onClick={() => { setCommentToDelete(c); setConfirmModalOpen(true); }}
@@ -209,6 +251,7 @@ export default function AdminComments() {
                 </button>
               </div>
             </li>
+<<<<<<< HEAD
 <<<<<<< HEAD
           ))}
       </ul>
@@ -239,6 +282,32 @@ export default function AdminComments() {
         })()}
       </ul>
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+          ))}
+      </ul>
+      {/* Pagination */}
+      {!loading && totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 mt-4">
+          <button
+            className="px-2 py-1 rounded bg-gray-200"
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
+            Précédent
+          </button>
+          <span className="text-sm">
+            Page {page} / {totalPages}
+          </span>
+          <button
+            className="px-2 py-1 rounded bg-gray-200"
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+          >
+            Suivant
+          </button>
+        </div>
+      )}
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
     </div>
   );
 }

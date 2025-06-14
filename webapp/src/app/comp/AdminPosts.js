@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import { HiSearch, HiTrash, HiPencil } from "react-icons/hi";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { getPosts, updatePost, deletePost } from "../../services/PostsServices";
 import Image from "next/image";
+=======
+import { getPosts, updatePost, deletePost } from "../../services/postsServices";
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
 import Cookies from "js-cookie";
 
 // Composant pour charger une image protégée par cookie
@@ -23,7 +27,11 @@ function SecureImage({ src, alt, className }) {
           credentials: "include",
           headers,
         });
+<<<<<<< HEAD
         if (!res.ok) throw new Error("Erreur chargement image");
+=======
+        if (!res.ok) throw new Error("Erreur chargement avatar");
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
         const blob = await res.blob();
         if (isMounted) setImgSrc(URL.createObjectURL(blob));
       } catch {
@@ -38,6 +46,7 @@ function SecureImage({ src, alt, className }) {
     // eslint-disable-next-line
   }, [src]);
 
+<<<<<<< HEAD
   return (
     <div
       className={`${className} flex items-center justify-center bg-gray-100 rounded-lg shadow`}
@@ -54,6 +63,9 @@ function SecureImage({ src, alt, className }) {
       />
     </div>
   );
+=======
+  return <img src={imgSrc} alt={alt} className={className} />;
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
 }
 
 // Modale de confirmation suppression
@@ -128,9 +140,12 @@ function PostModal({ open, onClose, onSave, initialPost }) {
 }
 
 const POSTS_PER_PAGE = 4;
+<<<<<<< HEAD
 =======
 import { getPosts, deletePost } from "../../services/postsServices";
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
 
 export default function AdminPosts() {
   const [search, setSearch] = useState("");
@@ -138,6 +153,9 @@ export default function AdminPosts() {
   const [loading, setLoading] = useState(true);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
   // Pagination
   const [page, setPage] = useState(1);
 
@@ -148,8 +166,11 @@ export default function AdminPosts() {
   const [postModalOpen, setPostModalOpen] = useState(false);
   const [postToEdit, setPostToEdit] = useState(null);
 
+<<<<<<< HEAD
 =======
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
   useEffect(() => {
     getPosts().then(data => {
       setPosts(data);
@@ -160,6 +181,9 @@ export default function AdminPosts() {
   const handleDelete = async (id) => {
     await deletePost(id);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
     const data = await getPosts();
     setPosts(data);
     setConfirmModalOpen(false);
@@ -171,6 +195,7 @@ export default function AdminPosts() {
     setPosts(data);
     setPostModalOpen(false);
     setPostToEdit(null);
+<<<<<<< HEAD
   };
 
   const filteredPosts = posts.filter(p =>
@@ -207,16 +232,45 @@ export default function AdminPosts() {
       />
 =======
     setPosts(posts => posts.filter(p => p._id !== id));
+=======
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
   };
 
   const filteredPosts = posts.filter(p =>
-    p.content?.toLowerCase().includes(search.toLowerCase()) ||
-    p.author?.toLowerCase().includes(search.toLowerCase())
+    (typeof p.content === "string" && p.content.toLowerCase().includes(search.toLowerCase())) ||
+    (typeof p.author === "string" && p.author.toLowerCase().includes(search.toLowerCase()))
   );
+
+  // Pagination calcul
+  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
+  const paginatedPosts = filteredPosts.slice(
+    (page - 1) * POSTS_PER_PAGE,
+    page * POSTS_PER_PAGE
+  );
+
+  // Remettre à la page 1 si la recherche change
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col gap-4 border-t-4 border-celestial-blue">
+<<<<<<< HEAD
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+      <ConfirmModal
+        open={confirmModalOpen}
+        message="Voulez-vous vraiment supprimer ce post ?"
+        onCancel={() => setConfirmModalOpen(false)}
+        onConfirm={() => handleDelete(postToDelete?._id)}
+      />
+      <PostModal
+        open={postModalOpen}
+        onClose={() => { setPostModalOpen(false); setPostToEdit(null); }}
+        onSave={handleSavePost}
+        initialPost={postToEdit}
+      />
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold text-celestial-blue">Posts</h2>
       </div>
@@ -231,6 +285,9 @@ export default function AdminPosts() {
       </div>
       <ul className="flex-1 overflow-y-auto divide-y divide-seasalt">
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
         {loading && <li>Chargement...</li>}
         {!loading && paginatedPosts.length === 0 && (
           <li className="text-xs text-folly py-2">Aucun post trouvé.</li>
@@ -238,6 +295,7 @@ export default function AdminPosts() {
         {!loading &&
           paginatedPosts.length > 0 &&
           paginatedPosts.map(p => (
+<<<<<<< HEAD
 =======
         {(() => {
           if (loading) {
@@ -248,10 +306,13 @@ export default function AdminPosts() {
           }
           return filteredPosts.map(p => (
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
             <li key={p._id} className="flex justify-between items-center py-2">
               <div>
                 <span className="font-semibold text-rich-black">{p.content}</span>
                 <span className="block text-xs text-sea-green">{p.author}</span>
+<<<<<<< HEAD
 <<<<<<< HEAD
                 {p.image && (
                   <SecureImage src={p.image} alt="post" className="mt-1 max-h-16 rounded" />
@@ -268,21 +329,38 @@ export default function AdminPosts() {
               <div className="flex gap-2">
                 <button className="p-2 rounded-full bg-celestial-blue hover:bg-sea-green transition" title="Modifier">
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+                {p.image && (
+                  <SecureImage src={p.image} alt="post" className="mt-1 max-h-16 rounded" />
+                )}
+              </div>
+              <div className="flex gap-2">
+                <button
+                  className="p-2 rounded-full bg-celestial-blue hover:bg-sea-green transition"
+                  title="Modifier"
+                  onClick={() => { setPostModalOpen(true); setPostToEdit(p); }}
+                >
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
                   <HiPencil className="text-white" />
                 </button>
                 <button
                   className="p-2 rounded-full bg-folly hover:bg-rich-black transition"
                   title="Supprimer"
 <<<<<<< HEAD
+<<<<<<< HEAD
                   onClick={() => { setPostToDelete(p); setConfirmModalOpen(true); }}
 =======
                   onClick={() => handleDelete(p._id)}
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+                  onClick={() => { setPostToDelete(p); setConfirmModalOpen(true); }}
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
                 >
                   <HiTrash className="text-white" />
                 </button>
               </div>
             </li>
+<<<<<<< HEAD
 <<<<<<< HEAD
           ))}
       </ul>
@@ -313,6 +391,32 @@ export default function AdminPosts() {
         })()}
       </ul>
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+          ))}
+      </ul>
+      {/* Pagination */}
+      {!loading && totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 mt-4">
+          <button
+            className="px-2 py-1 rounded bg-gray-200"
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
+            Précédent
+          </button>
+          <span className="text-sm">
+            Page {page} / {totalPages}
+          </span>
+          <button
+            className="px-2 py-1 rounded bg-gray-200"
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+          >
+            Suivant
+          </button>
+        </div>
+      )}
+>>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
     </div>
   );
 }
