@@ -167,6 +167,12 @@ class UserController {
                 return res.status(400).json({ error: 'Le nom d\'utilisateur existe déjà' });
             }
 
+            // Vérifie que l'email n'existe pas déjà
+            const emailExists = await UsersServices.getUsers({ email: req.body.email });
+            if (emailExists.length > 0) {
+                return res.status(400).json({ error: 'L\'email est déjà utilisé' });
+            }
+
             const newUser = req.body;
 
             // Hacher le mot de passe
