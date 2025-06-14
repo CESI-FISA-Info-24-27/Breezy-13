@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Post() {
   return (
-    <div className="w-full max-w-full bg-[var(--color-celestial-blue)] dark:bg-[var(--color-rich-black)] rounded-lg shadow p-6">
+    <div className="w-full max-w-full bg-[var(--color-celestial-blue)] rounded-lg shadow p-6">
       <form className="flex flex-col gap-4 w-full">
         <div className="flex items-center mb-2">
           <Image
@@ -12,7 +12,7 @@ export default function Post() {
             height={40}
             className="rounded-full mr-3"
           />
-          <label htmlFor="description" className="mb-0 w-full text-lg text-[var(--color-seasalt)]">
+          <label htmlFor="description" className="mb-0 w-full text-lg font-extrabold text-[var(--color-seasalt)]">
             Comment ça va ?
           </label>
         </div>
