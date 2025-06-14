@@ -11,6 +11,7 @@ const fieldsRequired = (requiredFields) => {
                 ) {
                     return;
                 }
+<<<<<<< HEAD
                 // Exception : role_id n'est pas requis pour PATCH sur /users
                 if (
                     field === "role_id" &&
@@ -19,6 +20,8 @@ const fieldsRequired = (requiredFields) => {
                 ) {
                     return;
                 }
+=======
+>>>>>>> 5d7dcf3 (fix: Correction pour éviter d'avoir de passer le mdp obligatoirement lors d'un patch)
                 if (!req.body[field]) {
                     missingFields.push(field);
                 }
