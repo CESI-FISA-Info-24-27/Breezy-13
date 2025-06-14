@@ -7,10 +7,14 @@ export default function Footer() {
 
     return (
 <<<<<<< HEAD
+<<<<<<< HEAD
         <footer className="bg-celestial-blue rounded-lg shadow-sm m-2">
 =======
         <footer className="bg-rich-black rounded-lg shadow-sm m-2">
 >>>>>>> b2fa2f6 (Debut de suppression de flowbite)
+=======
+        <footer className="bg-celestial-blue rounded-lg shadow-sm m-2">
+>>>>>>> 2530cdd (Modif footer)
             <div className="w-full max-w-screen-xl mx-auto p-4 md:py-6">
                 <div className="sm:flex sm:items-center sm:justify-between">
                     <Link href="/home-page" className="flex items-center mb-2 sm:mb-0 space-x-2 rtl:space-x-reverse">
@@ -26,7 +30,11 @@ export default function Footer() {
                 </div>
                 <hr className="my-4 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-6" />
                 <span className="block text-xs text-seasalt sm:text-center dark:text-seasalt">
+<<<<<<< HEAD
                     © {year} <Link href="/home-page" className="hover:underline">TwiX™</Link>. All Rights Reserved.
+=======
+                    © {year} <Link href="/#" className="hover:underline">TwiX™</Link>. All Rights Reserved.
+>>>>>>> 2530cdd (Modif footer)
                 </span>
             </div>
         </footer>
