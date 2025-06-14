@@ -3,10 +3,14 @@ import Image from "next/image";
 export default function Post() {
   return (
 <<<<<<< HEAD
+<<<<<<< HEAD
     <div className="w-full max-w-full bg-[var(--color-seasalt)] rounded-lg shadow p-6 border-2 border-[var(--color-celestial-blue)]">
 =======
     <div className="w-full max-w-full bg-[var(--color-celestial-blue)] dark:bg-[var(--color-rich-black)] rounded-lg shadow p-6">
 >>>>>>> b2fa2f6 (Debut de suppression de flowbite)
+=======
+    <div className="w-full max-w-full bg-[var(--color-celestial-blue)] rounded-lg shadow p-6">
+>>>>>>> 8764791 (Init profil page)
       <form className="flex flex-col gap-4 w-full">
         <div className="flex items-center mb-2">
           <Image
@@ -17,10 +21,14 @@ export default function Post() {
             className="rounded-full mr-3"
           />
 <<<<<<< HEAD
+<<<<<<< HEAD
           <label htmlFor="description" className="mb-0 w-full text-lg font-extrabold text-rich-black">
 =======
           <label htmlFor="description" className="mb-0 w-full text-lg text-[var(--color-seasalt)]">
 >>>>>>> b2fa2f6 (Debut de suppression de flowbite)
+=======
+          <label htmlFor="description" className="mb-0 w-full text-lg font-extrabold text-[var(--color-seasalt)]">
+>>>>>>> 8764791 (Init profil page)
             Comment ça va ?
           </label>
         </div>
