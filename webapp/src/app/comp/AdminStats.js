@@ -19,10 +19,15 @@ const ForceGraph2D = dynamic(
 );
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const MAX_USERS_DISPLAYED = 100; // Limite d'utilisateurs affichés sur le graphe
 
 =======
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+const MAX_USERS_DISPLAYED = 200; // Limite d'utilisateurs affichés sur le graphe
+
+>>>>>>> 58dc0b8 (fix: Correction affichage du réseau d'utilisateurs)
 export default function AdminStats() {
   const [userCount, setUserCount] = useState(0);
   const [postCount, setPostCount] = useState(0);
@@ -32,6 +37,9 @@ export default function AdminStats() {
   const [loading, setLoading] = useState(true);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 58dc0b8 (fix: Correction affichage du réseau d'utilisateurs)
   const [selectedUser, setSelectedUser] = useState(null);
 
   // Pour filtrage dynamique complet
@@ -42,6 +50,7 @@ export default function AdminStats() {
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
+<<<<<<< HEAD
   const graphRef = useRef(null);
   // Hauteur augmentée et responsive
   const [dimensions, setDimensions] = useState({ width: 600, height: 450 });
@@ -49,6 +58,11 @@ export default function AdminStats() {
   const graphRef = useRef(null);
   const [dimensions, setDimensions] = useState({ width: 600, height: 350 });
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+  const graphRef = useRef(null);
+  // Hauteur augmentée et responsive
+  const [dimensions, setDimensions] = useState({ width: 600, height: 450 });
+>>>>>>> 58dc0b8 (fix: Correction affichage du réseau d'utilisateurs)
 
   useEffect(() => {
     async function fetchAll() {
@@ -63,6 +77,9 @@ export default function AdminStats() {
       setPostCount(posts.length);
       setCommentCount(comments.length);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 58dc0b8 (fix: Correction affichage du réseau d'utilisateurs)
 
       setAllUsers(users);
       setAllFollows(follows);
@@ -72,15 +89,19 @@ export default function AdminStats() {
       const displayedIds = new Set(displayedUsers.map(u => u._id));
 
       setUserNodes(displayedUsers.map(u => ({
+<<<<<<< HEAD
 =======
   
       const userIds = new Set(users.map(u => u._id));
       setUserNodes(users.map(u => ({
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+>>>>>>> 58dc0b8 (fix: Correction affichage du réseau d'utilisateurs)
         id: u._id,
         label: u.username || u.email || u._id,
         group: u.role_id || 1
       })));
+<<<<<<< HEAD
 <<<<<<< HEAD
 
       setUserLinks(
@@ -91,6 +112,12 @@ export default function AdminStats() {
         follows
           .filter(f => userIds.has(f.follower) && userIds.has(f.following))
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+
+      setUserLinks(
+        follows
+          .filter(f => displayedIds.has(f.follower) && displayedIds.has(f.following))
+>>>>>>> 58dc0b8 (fix: Correction affichage du réseau d'utilisateurs)
           .map(f => ({
             source: f.follower,
             target: f.following
@@ -107,10 +134,14 @@ export default function AdminStats() {
         setDimensions({
           width: graphRef.current.offsetWidth,
 <<<<<<< HEAD
+<<<<<<< HEAD
           height: Math.max(graphRef.current.offsetHeight, 600),
 =======
           height: graphRef.current.offsetHeight,
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+          height: Math.max(graphRef.current.offsetHeight, 600),
+>>>>>>> 58dc0b8 (fix: Correction affichage du réseau d'utilisateurs)
         });
       }
     }
@@ -120,6 +151,9 @@ export default function AdminStats() {
   }, []);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 58dc0b8 (fix: Correction affichage du réseau d'utilisateurs)
   // Recherche utilisateur
   useEffect(() => {
     if (search.trim().length === 0) {
@@ -168,6 +202,7 @@ export default function AdminStats() {
     filteredLinks = links;
   }
 
+<<<<<<< HEAD
   const userGraph = {
     nodes: filteredNodes,
     links: filteredLinks
@@ -176,6 +211,11 @@ export default function AdminStats() {
     nodes: userNodes,
     links: userLinks
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+  const userGraph = {
+    nodes: filteredNodes,
+    links: filteredLinks
+>>>>>>> 58dc0b8 (fix: Correction affichage du réseau d'utilisateurs)
   };
 
   return (
@@ -205,6 +245,9 @@ export default function AdminStats() {
       </div>
       <div className="bg-white rounded-2xl shadow p-6 border-t-4 border-celestial-blue">
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 58dc0b8 (fix: Correction affichage du réseau d'utilisateurs)
         <h3 className="text-lg font-bold text-celestial-blue mb-4">
           Réseau des utilisateurs
           <span className="ml-2 text-xs text-gray-400">
@@ -238,10 +281,13 @@ export default function AdminStats() {
           )}
         </div>
         <div ref={graphRef} className="w-full min-h-[500px] relative">
+<<<<<<< HEAD
 =======
         <h3 className="text-lg font-bold text-celestial-blue mb-4">Réseau des utilisateurs</h3>
         <div ref={graphRef} className="w-full h-96 relative">
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+>>>>>>> 58dc0b8 (fix: Correction affichage du réseau d'utilisateurs)
           <ForceGraph2D
             graphData={userGraph}
             nodeAutoColorBy="group"
@@ -249,6 +295,9 @@ export default function AdminStats() {
             width={dimensions.width}
             height={dimensions.height}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 58dc0b8 (fix: Correction affichage du réseau d'utilisateurs)
             linkDirectionalArrowLength={3}
             linkDirectionalArrowRelPos={1}
             linkCurvature={0.2}
@@ -257,6 +306,7 @@ export default function AdminStats() {
             d3VelocityDecay={0.1}
             onNodeClick={node => setSelectedUser(node)}
             onBackgroundClick={() => setSelectedUser(null)}
+<<<<<<< HEAD
           />
         </div>
         {selectedUser && (
@@ -275,6 +325,15 @@ export default function AdminStats() {
           />
         </div>
 >>>>>>> bbfb259 (Component pour la page admin #22)
+=======
+          />
+        </div>
+        {selectedUser && (
+          <div className="mt-2 text-sm text-celestial-blue">
+            Utilisateur sélectionné : <b>{selectedUser.label}</b> (<button className="underline" onClick={() => setSelectedUser(null)}>réinitialiser</button>)
+          </div>
+        )}
+>>>>>>> 58dc0b8 (fix: Correction affichage du réseau d'utilisateurs)
       </div>
     </div>
   );
