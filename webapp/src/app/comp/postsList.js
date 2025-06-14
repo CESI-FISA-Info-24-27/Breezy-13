@@ -63,14 +63,14 @@ export function PostsList({ posts }) {
       {displayPosts.map((post) => (
         <div
           key={post._id}
-          className="flex flex-col gap-4 w-full bg-[var(--color-celestial-blue)] rounded-xl shadow-lg p-6"
+          className="flex flex-col gap-4 w-full bg-[var(--color-outer-space)] rounded-xl shadow-lg p-6 border-2 border-[var(--color-sea-green)]"
         >
           <div className="flex items-center mb-2 justify-between">
             <div className="flex items-center">
               <span className="w-10 h-10 flex-shrink-0 rounded-full bg-[var(--color-seasalt)]/30 flex items-center justify-center font-bold uppercase text-[var(--color-celestial-blue)] mr-3 text-lg">
                 {post.username[0]}
               </span>
-              <span className="mb-0 text-lg font-bold text-[var(--color-seasalt)]">
+              <span className="mb-0 text-lg font-bold text-[var(--color-rich-black)]">
                 {post.username}
               </span>
             </div>
@@ -80,15 +80,17 @@ export function PostsList({ posts }) {
               className="cursor-pointer"
             >
               {hovered === "useradd" + post._id ? (
-                <HiUserAdd className="text-[var(--color-seasalt)] text-2xl" />
+                <HiUserAdd className="text-[var(--color-celestial-blue)] text-2xl" />
               ) : (
-                <HiOutlineUserAdd className="text-[var(--color-seasalt)] text-2xl" />
+                <HiOutlineUserAdd className="text-[var(--color-celestial-blue)] text-2xl" />
               )}
             </span>
           </div>
-          <hr className="border-[var(--color-seasalt)]/30" />
+          {/* <hr className="border-[var(--color-celestial-blue)]/30" /> */
+          //Je sais pas si on la garde celle la
+          }
           <div>
-            <span className="w-full text-lg font-bold text-[var(--color-seasalt)]">
+            <span className="ms-5 me-5 w-full text-lg font-lg text-[var(--color-rich-black)]">
               {post.content}
             </span>
           </div>
@@ -99,9 +101,9 @@ export function PostsList({ posts }) {
               className="cursor-pointer"
             >
               {hovered === "chat" + post._id ? (
-                <HiChat className="text-[var(--color-seasalt)] text-2xl" />
+                <HiChat className="text-[var(--color-celestial-blue)] text-2xl" />
               ) : (
-                <HiOutlineChat className="text-[var(--color-seasalt)] text-2xl" />
+                <HiOutlineChat className="text-[var(--color-celestial-blue)] text-2xl" />
               )}
             </span>
             <span
@@ -110,9 +112,9 @@ export function PostsList({ posts }) {
               className="cursor-pointer"
             >
               {hovered === "share" + post._id ? (
-                <HiShare className="text-[var(--color-seasalt)] text-2xl" />
+                <HiShare className="text-[var(--color-celestial-blue)] text-2xl" />
               ) : (
-                <HiOutlineShare className="text-[var(--color-seasalt)] text-2xl" />
+                <HiOutlineShare className="text-[var(--color-celestial-blue)] text-2xl" />
               )}
             </span>
             <span
@@ -121,9 +123,9 @@ export function PostsList({ posts }) {
               className="cursor-pointer"
             >
               {hovered === "heart" + post._id ? (
-                <HiHeart className="text-[var(--color-seasalt)] text-2xl" />
+                <HiHeart className="text-[var(--color-celestial-blue)] text-2xl" />
               ) : (
-                <HiOutlineHeart className="text-[var(--color-seasalt)] text-2xl" />
+                <HiOutlineHeart className="text-[var(--color-celestial-blue)] text-2xl" />
               )}
             </span>
           </div>
