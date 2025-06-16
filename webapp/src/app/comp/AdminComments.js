@@ -149,7 +149,8 @@ export default function AdminComments() {
   const filteredComments = comments.filter(c =>
     (c.content?.toLowerCase() || "").includes(search.toLowerCase()) ||
     (c.author?.toLowerCase() || "").includes(search.toLowerCase()) ||
-    (c.post?.toLowerCase() || "").includes(search.toLowerCase())
+    (c.post?.toLowerCase() || "").includes(search.toLowerCase()) ||
+    (c._id?.toLowerCase() || "").includes(search.toLowerCase())
   );
 
   // Pagination calcul
