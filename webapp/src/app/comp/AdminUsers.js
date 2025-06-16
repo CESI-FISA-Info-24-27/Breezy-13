@@ -229,7 +229,8 @@ export default function AdminUsers() {
 
   const filteredUsers = users.filter(u =>
     (u.username?.toLowerCase() || "").includes(search.toLowerCase()) ||
-    (u.email?.toLowerCase() || "").includes(search.toLowerCase())
+    (u.email?.toLowerCase() || "").includes(search.toLowerCase()) ||
+    (u._id?.toLowerCase() || "").includes(search.toLowerCase())
   );
 
   // Pagination calcul
