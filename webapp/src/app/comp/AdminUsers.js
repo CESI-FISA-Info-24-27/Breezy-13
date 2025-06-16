@@ -64,12 +64,17 @@ import { getUsers, deleteUser } from "../../services/usersServices";
 =======
 import { getUsers, createUser, updateUser, deleteUser } from "../../services/usersServices";
 import { getRoles } from "../../services/rolesServices";
+<<<<<<< HEAD
 >>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
+=======
+import Image from "next/image";
+>>>>>>> 3b5e475 (fix: Correction balise img et  ' dans les titres)
 import Cookies from "js-cookie";
 
 // Composant pour charger un avatar protégé par cookie
 function SecureAvatar({ src, alt, className }) {
   const [imgSrc, setImgSrc] = useState("/default-avatar.png");
+  const [size, setSize] = useState({ width: 48, height: 48 }); // Valeurs par défaut
 
   useEffect(() => {
     if (!src) {
@@ -88,7 +93,15 @@ function SecureAvatar({ src, alt, className }) {
         });
         if (!res.ok) throw new Error("Erreur chargement avatar");
         const blob = await res.blob();
-        if (isMounted) setImgSrc(URL.createObjectURL(blob));
+        if (isMounted) {
+          const objectUrl = URL.createObjectURL(blob);
+          setImgSrc(objectUrl);
+
+          // Récupérer la taille de l'image pour garder le ratio
+          const img = new window.Image();
+          img.onload = () => setSize({ width: img.width, height: img.height });
+          img.src = objectUrl;
+        }
       } catch {
         if (isMounted) setImgSrc("/default-avatar.png");
       }
@@ -99,9 +112,19 @@ function SecureAvatar({ src, alt, className }) {
       isMounted = false;
       if (imgSrc && imgSrc.startsWith("blob:")) URL.revokeObjectURL(imgSrc);
     };
+    // eslint-disable-next-line
   }, [src]);
 
-  return <img src={imgSrc} alt={alt} className={className} />;
+  return (
+    <Image
+      src={imgSrc}
+      alt={alt}
+      width={size.width}
+      height={size.height}
+      className={className}
+      unoptimized
+    />
+  );
 }
 
 // Modale de confirmation suppression
@@ -204,10 +227,14 @@ function UserModal({ open, onClose, onSave, initialUser, roles }) {
         <div className="font-bold text-lg">{initialUser ? "Modifier l'utilisateur" : "Ajouter un utilisateur"}</div>
         <div>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <label className="block text-sm font-semibold mb-1">Nom d&apos;utilisateur</label>
 =======
           <label className="block text-sm font-semibold mb-1">Nom d'utilisateur</label>
 >>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
+=======
+          <label className="block text-sm font-semibold mb-1">Nom d&apos;utilisateur</label>
+>>>>>>> 3b5e475 (fix: Correction balise img et  ' dans les titres)
           <input className="w-full border rounded px-3 py-2" value={username} onChange={e => setUsername(e.target.value)} required />
         </div>
         <div>

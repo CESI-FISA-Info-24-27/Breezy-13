@@ -15,7 +15,7 @@ export default function HomePage() {
         <SideBarFollow />
       </div>
       <main className="ml-64 mr-64 p-8 flex-1">
-        <h1 className="text-2xl font-bold pb-5">Page d'accueil</h1>
+        <h1 className="text-2xl font-bold pb-5">Page d&apos;accueil</h1>
         <hr className="text-2xl font-bold pb-5"></hr>
         <Post />
         <hr className="mt-7 text-rich-black"></hr>

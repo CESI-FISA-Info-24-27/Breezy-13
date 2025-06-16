@@ -6,7 +6,11 @@ import { getPosts, updatePost, deletePost } from "../../services/PostsServices";
 import Image from "next/image";
 =======
 import { getPosts, updatePost, deletePost } from "../../services/postsServices";
+<<<<<<< HEAD
 >>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
+=======
+import Image from "next/image";
+>>>>>>> 3b5e475 (fix: Correction balise img et  ' dans les titres)
 import Cookies from "js-cookie";
 
 // Composant pour charger une image protégée par cookie
@@ -47,15 +51,21 @@ function SecureImage({ src, alt, className }) {
   }, [src]);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   return (
     <div
       className={`${className} flex items-center justify-center bg-gray-100 rounded-lg shadow`}
       style={{ position: "relative", width: 120, height: 120, overflow: "hidden" }}
     >
+=======
+  return (
+    <div className={className} style={{ position: "relative", width: 48, height: 48 }}>
+>>>>>>> 3b5e475 (fix: Correction balise img et  ' dans les titres)
       <Image
         src={imgSrc}
         alt={alt}
         layout="fill"
+<<<<<<< HEAD
         objectFit="contain" // <-- Affiche l'image entière sans crop
         className="transition-transform duration-200 hover:scale-105"
         unoptimized
@@ -66,6 +76,14 @@ function SecureImage({ src, alt, className }) {
 =======
   return <img src={imgSrc} alt={alt} className={className} />;
 >>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
+=======
+        objectFit="cover"
+        sizes="48px"
+        style={{ borderRadius: "10%" }}
+      />
+    </div>
+  );
+>>>>>>> 3b5e475 (fix: Correction balise img et  ' dans les titres)
 }
 
 // Modale de confirmation suppression
