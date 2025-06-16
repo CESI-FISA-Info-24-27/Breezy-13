@@ -99,7 +99,7 @@ export default function AdminComments() {
             <li key={c._id} className="flex justify-between items-center py-2">
               <div>
                 <span className="font-semibold text-rich-black">{c.content}</span>
-                <span className="block text-xs text-sea-green">{c.author} sur "{c.post}"</span>
+                <span className="block text-xs text-sea-green">{c.author} sur &quot;{c.post}&quot;</span>
               </div>
               <div className="flex gap-2">
                 <button
