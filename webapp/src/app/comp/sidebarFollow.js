@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import { getFollows } from "../../services/FollowsServices";
 
@@ -44,14 +45,27 @@ export default function SideBarFollow(props) {
   //     .then((data) => setFollows(data))
   //     .catch((err) => console.error(err));
   // }, []);
+=======
+import { useState } from "react";
+>>>>>>> 5c2486d (update sidebar)
 
+export default function SideBarFollow(props) {
   // Pour la démo, on met des données fictives
   const follows = [
     { _id: "1", username: "eloncuck" },
     { _id: "2", username: "billgrates" },
     { _id: "3", username: "arkuni" },
     { _id: "4", username: "terracist" },
+    { _id: "5", username: "user5" },
+    { _id: "6", username: "user6" },
+    { _id: "7", username: "user7" },
   ];
+
+  const [showCount, setShowCount] = useState(5);
+
+  const handleShowMore = () => {
+    setShowCount((prev) => Math.min(prev + 5, follows.length));
+  };
 
   return (
     <aside
@@ -64,6 +78,7 @@ export default function SideBarFollow(props) {
 >>>>>>> dc16337 (Fin de la page d'accueil)
       </div>
       <ul className="flex-1 flex flex-col gap-2 overflow-y-auto">
+<<<<<<< HEAD
         {follows.length === 0 ? (
           <li className="text-[var(--color-seasalt)] text-sm opacity-70">Vous ne suivez personne.</li>
         ) : (
@@ -93,6 +108,13 @@ export default function SideBarFollow(props) {
           </>
 =======
           follows.map((follow) => (
+=======
+      {follows.length === 0 ? (
+        <li className="text-[var(--color-seasalt)] text-sm opacity-70">Vous ne suivez personne.</li>
+      ) : (
+        <>
+          {follows.slice(0, showCount).map((follow) => (
+>>>>>>> 5c2486d (update sidebar)
             <li
               key={follow._id}
               className="flex items-center gap-3 px-3 py-2 rounded-lg bg-[var(--color-seasalt)]/10 text-[var(--color-seasalt)] hover:bg-[var(--color-seasalt)]/20 transition font-medium"
@@ -102,10 +124,27 @@ export default function SideBarFollow(props) {
               </span>
               <span className="truncate">{follow.username}</span>
             </li>
+<<<<<<< HEAD
           ))
 >>>>>>> dc16337 (Fin de la page d'accueil)
         )}
       </ul>
+=======
+          ))}
+          {follows.length >= 5 && showCount < follows.length && (
+            <li>
+              <button
+                className="w-full mt-4 px-4 py-2 rounded bg-folly text-seasalt font-semibold hover:bg-sea-green transition"
+                onClick={handleShowMore}
+              >
+                Afficher plus
+              </button>
+            </li>
+          )}
+        </>
+      )}
+    </ul>
+>>>>>>> 5c2486d (update sidebar)
     </aside>
   );
 }
