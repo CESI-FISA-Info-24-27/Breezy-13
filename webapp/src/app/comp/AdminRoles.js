@@ -176,7 +176,8 @@ export default function AdminRoles() {
 
   // Correction ici : on vérifie que r.name est bien une string avant d'appeler toLowerCase()
   const filteredRoles = roles.filter(r =>
-    typeof r?.name === "string" && r.name && r.name.toLowerCase().includes(search.toLowerCase())
+    typeof r?.name === "string" && r.name && r.name.toLowerCase().includes(search.toLowerCase()) ||
+    typeof r?._id === "string" && r._id.toLowerCase().includes(search.toLowerCase())
   );
 
   // Pagination calcul

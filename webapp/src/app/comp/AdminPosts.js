@@ -167,7 +167,8 @@ export default function AdminPosts() {
 
   const filteredPosts = posts.filter(p =>
     (typeof p.content === "string" && p.content.toLowerCase().includes(search.toLowerCase())) ||
-    (typeof p.author === "string" && p.author.toLowerCase().includes(search.toLowerCase()))
+    (typeof p.author === "string" && p.author.toLowerCase().includes(search.toLowerCase())) ||
+    (typeof p._id === "string" && p._id.toLowerCase().includes(search.toLowerCase()))
   );
 
   // Pagination calcul
