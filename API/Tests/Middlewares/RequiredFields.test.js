@@ -25,14 +25,14 @@ describe('fieldsRequired middleware', () => {
   });
 
   it('should respond with 400 if some required fields are missing', () => {
-    req.body = { username: 'user1' }; // password missing
-    const middleware = fieldsRequired(['username', 'password']);
+    req.body = { username: 'user1' };
+    const middleware = fieldsRequired(['username', 'bio']);
 
     middleware(req, res, next);
 
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.json).toHaveBeenCalledWith({
-      error: 'Les champs suivants sont requis : password',
+      error: 'Les champs suivants sont requis : bio',
     });
     expect(next).not.toHaveBeenCalled();
   });
