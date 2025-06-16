@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { HiSearch, HiTrash, HiPencil } from "react-icons/hi";
 import { getPosts, updatePost, deletePost } from "../../services/postsServices";
+import Image from "next/image";
 import Cookies from "js-cookie";
 
 // Composant pour charger une image protégée par cookie
@@ -36,7 +37,18 @@ function SecureImage({ src, alt, className }) {
     // eslint-disable-next-line
   }, [src]);
 
-  return <img src={imgSrc} alt={alt} className={className} />;
+  return (
+    <div className={className} style={{ position: "relative", width: 48, height: 48 }}>
+      <Image
+        src={imgSrc}
+        alt={alt}
+        layout="fill"
+        objectFit="cover"
+        sizes="48px"
+        style={{ borderRadius: "10%" }}
+      />
+    </div>
+  );
 }
 
 // Modale de confirmation suppression
