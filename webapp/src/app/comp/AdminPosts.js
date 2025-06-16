@@ -32,10 +32,14 @@ function SecureImage({ src, alt, className }) {
           headers,
         });
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (!res.ok) throw new Error("Erreur chargement image");
 =======
         if (!res.ok) throw new Error("Erreur chargement avatar");
 >>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
+=======
+        if (!res.ok) throw new Error("Erreur chargement image");
+>>>>>>> 7c70c9b (fix: Correction image d'un post dans l'adminpage)
         const blob = await res.blob();
         if (isMounted) setImgSrc(URL.createObjectURL(blob));
       } catch {
@@ -59,17 +63,28 @@ function SecureImage({ src, alt, className }) {
     >
 =======
   return (
+<<<<<<< HEAD
     <div className={className} style={{ position: "relative", width: 48, height: 48 }}>
 >>>>>>> 3b5e475 (fix: Correction balise img et  ' dans les titres)
+=======
+    <div
+      className={`${className} flex items-center justify-center bg-gray-100 rounded-lg shadow`}
+      style={{ position: "relative", width: 120, height: 120, overflow: "hidden" }}
+    >
+>>>>>>> 7c70c9b (fix: Correction image d'un post dans l'adminpage)
       <Image
         src={imgSrc}
         alt={alt}
         layout="fill"
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7c70c9b (fix: Correction image d'un post dans l'adminpage)
         objectFit="contain" // <-- Affiche l'image entière sans crop
         className="transition-transform duration-200 hover:scale-105"
         unoptimized
         sizes="120px"
+<<<<<<< HEAD
       />
     </div>
   );
@@ -80,6 +95,8 @@ function SecureImage({ src, alt, className }) {
         objectFit="cover"
         sizes="48px"
         style={{ borderRadius: "10%" }}
+=======
+>>>>>>> 7c70c9b (fix: Correction image d'un post dans l'adminpage)
       />
     </div>
   );
