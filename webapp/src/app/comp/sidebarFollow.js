@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import { getFollows } from "../../services/FollowsServices";
 
@@ -32,6 +33,9 @@ export default function SideBarFollow(props) {
         <hr className="w-14/15 mx-auto h-0.5 border-0 bg-seasalt my-5 rounded" />
 =======
 export default function SideBarFollow() {
+=======
+export default function SideBarFollow(props) {
+>>>>>>> 31fcbf1 (Header trop classe)
   // Remettre la logique de récupération des follows si besoin
   // const [follows, setFollows] = useState([]);
   // useEffect(() => {
@@ -50,7 +54,10 @@ export default function SideBarFollow() {
   ];
 
   return (
-    <aside className="fixed right-0 top-0 h-screen z-50 w-64 bg-[var(--color-celestial-blue)] shadow-lg flex flex-col px-4 py-6">
+    <aside
+      className="fixed right-0 z-50 w-64 bg-[var(--color-celestial-blue)] shadow-lg flex flex-col px-4 py-6 transition-all duration-300"
+      style={props.style}
+    >
       <div className="mb-4">
         <h2 className="text-xl font-extrabold text-[var(--color-seasalt)] tracking-tight">Comptes suivis</h2>
         <hr className="border-[var(--color-seasalt)] mt-2 mb-4" />

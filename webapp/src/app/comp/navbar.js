@@ -82,19 +82,6 @@ export default function Navbar() {
 
   return (
     <nav className="h-screen w-64 flex flex-col min-h-screen px-4 py-6 bg-[var(--color-celestial-blue)] shadow-full">
-      <Link href="/" className="flex items-center mb-7">
-        <Image
-          src="/logo.png"
-          alt="TwiX logo"
-          width={36}
-          height={36}
-          className="rounded-full"
-        />
-        <span className="ml-4 text-2xl font-extrabold tracking-tight text-[var(--color-seasalt)]">
-          TwiX
-        </span>
-      </Link>
-      <hr className="border-[var(--color-seasalt)] mb-6" />
       <ul className="flex-1 flex flex-col gap-2">
         <li>
           <Link
@@ -249,12 +236,15 @@ export default function Navbar() {
           </Link>
         </li>
       </ul>
+<<<<<<< HEAD
       <div className="mt-8">
         <button className="w-full flex items-center justify-center gap-3 px-4 py-2 rounded-lg bg-[var(--color-folly)] text-[var(--color-seasalt)] font-semibold hover:bg-[var(--color-sea-green)] transition shadow">
           Déconnexion
         </button>
       </div>
 >>>>>>> b2fa2f6 (Debut de suppression de flowbite)
+=======
+>>>>>>> 31fcbf1 (Header trop classe)
     </nav>
   );
 }
