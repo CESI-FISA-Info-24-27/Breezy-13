@@ -18,7 +18,7 @@ userPath.get('/', UserController.getUsers);
  * Créer des utilisateurs
  * @param {object} req - La requête
  */
-userPath.post('/', fieldsRequired(["username", "email", "password", "avatar", "bio", "role_id"]), UserController.createUsers);
+userPath.post('/', fieldsRequired(["username", "email", "password", "avatar"]), UserController.createUsers);
 
 /**
  * Mettre à jour les utilisateurs

@@ -14,13 +14,21 @@ import { login } from "../../services/AuthServices";
 >>>>>>> Stashed changes
 
 export default function Register() {
-  // Utilise un avatar par défaut en ligne
   const [avatarPreview, setAvatarPreview] = useState(
     "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20fill%3D%22none%22%20shape-rendering%3D%22auto%22%3E%3Cmetadata%20xmlns%3Ardf%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%22%20xmlns%3Axsi%3D%22http%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema-instance%22%20xmlns%3Adc%3D%22http%3A%2F%2Fpurl.org%2Fdc%2Felements%2F1.1%2F%22%20xmlns%3Adcterms%3D%22http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2F%22%3E%3Crdf%3ARDF%3E%3Crdf%3ADescription%3E%3Cdc%3Atitle%3EThumbs%3C%2Fdc%3Atitle%3E%3Cdc%3Acreator%3EDiceBear%3C%2Fdc%3Acreator%3E%3Cdc%3Asource%20xsi%3Atype%3D%22dcterms%3AURI%22%3Ehttps%3A%2F%2Fwww.dicebear.com%3C%2Fdc%3Asource%3E%3Cdcterms%3Alicense%20xsi%3Atype%3D%22dcterms%3AURI%22%3Ehttps%3A%2F%2Fcreativecommons.org%2Fpublicdomain%2Fzero%2F1.0%2F%3C%2Fdcterms%3Alicense%3E%3Cdc%3Arights%3E%E2%80%9EThumbs%E2%80%9D%20(https%3A%2F%2Fwww.dicebear.com)%20by%20%E2%80%9EDiceBear%E2%80%9D%2C%20licensed%20under%20%E2%80%9ECC0%201.0%E2%80%9D%20(https%3A%2F%2Fcreativecommons.org%2Fpublicdomain%2Fzero%2F1.0%2F)%3C%2Fdc%3Arights%3E%3C%2Frdf%3ADescription%3E%3C%2Frdf%3ARDF%3E%3C%2Fmetadata%3E%3Cmask%20id%3D%22viewboxMask%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%220%22%20ry%3D%220%22%20x%3D%220%22%20y%3D%220%22%20fill%3D%22%23fff%22%20%2F%3E%3C%2Fmask%3E%3Cg%20mask%3D%22url(%23viewboxMask)%22%3E%3Crect%20fill%3D%22%2369d2e7%22%20width%3D%22100%22%20height%3D%22100%22%20x%3D%220%22%20y%3D%220%22%20%2F%3E%3Cg%20transform%3D%22translate(-5%2C%204)%20rotate(-5%2050%2070)%22%3E%3Cpath%20d%3D%22M95%2053.33C95%2029.4%2074.85%2010%2050%2010S5%2029.4%205%2053.33V140h90V53.33Z%22%20fill%3D%22%23f1f4dc%22%2F%3E%3Cg%20transform%3D%22translate(29%2033)%22%3E%3Cg%20transform%3D%22translate(15%2C%20-3)%20rotate(18%2021%2021)%22%3E%3Cg%20transform%3D%22translate(0%205)%22%3E%3Cpath%20d%3D%22M14%208c0%203.31-1.34%206-3%206s-3-2.69-3-6%201.34-6%203-6%203%202.69%203%206ZM34%208c0%203.31-1.34%206-3%206s-3-2.69-3-6%201.34-6%203-6%203%202.69%203%206Z%22%20fill%3D%22%23000000%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(6%2023)%22%3E%3Cpath%20d%3D%22M15.5%2010c-5.07%200-9.3-5.23-8.37-5.88.93-.65%203.45%202.15%208.37%202.15%204.92%200%207.44-2.88%208.37-2.15.93.73-3.3%205.88-8.37%205.88Z%22%20fill%3D%22%23000000%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
   );
   const [avatarError, setAvatarError] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+    confirmPassword: "",
+    email: "",
+    avatar: "",
+    bio: "",
+  });
+
+  const [successMsg, setSuccessMsg] = useState("");
+  const router = useRouter();
   const [passwordError, setPasswordError] = useState("");
 
   function handleAvatarChange(e) {
@@ -28,27 +36,59 @@ export default function Register() {
     const file = e.target.files?.[0];
     if (file) {
       const validTypes = ["image/png", "image/jpeg", "image/gif"];
-      const maxSize = 2 * 1024 * 1024; // 2 Mo
+      const maxSize = 5 * 1024 * 1024; // 5 Mo
       if (!validTypes.includes(file.type)) {
         setAvatarError("Seuls les fichiers PNG, JPEG ou GIF sont autorisés.");
         return;
       }
       if (file.size > maxSize) {
-        setAvatarError("L'image ne doit pas dépasser 2 Mo.");
+        setAvatarError("L'image ne doit pas dépasser 5 Mo.");
         return;
       }
       setAvatarPreview(URL.createObjectURL(file));
+      setForm(f => ({ ...f, avatar: URL.createObjectURL(file) }));
     }
   }
 
-  function handleSubmit(e) {
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setForm(f => ({ ...f, [name]: value }));
+  }
+
+  const handleRegister = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
+
+    if (!form.password || form.password.length < 6) {
+      setPasswordError("Le mot de passe doit contenir au moins 6 caractères.");
+      return;
+    }
+    if (form.password !== form.confirmPassword) {
       setPasswordError("Les mots de passe ne correspondent pas.");
       return;
     }
     setPasswordError("");
-  }
+
+    try {
+      const res = await axios.post("/api/users", {
+        username: form.username,
+        password: form.password,
+        email: form.email,
+        avatar: form.avatar,
+        bio: form.bio,
+      });
+
+      setSuccessMsg("Compte créé avec succès ! Redirection vers la connexion...");
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000); // 2 secondes avant la redirection
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.error) {
+        alert("Erreur : " + error.response.data.error);
+      } else {
+        alert("Erreur lors de la création de l'utilisateur");
+      }
+    }
+  };
 
   return (
     <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-celestial-blue via-sea-green to-folly animate-fade-in">
@@ -63,13 +103,18 @@ export default function Register() {
             priority
           />
           <span className="text-3xl font-extrabold text-celestial-blue font-sans tracking-tight drop-shadow">
-            Beak
+            TwiX
           </span>
         </Link>
         <h1 className="text-2xl md:text-3xl font-bold text-rich-black text-center animate-slide-down">
           Créez votre compte
         </h1>
-        <form className="w-full flex flex-col gap-5 animate-fade-in-slow" onSubmit={handleSubmit}>
+        {successMsg && (
+          <div className="mt-4 text-green-600 text-center animate-pulse">
+            {successMsg}
+          </div>
+        )}
+        <form className="w-full flex flex-col gap-5 animate-fade-in-slow" onSubmit={handleRegister} onChange={handleChange}>
           <div>
             <label htmlFor="username" className="block mb-1 text-sm font-medium text-rich-black">
               Nom d&apos;utilisateur <span className="text-folly">*</span>
@@ -78,9 +123,11 @@ export default function Register() {
               type="text"
               name="username"
               id="username"
+              value={form.username}
               className="w-full p-3 rounded-lg border border-sea-green/40 bg-seasalt text-rich-black placeholder:text-rich-black/40 focus:ring-2 focus:ring-sea-green transition-all duration-200 outline-none"
               placeholder="Votre pseudo unique"
               required
+              onChange={e => setForm(f => ({ ...f, username: e.target.value }))}
               minLength={3}
               maxLength={32}
               autoComplete="username"
@@ -94,6 +141,8 @@ export default function Register() {
               type="email"
               name="email"
               id="email"
+              value={form.email}
+              onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
               className="w-full p-3 rounded-lg border border-sea-green/40 bg-seasalt text-rich-black placeholder:text-rich-black/40 focus:ring-2 focus:ring-sea-green transition-all duration-200 outline-none"
               placeholder="nom@entreprise.com"
               required
@@ -108,6 +157,7 @@ export default function Register() {
               type="password"
               name="password"
               id="password"
+              value={form.password}
               className="w-full p-3 rounded-lg border border-sea-green/40 bg-seasalt text-rich-black placeholder:text-rich-black/40 focus:ring-2 focus:ring-sea-green transition-all duration-200 outline-none"
               placeholder="••••••••"
               required
@@ -115,7 +165,6 @@ export default function Register() {
               pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$"
               title="Au moins 8 caractères, dont une lettre et un chiffre"
               autoComplete="new-password"
-              value={password}
               onChange={e => setPassword(e.target.value)}
             />
             <p className="text-xs text-rich-black/60 mt-1">
@@ -130,10 +179,10 @@ export default function Register() {
               type="password"
               name="confirmPassword"
               id="confirmPassword"
+              value={form.confirmPassword}
               className="w-full p-3 rounded-lg border border-sea-green/40 bg-seasalt text-rich-black placeholder:text-rich-black/40 focus:ring-2 focus:ring-sea-green transition-all duration-200 outline-none"
               placeholder="Répétez le mot de passe"
               required
-              value={confirmPassword}
               onChange={e => setConfirmPassword(e.target.value)}
             />
             {passwordError && (
@@ -162,6 +211,7 @@ export default function Register() {
                   id="avatar"
                   accept="image/png,image/jpeg,image/gif"
                   className="hidden"
+                  value={form.avatar}
                   required
                   onChange={handleAvatarChange}
                 />
@@ -171,7 +221,7 @@ export default function Register() {
               <p className="text-xs text-folly mt-1">{avatarError}</p>
             )}
             <p className="text-xs text-rich-black/60 mt-1">
-              PNG, JPEG ou GIF. 2 Mo max.
+              PNG, JPEG ou GIF. 5 Mo max.
             </p>
           </div>
           <div>

@@ -175,9 +175,20 @@ class UserController {
 
             const newUser = req.body;
 
+            // Définir le rôle par défaut si non fourni (principalement pour les nouveaux utilisateurs)
+            if (!newUser.role_id || newUser.role_id === 'undefined') {
+                let role = await RolesServices.getRoles({ name: 'User' });
+
+                if (!role || role.length === 0) {
+                    return res.status(500).json({ error: "Rôle 'User' introuvable" });
+                }
+
+                newUser.role_id = role[0]._id;
+            }
+
             // Hacher le mot de passe
             if (req.body.password) {
-                const saltRounds = parseInt(process.env.BCRYPT_SALT); // Convertir BCRYPT_SALT en nombre
+                const saltRounds = parseInt(process.env.BCRYPT_SALT);
                 const salt = bcrypt.genSaltSync(saltRounds);
                 newUser.password = bcrypt.hashSync(newUser.password, salt);
             }
