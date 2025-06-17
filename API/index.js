@@ -41,8 +41,13 @@ app.use('/auth', authPath);
 app.use('/refresh-token', refreshTokenPath);
 
 // Middleware de vérification du token
-//TODO: Mettre ce middleware dans un fichier séparé pour la réutilisation
+// TODO: Mettre ce middleware dans un fichier séparé pour la réutilisation
 app.use(async (req, res, next) => {
+  if (req.method === "POST" && req.path === "/users") {
+    // Si la requête est pour créer un utilisateur, on ne vérifie pas le token
+    return next();
+  }
+
   const token = req.headers['authorization'];
 
   if (!token) {
