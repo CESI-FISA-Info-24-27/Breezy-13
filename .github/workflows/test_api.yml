@@ -37,10 +37,14 @@ jobs:
 
       - name: Run API tests
 <<<<<<< HEAD
+<<<<<<< HEAD
         run: docker compose exec -T api ./wait-for-it.sh mongodb 27017 npm run test --trace-warning
 =======
         run: docker compose exec -T api ./wait-for-it.sh mongodb 27017 npm run test
 >>>>>>> 9957fd7 (feat : tentatives de fonctionnement de la pipeline pour les tests d'api automatique #39)
+=======
+        run: docker compose exec -T api ./wait-for-it.sh mongodb 27017 npm run test --trace-warning
+>>>>>>> 40b0c8e (feat : réglage tests unitaires sur le serveur de fichier #39 #40)
 
       - name: Tear down
         if: always()

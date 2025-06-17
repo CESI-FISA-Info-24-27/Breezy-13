@@ -13,11 +13,14 @@ const __dirname = dirname(__filename);
 dotenv.config();
 
 const app = express();
+<<<<<<< HEAD
 
 app.use(cors({
     origin: "http://localhost:3001", // autorise ton front
     credentials: true
 }));
+=======
+>>>>>>> 40b0c8e (feat : réglage tests unitaires sur le serveur de fichier #39 #40)
 
 app.use(cors({
     origin: "http://localhost:3001", // autorise ton front
@@ -109,6 +112,7 @@ app.get('/files/:filename', authenticateUser, (req, res) => {
 });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export default app;
 =======
 // On lance le serveur
@@ -118,3 +122,6 @@ const server = app.listen(PORT, () => {
 
 export default server;
 >>>>>>> efa4989 (feat : Test unitaire fonctionnel sur le serveur de fichier + mise en place d'un github action pour lancer les tests automatiquements #39 #40)
+=======
+export default app;
+>>>>>>> 40b0c8e (feat : réglage tests unitaires sur le serveur de fichier #39 #40)
