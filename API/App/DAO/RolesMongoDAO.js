@@ -19,7 +19,7 @@ export class RolesMongoDAO extends RolesDAO {
         const uri = process.env.MONGODB_URI
         const dbName = process.env.DB_NAME
 
-        this.client = new MongoClient(uri, { useUnifiedTopology: true });
+        this.client = new MongoClient(uri);
         this.dbName = dbName;
     }
 
@@ -30,6 +30,14 @@ export class RolesMongoDAO extends RolesDAO {
         await this.client.connect();
         this.db = this.client.db(this.dbName);
         this.collection = this.db.collection('roles');
+    }
+
+     /**
+     * Ferme la connexion à la base de données.
+     */
+    async close() 
+    {
+        await this.client.close();
     }
 
     /**

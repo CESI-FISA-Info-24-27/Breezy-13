@@ -9,6 +9,11 @@ const UsersDAO = Factory.createUsersDAO();
  * Represents a service for handling users requests
  */
 const UsersServices = {
+    close: async () => 
+    {
+        return await UsersDAO.close();
+    },
+
     /**
      * Get users
      * @param {object} filters - The filters to apply

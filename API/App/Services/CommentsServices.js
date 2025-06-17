@@ -9,6 +9,11 @@ const CommentsDAO = Factory.createCommentsDAO();
  * Represents a service for handling comments requests
  */
 const CommentsServices = {
+    close: async () => 
+    {
+        return await CommentsDAO.close();
+    },
+
     /**
      * Get posts
      * @param {object} filters - The filters to apply

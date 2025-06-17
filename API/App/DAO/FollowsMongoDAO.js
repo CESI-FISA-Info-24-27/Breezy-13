@@ -18,7 +18,7 @@ export class FollowsMongoDAO extends FollowsDAO {
         const uri = process.env.MONGODB_URI
         const dbName = process.env.DB_NAME
 
-        this.client = new MongoClient(uri, { useUnifiedTopology: true });
+        this.client = new MongoClient(uri);
         this.dbName = dbName;
     }
 
@@ -31,6 +31,14 @@ export class FollowsMongoDAO extends FollowsDAO {
         this.collection = this.db.collection('follows');
     }
 
+     /**
+     * Ferme la connexion à la base de données.
+     */
+    async close() 
+    {
+        await this.client.close();
+    }
+    
     /**
      * Récupère les abonnements selon les filtres spécifiés.
      * @param {object} filters - Les filtres à appliquer (id, follower, following, createdAt).

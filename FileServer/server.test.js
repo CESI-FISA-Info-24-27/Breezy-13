@@ -2,6 +2,8 @@ import request from 'supertest';
 import Jwt from 'jsonwebtoken';
 import app from './server.js';
 
+const PORT = 10000; // Port différent de celui de prod pour éviter les conflits
+
 // Récupération du secret JWT
 const JWT_SECRET = process.env.JWT_SECRET || 'testsecret';
 
@@ -9,23 +11,26 @@ const JWT_SECRET = process.env.JWT_SECRET || 'testsecret';
 const validToken = Jwt.sign({ userId: 123, username: 'testuser' }, JWT_SECRET, { expiresIn: '1h' });
 const invalidToken = 'invalid.token.here';
 
-// Fermer le serveur après tous les tests si app.close() est exposé (sinon, retirer cette section)
-if (typeof app.close === 'function') {
-  afterAll((done) => {
-    app.close(done);
-  });
-}
+// On ouvre le server
+let server;
+
+beforeAll(() => {
+  server = app.listen(PORT);
+});
+afterAll((done) => {
+  server.close(done);
+});
 
 describe('File Upload API', () => {
   describe('Authentication Middleware', () => {
     test('should reject request without token', async () => {
-      const res = await request(app).post('/upload');
+      const res = await request(server).post('/upload');
       expect(res.status).toBe(401);
       expect(res.body.error).toBe('Accès non autorisé. Token manquant.');
     });
 
     test('should reject request with invalid token', async () => {
-      const res = await request(app)
+      const res = await request(server)
         .post('/upload')
         .set('Authorization', `Bearer ${invalidToken}`);
       expect(res.status).toBe(401);
@@ -35,7 +40,7 @@ describe('File Upload API', () => {
 
   describe('Single File Upload', () => {
     test('should upload a valid file successfully', async () => {
-      const res = await request(app)
+      const res = await request(server)
         .post('/upload')
         .set('Authorization', `Bearer ${validToken}`)
         .attach('file', Buffer.from('test file content'), 'test.jpg');
@@ -48,7 +53,7 @@ describe('File Upload API', () => {
 
   describe('Multiple Files Upload', () => {
     test('should upload multiple valid files successfully', async () => {
-      const res = await request(app)
+      const res = await request(server)
         .post('/upload-multiple')
         .set('Authorization', `Bearer ${validToken}`)
         .attach('files', Buffer.from('file 1 content'), 'file1.jpg')
@@ -61,7 +66,7 @@ describe('File Upload API', () => {
     });
 
     test('should reject if more than 5 files are uploaded', async () => {
-      const req = request(app).post('/upload-multiple').set('Authorization', `Bearer ${validToken}`);
+      const req = request(server).post('/upload-multiple').set('Authorization', `Bearer ${validToken}`);
 
       for (let i = 1; i <= 6; i++) {
         req.attach('files', Buffer.from(`file ${i} content`), `file${i}.jpg`);
@@ -74,7 +79,7 @@ describe('File Upload API', () => {
 
   describe('Get File Endpoint', () => {
     test('should return 404 if file does not exist', async () => {
-      const res = await request(app)
+      const res = await request(server)
         .get('/files/nonexistentfile.jpg')
         .set('Authorization', `Bearer ${validToken}`);
 
@@ -85,7 +90,7 @@ describe('File Upload API', () => {
 
   describe('Static File Serving with Authentication', () => {
     test('should deny access without token', async () => {
-      const res = await request(app).get('/uploads/somefile.jpg');
+      const res = await request(server).get('/uploads/somefile.jpg');
       expect(res.status).toBe(401);
     });
   });
