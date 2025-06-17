@@ -5,9 +5,10 @@ import dotenv from 'dotenv';
 import Jwt from 'jsonwebtoken';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(__filename);
 
 dotenv.config();
 
@@ -111,7 +112,9 @@ app.get('/files/:filename', authenticateUser, (req, res) => {
     });
 });
 
-// Lancer le serveur
-app.listen(PORT, () => {
+// On lance le serveur
+const server = app.listen(PORT, () => {
     console.log(`✅ Serveur de fichiers démarré sur http://localhost:${PORT}`);
 });
+
+export default server;

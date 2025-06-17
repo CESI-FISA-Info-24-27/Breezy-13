@@ -8,7 +8,7 @@ on:
     paths:
       - "API/**"
       - "Database/**"
-      - ".github/workflows/test-api.yml"
+      - ".github/workflows/test_api.yml"
   pull_request:
     branches:
         - "**"
