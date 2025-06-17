@@ -1,7 +1,12 @@
 # Liste des scripts disponibles
 $scripts = @(
+<<<<<<< HEAD
     "low_data_dump.js",
     "complete_data_dump.js"
+=======
+    "data_dump.js",
+    "bdd_dev.js"
+>>>>>>> efa4989 (feat : Test unitaire fonctionnel sur le serveur de fichier + mise en place d'un github action pour lancer les tests automatiquements #39 #40)
 )
 
 # Nombre max d'indices

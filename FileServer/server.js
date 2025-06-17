@@ -108,4 +108,13 @@ app.get('/files/:filename', authenticateUser, (req, res) => {
     });
 });
 
+<<<<<<< HEAD
 export default app;
+=======
+// On lance le serveur
+const server = app.listen(PORT, () => {
+    console.log(`✅ Serveur de fichiers démarré sur http://localhost:${PORT}`);
+});
+
+export default server;
+>>>>>>> efa4989 (feat : Test unitaire fonctionnel sur le serveur de fichier + mise en place d'un github action pour lancer les tests automatiquements #39 #40)

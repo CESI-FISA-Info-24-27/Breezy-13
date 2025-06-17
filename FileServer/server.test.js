@@ -2,8 +2,11 @@ import request from 'supertest';
 import Jwt from 'jsonwebtoken';
 import app from './server.js';
 
+<<<<<<< HEAD
 const PORT = 10000; // Port différent de celui de prod pour éviter les conflits
 
+=======
+>>>>>>> efa4989 (feat : Test unitaire fonctionnel sur le serveur de fichier + mise en place d'un github action pour lancer les tests automatiquements #39 #40)
 // Récupération du secret JWT
 const JWT_SECRET = process.env.JWT_SECRET || 'testsecret';
 
@@ -11,6 +14,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'testsecret';
 const validToken = Jwt.sign({ userId: 123, username: 'testuser' }, JWT_SECRET, { expiresIn: '1h' });
 const invalidToken = 'invalid.token.here';
 
+<<<<<<< HEAD
 // On ouvre le server
 let server;
 
@@ -20,17 +24,33 @@ beforeAll(() => {
 afterAll((done) => {
   server.close(done);
 });
+=======
+// Fermer le serveur après tous les tests si app.close() est exposé (sinon, retirer cette section)
+if (typeof app.close === 'function') {
+  afterAll((done) => {
+    app.close(done);
+  });
+}
+>>>>>>> efa4989 (feat : Test unitaire fonctionnel sur le serveur de fichier + mise en place d'un github action pour lancer les tests automatiquements #39 #40)
 
 describe('File Upload API', () => {
   describe('Authentication Middleware', () => {
     test('should reject request without token', async () => {
+<<<<<<< HEAD
       const res = await request(server).post('/upload');
+=======
+      const res = await request(app).post('/upload');
+>>>>>>> efa4989 (feat : Test unitaire fonctionnel sur le serveur de fichier + mise en place d'un github action pour lancer les tests automatiquements #39 #40)
       expect(res.status).toBe(401);
       expect(res.body.error).toBe('Accès non autorisé. Token manquant.');
     });
 
     test('should reject request with invalid token', async () => {
+<<<<<<< HEAD
       const res = await request(server)
+=======
+      const res = await request(app)
+>>>>>>> efa4989 (feat : Test unitaire fonctionnel sur le serveur de fichier + mise en place d'un github action pour lancer les tests automatiquements #39 #40)
         .post('/upload')
         .set('Authorization', `Bearer ${invalidToken}`);
       expect(res.status).toBe(401);
@@ -40,7 +60,11 @@ describe('File Upload API', () => {
 
   describe('Single File Upload', () => {
     test('should upload a valid file successfully', async () => {
+<<<<<<< HEAD
       const res = await request(server)
+=======
+      const res = await request(app)
+>>>>>>> efa4989 (feat : Test unitaire fonctionnel sur le serveur de fichier + mise en place d'un github action pour lancer les tests automatiquements #39 #40)
         .post('/upload')
         .set('Authorization', `Bearer ${validToken}`)
         .attach('file', Buffer.from('test file content'), 'test.jpg');
@@ -53,7 +77,11 @@ describe('File Upload API', () => {
 
   describe('Multiple Files Upload', () => {
     test('should upload multiple valid files successfully', async () => {
+<<<<<<< HEAD
       const res = await request(server)
+=======
+      const res = await request(app)
+>>>>>>> efa4989 (feat : Test unitaire fonctionnel sur le serveur de fichier + mise en place d'un github action pour lancer les tests automatiquements #39 #40)
         .post('/upload-multiple')
         .set('Authorization', `Bearer ${validToken}`)
         .attach('files', Buffer.from('file 1 content'), 'file1.jpg')
@@ -66,7 +94,11 @@ describe('File Upload API', () => {
     });
 
     test('should reject if more than 5 files are uploaded', async () => {
+<<<<<<< HEAD
       const req = request(server).post('/upload-multiple').set('Authorization', `Bearer ${validToken}`);
+=======
+      const req = request(app).post('/upload-multiple').set('Authorization', `Bearer ${validToken}`);
+>>>>>>> efa4989 (feat : Test unitaire fonctionnel sur le serveur de fichier + mise en place d'un github action pour lancer les tests automatiquements #39 #40)
 
       for (let i = 1; i <= 6; i++) {
         req.attach('files', Buffer.from(`file ${i} content`), `file${i}.jpg`);
@@ -79,7 +111,11 @@ describe('File Upload API', () => {
 
   describe('Get File Endpoint', () => {
     test('should return 404 if file does not exist', async () => {
+<<<<<<< HEAD
       const res = await request(server)
+=======
+      const res = await request(app)
+>>>>>>> efa4989 (feat : Test unitaire fonctionnel sur le serveur de fichier + mise en place d'un github action pour lancer les tests automatiquements #39 #40)
         .get('/files/nonexistentfile.jpg')
         .set('Authorization', `Bearer ${validToken}`);
 
@@ -90,7 +126,11 @@ describe('File Upload API', () => {
 
   describe('Static File Serving with Authentication', () => {
     test('should deny access without token', async () => {
+<<<<<<< HEAD
       const res = await request(server).get('/uploads/somefile.jpg');
+=======
+      const res = await request(app).get('/uploads/somefile.jpg');
+>>>>>>> efa4989 (feat : Test unitaire fonctionnel sur le serveur de fichier + mise en place d'un github action pour lancer les tests automatiquements #39 #40)
       expect(res.status).toBe(401);
     });
   });
