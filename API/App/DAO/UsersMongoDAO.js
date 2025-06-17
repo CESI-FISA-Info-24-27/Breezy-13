@@ -18,7 +18,7 @@ export class UsersMongoDAO extends UsersDAO {
         const uri = process.env.MONGODB_URI
         const dbName = process.env.DB_NAME
 
-        this.client = new MongoClient(uri, { useUnifiedTopology: true });
+        this.client = new MongoClient(uri);
         this.dbName = dbName;
     }
 
@@ -37,6 +37,14 @@ export class UsersMongoDAO extends UsersDAO {
         } catch (error) {
             console.error('Erreur lors de l\'initialisation de la connexion MongoDB:', error);
         }
+    }
+
+     /**
+     * Ferme la connexion à la base de données.
+     */
+    async close() 
+    {
+        await this.client.close();
     }
 
     /**

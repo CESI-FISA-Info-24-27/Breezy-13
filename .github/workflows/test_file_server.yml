@@ -34,7 +34,7 @@ jobs:
         run: docker compose up -d --build fileserver
 
       - name: Run File Server tests
-        run: docker compose exec -T fileserver npm run test
+        run: docker compose exec -T fileserver npm run test --trace-warning
 
       - name: Tear down
         if: always()

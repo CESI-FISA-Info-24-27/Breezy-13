@@ -13,7 +13,6 @@ const __dirname = dirname(__filename);
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT; 
 
 app.use(cors({
     origin: "http://localhost:3001", // autorise ton front
@@ -104,9 +103,4 @@ app.get('/files/:filename', authenticateUser, (req, res) => {
     });
 });
 
-// On lance le serveur
-const server = app.listen(PORT, () => {
-    console.log(`✅ Serveur de fichiers démarré sur http://localhost:${PORT}`);
-});
-
-export default server;
+export default app;

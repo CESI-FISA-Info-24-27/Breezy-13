@@ -9,6 +9,11 @@ const PostsDAO = Factory.createPostsDAO();
  * Represents a service for handling posts requests
  */
 const PostsServices = {
+    close: async () => 
+    {
+        return await PostsDAO.close();
+    },
+
     /**
      * Get posts
      * @param {object} filters - The filters to apply

@@ -9,6 +9,11 @@ const FollowsDAO = Factory.createFollowsDAO();
  * Represents a service for handling follows requests
  */
 const FollowsServices = {
+    close: async () => 
+    {
+        return await FollowsDAO.close();
+    },
+
     /**
      * Get follows
      * @param {object} filters - The filters to apply
