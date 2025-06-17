@@ -1,6 +1,7 @@
 # Liste des scripts disponibles
 $scripts = @(
-    "data_dump.js"
+    "data_dump.js",
+    "bdd_dev.js"
 )
 
 # Nombre max d'indices
