@@ -51,7 +51,6 @@ jobs:
 <<<<<<< HEAD
 <<<<<<< HEAD
       - name: Run File Server tests
-        id: test
         run: docker compose exec -T fileserver npm run test --trace-warning
 =======
       - name: Run File Server Tests
