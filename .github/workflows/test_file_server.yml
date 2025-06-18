@@ -30,6 +30,18 @@ jobs:
           docker --version
           docker compose version
 
+      - name: Create minimal docker-compose override (no volume mounts)
+        run: |
+          cat <<EOF > docker-compose.override.yml
+          services:
+            fileserver:
+              volumes:
+                - type: volume
+                  source: dummy_volume
+                  target: /app/uploads
+          volumes:
+            dummy_volume:
+
       - name: Build and Start File Server
         run: docker compose up -d --build fileserver
 
@@ -38,16 +50,7 @@ jobs:
 
       - name: Run File Server tests
         id: test
-        run: |
-          set +e
-          docker compose exec -T fileserver npm run test --trace-warning
-          CODE=$?
-          echo "exit_code=$CODE" >> $GITHUB_OUTPUT
-          if [ $CODE -eq 137 ]; then
-            echo "::error::Tests failed with exit code 137 (out of memory). Consider optimizing your tests or increasing available memory."
-            exit 1
-          fi
-          exit $CODE
+        run: docker compose exec -T fileserver npm run test --trace-warning
 
       - name: Show memory usage after test
         run: free -h
