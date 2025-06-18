@@ -37,8 +37,7 @@ jobs:
         run: free -h
 
       - name: Run File Server Tests
-        id: test
-        run: docker compose exec -T fileserver npm run test --trace-warning
+        run: docker compose exec -T fileserver bash -c "free -h && npm run test --trace-warning"
 
       - name: Show memory usage after test
         run: free -h
