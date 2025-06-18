@@ -37,7 +37,20 @@ jobs:
         run: free -h
 
       - name: Run File Server tests
-        run: docker compose exec -T fileserver npm run test --trace-warning
+        id: test
+        run: |
+          set +e
+          docker compose exec -T fileserver npm run test --trace-warning
+          CODE=$?
+          echo "exit_code=$CODE" >> $GITHUB_OUTPUT
+          if [ $CODE -eq 137 ]; then
+            echo "::error::Tests failed with exit code 137 (out of memory). Consider optimizing your tests or increasing available memory."
+            exit 1
+          fi
+          exit $CODE
+
+      - name: Show memory usage after test
+        run: free -h
 
       - name: Show memory usage after test
         run: free -h
