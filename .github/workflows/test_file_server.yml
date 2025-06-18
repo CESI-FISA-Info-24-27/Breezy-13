@@ -1,4 +1,4 @@
-name: Test API
+name: Test File Server
 
 on:
   workflow_dispatch:
@@ -6,15 +6,13 @@ on:
     branches:
         - "**"
     paths:
-      - "API/**"
-      - "Database/**"
-      - ".github/workflows/test_api.yml"
+      - "FileServer/**"
+      - ".github/workflows/test_file_server.yml"
   pull_request:
     branches:
         - "**"
     paths:
-      - "API/**"
-      - "Database/**"
+      - "FileServer/**"
 
 jobs:
   test-api:
@@ -32,11 +30,11 @@ jobs:
           docker --version
           docker compose version
 
-      - name: Build and Start API + MongoDB
-        run: docker compose up -d --build mongodb api
+      - name: Build and Start File Server
+        run: docker compose up -d --build fileserver
 
-      - name: Run API tests
-        run: docker compose exec -T api ./wait-for-it.sh mongodb 27017 npm run test --trace-warning
+      - name: Run File Server tests
+        run: docker compose exec -T fileserver npm run test --trace-warning
 
       - name: Tear down
         if: always()

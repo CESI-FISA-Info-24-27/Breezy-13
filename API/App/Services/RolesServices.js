@@ -9,6 +9,11 @@ const RolesDAO = Factory.createRolesDAO();
  * Represents a service for handling roles requests
  */
 const RolesServices = {
+    close: async () => 
+    {
+        return await RolesDAO.close();
+    },
+
     /**
      * Get roles
      * @param {object} filters - The filters to apply

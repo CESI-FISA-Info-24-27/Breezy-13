@@ -18,7 +18,7 @@ export class PostsMongoDAO extends PostsDAO {
         const uri = process.env.MONGODB_URI
         const dbName = process.env.DB_NAME
 
-        this.client = new MongoClient(uri, { useUnifiedTopology: true });
+        this.client = new MongoClient(uri);
         this.dbName = dbName;
     }
 
@@ -30,6 +30,14 @@ export class PostsMongoDAO extends PostsDAO {
         this.db = this.client.db(this.dbName);
         this.collection = this.db.collection('posts');
         this.commentsCollection = this.db.collection('comments');
+    }
+
+     /**
+     * Ferme la connexion à la base de données.
+     */
+    async close() 
+    {
+        await this.client.close();
     }
 
     /**
