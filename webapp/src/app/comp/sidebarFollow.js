@@ -3,10 +3,10 @@ import { useState } from "react";
 export default function SideBarFollow(props) {
   // Pour la démo, on met des données fictives
   const follows = [
-    { _id: "1", username: "eloncuck" },
-    { _id: "2", username: "billgrates" },
-    { _id: "3", username: "arkuni" },
-    { _id: "4", username: "terracist" },
+    { _id: "1", username: "elonmuck" },
+    { _id: "2", username: "billgates" },
+    { _id: "3", username: "arkunir" },
+    { _id: "4", username: "terracid" },
     { _id: "5", username: "user5" },
     { _id: "6", username: "user6" },
     { _id: "7", username: "user7" },
