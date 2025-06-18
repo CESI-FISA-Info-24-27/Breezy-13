@@ -15,7 +15,7 @@ on:
       - "FileServer/**"
 
 jobs:
-  test-api:
+  test-file-server:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -39,3 +39,4 @@ jobs:
       - name: Tear down
         if: always()
         run: docker compose down --volumes
+        run: docker system prune -a

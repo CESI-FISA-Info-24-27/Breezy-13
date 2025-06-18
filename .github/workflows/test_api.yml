@@ -41,3 +41,4 @@ jobs:
       - name: Tear down
         if: always()
         run: docker compose down --volumes
+        run: docker system prune -a
