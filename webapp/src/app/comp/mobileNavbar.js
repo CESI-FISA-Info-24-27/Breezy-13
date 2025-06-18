@@ -19,10 +19,14 @@ export default function MobileNavbar() {
   const isProfile = pathname === "/profilpage";
   const isNotifications = pathname === "/notifiationspage";
 <<<<<<< HEAD
+<<<<<<< HEAD
   const isMessages = pathname === "/messages";
 =======
   const isMessages = pathname === "/messagespage";
 >>>>>>> 6ec4464 (Presentation)
+=======
+  const isMessages = pathname === "/messages";
+>>>>>>> 20c8975 (fix: Correction path pour les messages privés)
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--color-celestial-blue)] text-seasalt shadow-t z-50 border-t border-seasalt/10">
@@ -48,10 +52,14 @@ export default function MobileNavbar() {
         </li>
         <li>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Link href="/messages">
 =======
           <Link href="/messagespage">
 >>>>>>> 6ec4464 (Presentation)
+=======
+          <Link href="/messages">
+>>>>>>> 20c8975 (fix: Correction path pour les messages privés)
             {isMessages ? <HiChat size={24} /> : <HiOutlineChat size={24} />}
           </Link>
         </li>

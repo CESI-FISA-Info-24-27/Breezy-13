@@ -4,7 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import Cookies from 'js-cookie';
 import { useState } from 'react';
+<<<<<<< HEAD
 import { login } from '../../services/AuthServices';
+=======
+import { login } from '../../services/authService';
+>>>>>>> 20c8975 (fix: Correction path pour les messages privés)
 import { useRouter } from 'next/navigation';
 
 export default function Login() {

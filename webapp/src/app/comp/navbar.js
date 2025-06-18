@@ -78,7 +78,7 @@ export default function Navbar() {
   const isHome = pathname === "/" || pathname === "/homepage";
   const isProfile = pathname === "/profilpage";
   const isNotifications = pathname === "/notifiationspage";
-  const isMessages = pathname === "/messagespage";
+  const isMessages = pathname === "/messages";
 
   return (
     <nav className="h-screen w-64 flex flex-col min-h-screen px-4 py-6 bg-[var(--color-celestial-blue)] shadow-full">
@@ -173,12 +173,16 @@ export default function Navbar() {
         </li>
         <li>
           <Link
+<<<<<<< HEAD
             href="/messagespage"
 <<<<<<< HEAD
             className={`flex items-center gap-3 ${
               showNotifications ? "px-0 justify-center" : "px-4"
             } py-2 rounded-lg font-medium transition ${
 =======
+=======
+            href="/messages"
+>>>>>>> 20c8975 (fix: Correction path pour les messages privés)
             className={`flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition ${
 >>>>>>> b2fa2f6 (Debut de suppression de flowbite)
               isMessages
