@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Cookies from 'js-cookie';
 import { useState } from 'react';
-import { login } from '@/services/authService'; // adapte le chemin si nécessaire
+import { login } from '../../services/authService';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
