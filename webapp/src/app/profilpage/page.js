@@ -1,26 +1,75 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState, useRef } from "react";
 import Navbar from "../comp/navbar";
-import ProfilPreview from "../comp/profilPreview";
 import Footer from "../comp/footer";
-import { PostsList } from "../comp/postsList";
+import Header from "../comp/header";
+import ProfilPreview from "../comp/profilPreview";
 
 export default function HomePage() {
+  const [headerStyle, setHeaderStyle] = useState({ opacity: 1, transform: "translateY(0)" });
+  const [headerHeight, setHeaderHeight] = useState(64);
+  const [sidebarTop, setSidebarTop] = useState(64);
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    if (headerRef.current) {
+      setHeaderHeight(headerRef.current.offsetHeight);
+      setSidebarTop(headerRef.current.offsetHeight);
+    }
+  }, []);
+
+  useEffect(() => {
+    function handleScroll() {
+      const scrollY = window.scrollY;
+      const opacity = Math.max(0, 1 - scrollY / 100);
+      const translateY = Math.min(scrollY, 100);
+
+      setHeaderStyle({
+        opacity,
+        transform: `translateY(-${translateY}px)`,
+      });
+
+      const ACCELERATION = 1.2;
+      const sidebarTranslate = Math.min(scrollY * ACCELERATION, 100 * ACCELERATION);
+      const visibleHeight = Math.max(headerHeight - sidebarTranslate, 0);
+      setSidebarTop(visibleHeight);
+    }
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [headerHeight]);
+
   return (
-    <div className="relative min-h-screen flex flex-col bg-seasalt">
-      <div className="fixed left-0 top-0 h-screen w-64 z-40">
-        <Navbar />
+    <div className="relative min-h-screen bg-seasalt">
+      {/* Header */}
+      <div
+        ref={headerRef}
+        className="fixed top-0 left-0 w-full z-50 transition-all duration-300"
+        style={headerStyle}
+      >
+        <Header />
       </div>
-      <main className="ml-64 mr-64 p-8 flex-1">
-        <ProfilPreview />
-        <hr className="mt-7 text-rich-black"></hr>
-        <div className="mt-8 mb-4">
-          <PostsList />
+
+      <div className="flex pt-[64px] md:pt-0">
+        {/* Sidebar gauche */}
+        <div
+          className="hidden md:block fixed left-0 w-64 z-40 transition-all duration-300"
+          style={{ top: `${sidebarTop}px`, height: `calc(100vh - ${sidebarTop}px)` }}
+        >
+          <Navbar />
         </div>
-      </main>
-      <div className="ml-64 mr-64">
-        <Footer>
-          <span>© {new Date().getFullYear()} Mon Footer Personnalisé</span>
-        </Footer>
+
+        {/* Contenu principal */}
+        <main
+          className="flex-1 md:ml-64 md:mr-64 p-4 sm:p-6 lg:p-8 pb-20 transition-all duration-300 w-full"
+          style={{ paddingTop: `${sidebarTop + 16}px` }}
+        >
+          <ProfilPreview />
+          <Footer>
+            <span>© {new Date().getFullYear()} Mon Footer Personnalisé</span>
+          </Footer>
+        </main>
       </div>
     </div>
   );

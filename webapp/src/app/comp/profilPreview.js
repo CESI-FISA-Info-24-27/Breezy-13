@@ -1,7 +1,7 @@
 export default function ProfilPreview() {
     const user = {
         _id: "1",
-        username: "eloncuck",
+        username: "elonmuck",
         avatar: "/logo.png",
         mail: "elon@bg.com",
         description: "Achetez mes voitures !"
