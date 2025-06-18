@@ -17,8 +17,12 @@
 =======
     "start": "node start.js",
     "dev": "nodemon start.js",
+<<<<<<< HEAD
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --forceExit",
 >>>>>>> 40b0c8e (feat : réglage tests unitaires sur le serveur de fichier #39 #40)
+=======
+    "test": "node --max-old-space-size=256 --experimental-vm-modules node_modules/jest/bin/jest.js --forceExit",
+>>>>>>> 8d85f3f (feat : Test #39 #40)
     "build": "babel . -d dist --ignore node_modules"
   },
   "type": "module",

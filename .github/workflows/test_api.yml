@@ -4,14 +4,14 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - "**"
+        - "**"
     paths:
       - "API/**"
       - "Database/**"
       - ".github/workflows/test_api.yml"
   pull_request:
     branches:
-      - "**"
+        - "**"
     paths:
       - "API/**"
       - "Database/**"
@@ -35,13 +35,8 @@ jobs:
       - name: Build and Start API + MongoDB
         run: docker compose up -d --build mongodb api
 
-      - name: Wait for MongoDB to be ready
-        run: docker compose exec -T api ./wait-for-it.sh mongodb:27017 --timeout=30 --strict -- echo "MongoDB is up"
-
-      - name: Show memory usage before test
-        run: free -h
-
       - name: Run API tests
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -68,10 +63,17 @@ jobs:
 
       - name: Show memory usage after test
         run: free -h
+=======
+        run: docker compose exec -T api ./wait-for-it.sh mongodb 27017 npm run test --trace-warning
+>>>>>>> 8d85f3f (feat : Test #39 #40)
 
       - name: Tear down
         if: always()
         run: |
           docker compose down --volumes
+<<<<<<< HEAD
           docker system prune -a -f
 >>>>>>> 7f900a4 (feat : ajout vérification mémoire utilisée sur chaque test #39 #40)
+=======
+          docker system prune -a
+>>>>>>> 8d85f3f (feat : Test #39 #40)

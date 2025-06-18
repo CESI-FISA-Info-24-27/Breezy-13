@@ -30,12 +30,25 @@ jobs:
           docker --version
           docker compose version
 
+      - name: Create minimal docker-compose override (no volume mounts)
+        run: |
+          cat <<EOF > docker-compose.override.yml
+          services:
+            fileserver:
+              volumes:
+                - type: volume
+                  source: dummy_volume
+                  target: /app/uploads
+          volumes:
+            dummy_volume:
+
       - name: Build and Start File Server
         run: docker compose up -d --build fileserver
 
       - name: Show memory usage before test
         run: free -h
 
+<<<<<<< HEAD
 <<<<<<< HEAD
       - name: Run File Server tests
         id: test
@@ -44,6 +57,11 @@ jobs:
       - name: Run File Server Tests
         run: docker compose exec -T fileserver bash -c "free -h && npm run test --trace-warning"
 >>>>>>> acb70e5 (feat : débug de l'utilisation de la ram lors du github action #39 #40)
+=======
+      - name: Run File Server tests
+        id: test
+        run: docker compose exec -T fileserver npm run test --trace-warning
+>>>>>>> 8d85f3f (feat : Test #39 #40)
 
       - name: Show memory usage after test
         run: free -h
