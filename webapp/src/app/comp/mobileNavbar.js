@@ -18,7 +18,11 @@ export default function MobileNavbar() {
   const isHome = pathname === "/" || pathname === "/homepage";
   const isProfile = pathname === "/profilpage";
   const isNotifications = pathname === "/notifiationspage";
+<<<<<<< HEAD
   const isMessages = pathname === "/messages";
+=======
+  const isMessages = pathname === "/messagespage";
+>>>>>>> 6ec4464 (Presentation)
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--color-celestial-blue)] text-seasalt shadow-t z-50 border-t border-seasalt/10">
@@ -43,7 +47,11 @@ export default function MobileNavbar() {
           </Link>
         </li>
         <li>
+<<<<<<< HEAD
           <Link href="/messages">
+=======
+          <Link href="/messagespage">
+>>>>>>> 6ec4464 (Presentation)
             {isMessages ? <HiChat size={24} /> : <HiOutlineChat size={24} />}
           </Link>
         </li>

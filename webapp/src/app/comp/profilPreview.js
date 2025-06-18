@@ -13,8 +13,12 @@ export default function ProfilPreview() {
 export default function ProfilPreview() {
     const user = {
         _id: "1",
+<<<<<<< HEAD
         username: "eloncuck",
 >>>>>>> 8764791 (Init profil page)
+=======
+        username: "elonmuck",
+>>>>>>> 6ec4464 (Presentation)
         avatar: "/logo.png",
         mail: "elon@bg.com",
         description: "Achetez mes voitures !"
