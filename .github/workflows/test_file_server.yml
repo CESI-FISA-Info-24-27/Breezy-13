@@ -36,9 +36,14 @@ jobs:
       - name: Show memory usage before test
         run: free -h
 
+<<<<<<< HEAD
       - name: Run File Server tests
         id: test
         run: docker compose exec -T fileserver npm run test --trace-warning
+=======
+      - name: Run File Server Tests
+        run: docker compose exec -T fileserver bash -c "free -h && npm run test --trace-warning"
+>>>>>>> acb70e5 (feat : débug de l'utilisation de la ram lors du github action #39 #40)
 
       - name: Show memory usage after test
         run: free -h
