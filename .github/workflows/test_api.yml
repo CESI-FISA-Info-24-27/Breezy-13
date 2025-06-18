@@ -48,6 +48,11 @@ jobs:
 
       - name: Tear down
         if: always()
+<<<<<<< HEAD
         run: |
           docker compose down --volumes
           docker system prune -a
+=======
+        run: docker compose down --volumes
+        run: docker system prune -a
+>>>>>>> 627c6a4 (feat : finalisation suppression docker compose après lancement des tests #39 #40)
