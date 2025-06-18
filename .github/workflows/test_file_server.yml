@@ -30,14 +30,27 @@ jobs:
           docker --version
           docker compose version
 
+      - name: Create minimal docker-compose override (no volume mounts)
+        run: |
+          cat <<EOF > docker-compose.override.yml
+          services:
+            fileserver:
+              volumes:
+                - type: volume
+                  source: dummy_volume
+                  target: /app/uploads
+          volumes:
+            dummy_volume:
+
       - name: Build and Start File Server
         run: docker compose up -d --build fileserver
 
       - name: Show memory usage before test
         run: free -h
 
-      - name: Run File Server Tests
-        run: docker compose exec -T fileserver bash -c "free -h && npm run test --trace-warning"
+      - name: Run File Server tests
+        id: test
+        run: docker compose exec -T fileserver npm run test --trace-warning
 
       - name: Show memory usage after test
         run: free -h
