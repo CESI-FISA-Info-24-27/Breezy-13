@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 node_modules
 <<<<<<< HEAD
 =======
@@ -7,6 +8,12 @@ npm-debug.log
 uploads
 =======
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+package-lock.json
+npm-debug.log
+uploads
+
+>>>>>>> c6f2cca (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
 .next
 .flowbite-react
 .swc
@@ -14,3 +21,7 @@ uploads
 package-lock.json
 npm-debug.log
 breezy_webapp.Dockerfile
+<<<<<<< HEAD
+=======
+
+>>>>>>> c6f2cca (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
