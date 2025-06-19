@@ -14,10 +14,6 @@ import { login } from "../../services/AuthServices";
 >>>>>>> Stashed changes
 
 export default function Register() {
-  const [avatarPreview, setAvatarPreview] = useState(
-    "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20fill%3D%22none%22%20shape-rendering%3D%22auto%22%3E%3Cmetadata%20xmlns%3Ardf%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%22%20xmlns%3Axsi%3D%22http%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema-instance%22%20xmlns%3Adc%3D%22http%3A%2F%2Fpurl.org%2Fdc%2Felements%2F1.1%2F%22%20xmlns%3Adcterms%3D%22http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2F%22%3E%3Crdf%3ARDF%3E%3Crdf%3ADescription%3E%3Cdc%3Atitle%3EThumbs%3C%2Fdc%3Atitle%3E%3Cdc%3Acreator%3EDiceBear%3C%2Fdc%3Acreator%3E%3Cdc%3Asource%20xsi%3Atype%3D%22dcterms%3AURI%22%3Ehttps%3A%2F%2Fwww.dicebear.com%3C%2Fdc%3Asource%3E%3Cdcterms%3Alicense%20xsi%3Atype%3D%22dcterms%3AURI%22%3Ehttps%3A%2F%2Fcreativecommons.org%2Fpublicdomain%2Fzero%2F1.0%2F%3C%2Fdcterms%3Alicense%3E%3Cdc%3Arights%3E%E2%80%9EThumbs%E2%80%9D%20(https%3A%2F%2Fwww.dicebear.com)%20by%20%E2%80%9EDiceBear%E2%80%9D%2C%20licensed%20under%20%E2%80%9ECC0%201.0%E2%80%9D%20(https%3A%2F%2Fcreativecommons.org%2Fpublicdomain%2Fzero%2F1.0%2F)%3C%2Fdc%3Arights%3E%3C%2Frdf%3ADescription%3E%3C%2Frdf%3ARDF%3E%3C%2Fmetadata%3E%3Cmask%20id%3D%22viewboxMask%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%220%22%20ry%3D%220%22%20x%3D%220%22%20y%3D%220%22%20fill%3D%22%23fff%22%20%2F%3E%3C%2Fmask%3E%3Cg%20mask%3D%22url(%23viewboxMask)%22%3E%3Crect%20fill%3D%22%2369d2e7%22%20width%3D%22100%22%20height%3D%22100%22%20x%3D%220%22%20y%3D%220%22%20%2F%3E%3Cg%20transform%3D%22translate(-5%2C%204)%20rotate(-5%2050%2070)%22%3E%3Cpath%20d%3D%22M95%2053.33C95%2029.4%2074.85%2010%2050%2010S5%2029.4%205%2053.33V140h90V53.33Z%22%20fill%3D%22%23f1f4dc%22%2F%3E%3Cg%20transform%3D%22translate(29%2033)%22%3E%3Cg%20transform%3D%22translate(15%2C%20-3)%20rotate(18%2021%2021)%22%3E%3Cg%20transform%3D%22translate(0%205)%22%3E%3Cpath%20d%3D%22M14%208c0%203.31-1.34%206-3%206s-3-2.69-3-6%201.34-6%203-6%203%202.69%203%206ZM34%208c0%203.31-1.34%206-3%206s-3-2.69-3-6%201.34-6%203-6%203%202.69%203%206Z%22%20fill%3D%22%23000000%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(6%2023)%22%3E%3Cpath%20d%3D%22M15.5%2010c-5.07%200-9.3-5.23-8.37-5.88.93-.65%203.45%202.15%208.37%202.15%204.92%200%207.44-2.88%208.37-2.15.93.73-3.3%205.88-8.37%205.88Z%22%20fill%3D%22%23000000%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
-  );
-  const [avatarError, setAvatarError] = useState("");
   const [form, setForm] = useState({
     username: "",
     password: "",
@@ -27,27 +23,42 @@ export default function Register() {
     bio: "",
   });
 
+  const [avatarPreview, setAvatarPreview] = useState("/default-avatar.png");
+  const [avatarFile, setAvatarFile] = useState(null);
+  const fileInputRef = useRef(null);
+  const [avatarError, setAvatarError] = useState("");
+
+
   const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
   const [passwordError, setPasswordError] = useState("");
 
   function handleAvatarChange(e) {
-    setAvatarError("");
-    const file = e.target.files?.[0];
+    const file = e.target.files[0];
     if (file) {
-      const validTypes = ["image/png", "image/jpeg", "image/gif"];
-      const maxSize = 5 * 1024 * 1024; // 5 Mo
-      if (!validTypes.includes(file.type)) {
-        setAvatarError("Seuls les fichiers PNG, JPEG ou GIF sont autorisés.");
-        return;
-      }
-      if (file.size > maxSize) {
-        setAvatarError("L'image ne doit pas dépasser 5 Mo.");
-        return;
-      }
+      setAvatarFile(file);
       setAvatarPreview(URL.createObjectURL(file));
-      setForm(f => ({ ...f, avatar: URL.createObjectURL(file) }));
     }
+  }
+
+  async function uploadAvatar() {
+    if (!avatarFile) return "";
+    const formData = new FormData();
+    formData.append("file", avatarFile);
+
+    const token = Cookies.get("token") || localStorage.getItem("token");
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+    const res = await fetch("http://localhost:5000/upload", {
+      method: "POST",
+      body: formData,
+      credentials: "include",
+      headers,
+    });
+    if (!res.ok) throw new Error("Erreur upload avatar");
+    const data = await res.json();
+    return data.path; // ex: "http://localhost:5000/files/1749865024759-123915179.png"
   }
 
   function handleChange(e) {
@@ -58,8 +69,8 @@ export default function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    if (!form.password || form.password.length < 6) {
-      setPasswordError("Le mot de passe doit contenir au moins 6 caractères.");
+    if (!form.password || form.password.length < 8) {
+      setPasswordError("Le mot de passe doit contenir au moins 8 caractères.");
       return;
     }
     if (form.password !== form.confirmPassword) {
@@ -69,18 +80,56 @@ export default function Register() {
     setPasswordError("");
 
     try {
-      const res = await axios.post("/api/users", {
+      // 1. Création du compte avec avatar par défaut
+      await createUser({
         username: form.username,
         password: form.password,
         email: form.email,
-        avatar: form.avatar,
+        avatar: "/default-avatar.png",
         bio: form.bio,
       });
+
+      // 2. Connexion automatique après inscription
+      const loginRes = await login(form.email, form.password, true);
+      const token = loginRes.token;
+      Cookies.set("token", token, { path: "/" });
+
+      // Vérifie la structure de loginRes pour récupérer l'id utilisateur
+      const userId =
+        loginRes.user?._id ||
+        loginRes.user?.id ||
+        loginRes.id ||
+        loginRes.userId;
+
+      if (!userId) {
+        throw new Error("Impossible de récupérer l'identifiant utilisateur après connexion.");
+      }
+
+      // 3. Upload de l'avatar si un fichier a été sélectionné
+      let avatarPath = "/default-avatar.png";
+      if (avatarFile) {
+        const formData = new FormData();
+        formData.append("file", avatarFile);
+
+        const uploadRes = await fetch("http://localhost:5000/upload", {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!uploadRes.ok) throw new Error("Erreur upload avatar");
+        const uploadData = await uploadRes.json();
+        avatarPath = uploadData.path;
+
+        // 4. Mise à jour du profil utilisateur avec le nouvel avatar
+        await updateUser(userId, { avatar: avatarPath });
+      }
 
       setSuccessMsg("Compte créé avec succès ! Redirection vers la connexion...");
       setTimeout(() => {
         router.push("/login");
-      }, 2000); // 2 secondes avant la redirection
+      }, 2000);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         alert("Erreur : " + error.response.data.error);
