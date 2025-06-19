@@ -2,7 +2,9 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import Navbar from "../comp/navbar";
+import SideBarFollow from "../comp/sidebarFollow";
 import Footer from "../comp/footer";
+import { PostsList } from "../comp/postsList";
 import Header from "../comp/header";
 import MobileNavbar from "../comp/mobileNavbar";
 import ProfilPreview from "../comp/profilPreview";
@@ -13,6 +15,13 @@ export default function HomePage() {
   const [sidebarTop, setSidebarTop] = useState(64);
   const headerRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
+
+  const demoPosts = [
+      { _id: "1", username: "elonmuck", avatar: "/logo.png", content: "Achetez mes voitures !" , date: "2023-10-01T12:00:00Z" },
+      { _id: "2", username: "elonmuck", avatar: "/logo.png", content: "Windows c'est mieux." , date: "2023-10-01T12:00:00Z" },
+      { _id: "3", username: "elonmuck", avatar: "/logo.png", content: "TwiX c'était mieux avant." , date: "2023-10-01T12:00:00Z" },
+      { _id: "4", username: "elonmuck", avatar: "/logo.png", content: "TwiX<Beak" , date: "2023-10-01T12:00:00Z" }
+    ];
 
   useEffect(() => {
     if (headerRef.current) {
@@ -54,6 +63,7 @@ export default function HomePage() {
 
   return (
     <div className="relative min-h-screen bg-seasalt">
+      {/* Header */}
       <div
         ref={headerRef}
         className="fixed top-0 left-0 w-full z-50 transition-all duration-300"
@@ -63,11 +73,20 @@ export default function HomePage() {
       </div>
 
       <div className="flex pt-[64px] md:pt-0">
+        {/* Sidebar gauche (desktop/tablette uniquement) */}
         <div
           className="hidden md:block fixed left-0 w-64 z-40 transition-all duration-300"
           style={{ top: `${sidebarTop}px`, height: `calc(100vh - ${sidebarTop}px)` }}
         >
           <Navbar />
+        </div>
+
+        {/* Sidebar droite (desktop/tablette uniquement) */}
+        <div
+          className="hidden md:block fixed right-0 w-64 z-40 transition-all duration-300"
+          style={{ top: `${sidebarTop}px`, height: `calc(100vh - ${sidebarTop}px)` }}
+        >
+          <SideBarFollow style={{ top: `${sidebarTop}px`, height: `calc(100vh - ${sidebarTop}px)` }} />
         </div>
 
         {/* Contenu principal */}
@@ -79,7 +98,10 @@ export default function HomePage() {
           }}
         >
           <ProfilPreview />
-          <h1>TEST</h1>
+          <hr className="mt-7 text-rich-black" />
+          <div className="mt-8 mb-4">
+            <PostsList posts={demoPosts} />
+          </div>
           <Footer>
             <span>© {new Date().getFullYear()} Mon Footer Personnalisé</span>
           </Footer>
