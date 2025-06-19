@@ -16,14 +16,14 @@ import {
 
 export default function Navbar() {
   const pathname = usePathname();
-  const isHome = pathname === "/" || pathname === "/homepage";
-  const isProfile = pathname === "/profilpage";
-  const isNotifications = pathname === "/notifiationspage";
-  const isMessages = pathname === "/messagespage";
+  const isHome = pathname === "/" || pathname === "/home-page";
+  const isProfile = pathname === "/profil-page";
+  const isNotifications = pathname === "/notifications-page";
+  const isMessages = pathname === "/messages-page";
 
   return (
     <nav className="h-screen w-64 flex flex-col min-h-screen px-4 py-6 bg-[var(--color-celestial-blue)] shadow-full">
-      <Link href="/" className="flex items-center mb-7">
+      <Link href="/home-page" className="flex items-center mb-7">
         <Image
           src="/logo.png"
           alt="TwiX logo"
@@ -39,7 +39,7 @@ export default function Navbar() {
       <ul className="flex-1 flex flex-col gap-2">
         <li>
           <Link
-            href="/homepage"
+            href="/home-page"
             className={`flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition ${
               isHome
                 ? "bg-[var(--color-seasalt)] text-[var(--color-celestial-blue)] shadow"
@@ -52,7 +52,7 @@ export default function Navbar() {
         </li>
         <li>
           <Link
-            href="/profilpage"
+            href="/profil-page"
             className={`flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition ${
               isProfile
                 ? "bg-[var(--color-seasalt)] text-[var(--color-celestial-blue)] shadow"
@@ -69,7 +69,7 @@ export default function Navbar() {
         </li>
         <li>
           <Link
-            href="/notifiationspage"
+            href="/notifications-page"
             className={`flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition relative ${
               isNotifications
                 ? "bg-[var(--color-seasalt)] text-[var(--color-celestial-blue)] shadow"
@@ -89,7 +89,7 @@ export default function Navbar() {
         </li>
         <li>
           <Link
-            href="/messagespage"
+            href="/messages-page"
             className={`flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition ${
               isMessages
                 ? "bg-[var(--color-seasalt)] text-[var(--color-celestial-blue)] shadow"

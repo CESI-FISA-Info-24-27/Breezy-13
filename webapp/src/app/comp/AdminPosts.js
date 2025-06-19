@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { HiSearch, HiTrash, HiPencil } from "react-icons/hi";
-import { getPosts, updatePost, deletePost } from "../../services/postsServices";
+import { getPosts, updatePost, deletePost } from "../../services/PostsServices";
 import Image from "next/image";
 import Cookies from "js-cookie";
 

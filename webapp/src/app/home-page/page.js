@@ -1,9 +1,9 @@
 import React from "react";
-import Navbar from "../comp/navbar";
-import Post from "../comp/post";
-import SideBarFollow from "../comp/sidebarFollow";
-import Footer from "../comp/footer";
-import { PostsList } from "../comp/postsList";
+import Navbar from "../comp/Navbar";
+import Post from "../comp/Post";
+import SideBarFollow from "../comp/SidebarFollow";
+import Footer from "../comp/Footer";
+import { PostsList } from "../comp/PostsList";
 
 export default function HomePage() {
   return (
