@@ -3,4 +3,5 @@
 
 # Mais on réautoriser le fichier d'initialisation
 !init_bdd.js
-!dumps/data_dump.js
+!dumps/low_data_dump.js
+!dumps/complete_data_dump.js

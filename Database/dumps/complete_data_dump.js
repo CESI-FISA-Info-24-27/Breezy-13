@@ -1,0 +1,140 @@
+const m_db = db.getSiblingDB('breezy_bdd');
+const now = new Date();
+
+// Configuration
+const USERS_COUNT = 337;
+const POSTS_PER_USER = 7;
+const COMMENTS_PER_USER = 20;
+const ROLE_USER = ObjectId("6849efc6bd8dc2e321172c79");
+
+const AVATAR_URLS = [
+  "http://localhost:5000/files/1749214669771-911823678.gif",
+  "http://localhost:5000/files/1749713669755-621390355.png",
+  "http://localhost:5000/files/1749824531489-54769329.gif",
+  "http://localhost:5000/files/1749864953025-258947954.jpg",
+  "http://localhost:5000/files/1749864963022-518074788.jpg",
+  "http://localhost:5000/files/1749864974040-277207196.PNG",
+  "http://localhost:5000/files/1749865024759-123915179.png"
+];
+
+// Utils
+function randomItem(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+function randomWord() {
+  const ws = ["lorem","ipsum","dolor","sit","amet","consectetur","adipiscing","elit","sed","do"];
+  return ws[Math.floor(Math.random() * ws.length)];
+}
+function randomSentence(min=5, max=12) {
+  const len = min + Math.floor(Math.random() * (max - min));
+  let s = [];
+  for (let i=0; i<len; i++) s.push(randomWord());
+  return s.join(' ');
+}
+
+// Génération des utilisateurs
+let users = [];
+for (let i = 0; i < USERS_COUNT; i++) {
+  users.push({
+    username: `user${i}_${Math.floor(Math.random()*10000)}`,
+    email: `user${i}@example.com`,
+    password: "choucroute",
+    avatar: randomItem(AVATAR_URLS),
+    bio: randomSentence(),
+    role_id: ROLE_USER,
+    createdAt: now,
+    updatedAt: now
+  });
+}
+m_db.users.insertMany(users);
+const userIds = m_db.users.find({}, {_id:1, username:1}).toArray().map(u => u._id);
+print(`${userIds.length} utilisateurs insérés.`);
+
+// 2) Génération des follows
+const GROUP_COUNT = 5;
+const GROUP_SIZE = Math.floor(userIds.length / GROUP_COUNT);
+let follows = [];
+
+// Inter-groupes et intra-groupes
+for (let g=0; g<GROUP_COUNT; g++) {
+  const start = g*GROUP_SIZE;
+  const end = (g === GROUP_COUNT-1 ? userIds.length : start + GROUP_SIZE);
+  const group = userIds.slice(start, end);
+  for (let i=0; i<group.length; i++) {
+    const follower = group[i];
+    const possible = group.filter((_, idx) => idx !== i);
+    possible.sort(() => Math.random()-0.5);
+    const count = Math.floor(possible.length * (0.6 + Math.random()*0.3));
+    possible.slice(0, count).forEach(f => follows.push({
+      follower, following: f, createdAt: now
+    }));
+  }
+}
+
+// Quelques liens inter‑groupes
+for (let i=0; i<GROUP_COUNT*8; i++) {
+  const ga = Math.floor(Math.random()*GROUP_COUNT);
+  const gb = (ga + 1 + Math.floor(Math.random()*(GROUP_COUNT-1)))%GROUP_COUNT;
+  const a = userIds[ga * GROUP_SIZE + Math.floor(Math.random()*GROUP_SIZE)];
+  const b = userIds[gb * GROUP_SIZE + Math.floor(Math.random()*GROUP_SIZE)];
+  if (a && b && !a.equals(b)) follows.push({ follower: a, following: b, createdAt: now });
+}
+
+// Influenceurs
+const influencerCount = Math.floor(GROUP_COUNT * 1.5);
+const shuffledAll = [...userIds].sort(() => Math.random()-0.5).slice(0, influencerCount);
+shuffledAll.forEach(inf => {
+  const others = userIds.filter(u => !u.equals(inf)).sort(() => Math.random()-0.5);
+  const count = 10 + Math.floor(Math.random()*21);
+  others.slice(0, count).forEach(u => {
+    follows.push({ follower: u, following: inf, createdAt: now });
+  });
+});
+
+// Insertion
+if (follows.length) {
+  m_db.follows.insertMany(follows);
+  print(`${follows.length} liens de follow insérés.`);
+}
+
+// Génération des posts
+let posts = [];
+userIds.forEach(uid => {
+  for (let j=0; j<POSTS_PER_USER; j++) {
+    const others = userIds.filter(u => !u.equals(uid)).sort(() => Math.random()-0.5);
+    const likesCount = Math.floor(Math.random() * 11);
+    const likes = others.slice(0, likesCount);
+    posts.push({
+      author: uid,
+      content: randomSentence(),
+      image: randomItem(AVATAR_URLS),
+      likes,
+      createdAt: now,
+      updatedAt: now
+    });
+  }
+});
+m_db.posts.insertMany(posts);
+print(`${posts.length} posts insérés.`);
+
+// Génération des commentaires
+const allPostIds = m_db.posts.find({}, {_id:1}).toArray().map(p => p._id);
+let comments = [];
+userIds.forEach(uid => {
+  const shuffledPosts = [...allPostIds].sort(() => Math.random()-0.5);
+  for (let j=0; j<Math.min(COMMENTS_PER_USER, shuffledPosts.length); j++) {
+    comments.push({
+      author: uid,
+      post: shuffledPosts[j],
+      content: randomSentence(),
+      createdAt: now,
+      updatedAt: now
+    });
+  }
+});
+if (comments.length) {
+  m_db.comments.insertMany(comments);
+  print(`${comments.length} commentaires insérés.`);
+}
+
+print("✅ Script terminé.");
