@@ -1,9 +1,7 @@
-node_modules
-<<<<<<< Updated upstream
 package-lock.json
 npm-debug.log
 uploads
-=======
+
 .next
 .flowbite-react
 .swc
@@ -11,4 +9,4 @@ uploads
 package-lock.json
 npm-debug.log
 breezy_webapp.Dockerfile
->>>>>>> Stashed changes
+
