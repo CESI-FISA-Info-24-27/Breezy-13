@@ -33,6 +33,7 @@ export default function Footer() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     © {year} <Link href="/home-page" className="hover:underline">TwiX™</Link>. All Rights Reserved.
 =======
                     © {year} <Link href="/#" className="hover:underline">TwiX™</Link>. All Rights Reserved.
@@ -43,6 +44,9 @@ export default function Footer() {
 =======
                     © {year} <Link href="/home-page" className="hover:underline">TwiX™</Link>. All Rights Reserved.
 >>>>>>> 7ea8f23 (feat : fix pour le merge)
+=======
+                    © {year} <Link href="/home-page" className="hover:underline">TwiX™</Link>. All Rights Reserved.
+>>>>>>> d1f66a5 (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
                 </span>
             </div>
         </footer>

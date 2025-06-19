@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { refreshToken } from "./authServices";
 =======
 import { refreshToken } from "./authService";
@@ -13,6 +14,9 @@ import { refreshToken } from "./AuthService";
 =======
 import { refreshToken } from "./AuthService";
 >>>>>>> 7ea8f23 (feat : fix pour le merge)
+=======
+import { refreshToken } from "./AuthService";
+>>>>>>> d1f66a5 (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/comments`;
 

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { HiSearch, HiPencil, HiPlus, HiTrash } from "react-icons/hi";
 import { getRoles, createRole, updateRole, deleteRole } from "../../services/RolesServices";
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import { HiSearch, HiPencil, HiPlus, HiTrash } from "react-icons/hi";
 <<<<<<< HEAD
@@ -14,6 +15,8 @@ import { getRoles, createRole, updateRole, deleteRole } from "../../services/Rol
 >>>>>>> a177e93 (feat : fix pour le merge)
 =======
 >>>>>>> 7ea8f23 (feat : fix pour le merge)
+=======
+>>>>>>> d1f66a5 (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
 
 // Fonction utilitaire pour compléter les permissions manquantes
 function buildCompletePermissions(partialPermissions) {

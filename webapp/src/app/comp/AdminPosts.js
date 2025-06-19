@@ -4,10 +4,13 @@ import { HiSearch, HiTrash, HiPencil } from "react-icons/hi";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a177e93 (feat : fix pour le merge)
 =======
 >>>>>>> 7ea8f23 (feat : fix pour le merge)
+=======
+>>>>>>> d1f66a5 (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
 import { getPosts, updatePost, deletePost } from "../../services/PostsServices";
 import Image from "next/image";
 =======

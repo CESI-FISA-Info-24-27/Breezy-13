@@ -8,6 +8,7 @@ import { useState } from 'react';
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { login } from '../../services/AuthServices';
 =======
 import { login } from '../../services/authService';
@@ -21,6 +22,9 @@ import { login } from '@/services/AuthServices';
 =======
 import { login } from '@/services/AuthService';
 >>>>>>> 7ea8f23 (feat : fix pour le merge)
+=======
+import { login } from '@/services/AuthService';
+>>>>>>> d1f66a5 (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
@@ -44,14 +48,20 @@ export default function Login() {
         });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d1f66a5 (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
         // On redirige l'utilisateur
         router.push('/home-page');
     } catch (error) 
     {
+<<<<<<< HEAD
 =======
         router.push('/homepage'); // par exemple
     } catch (error) {
 >>>>>>> 471b8f8 (feat: Ajout de l'avatar sur un profil utilisateur (pas fini))
+=======
+>>>>>>> d1f66a5 (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
         console.error('Erreur de connexion:', error);
         alert(error.message || "Échec de la connexion");
     }

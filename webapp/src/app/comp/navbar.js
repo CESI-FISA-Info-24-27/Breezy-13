@@ -78,7 +78,11 @@ export default function Navbar() {
   const isHome = pathname === "/" || pathname === "/home-page";
   const isProfile = pathname === "/profil-page";
   const isNotifications = pathname === "/notifications-page";
+<<<<<<< HEAD
   const isMessages = pathname === "/messages";
+=======
+  const isMessages = pathname === "/messages-page";
+>>>>>>> d1f66a5 (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
 
   return (
     <nav className="h-screen w-64 flex flex-col min-h-screen px-4 py-6 bg-[var(--color-celestial-blue)] shadow-full">
@@ -119,6 +123,7 @@ export default function Navbar() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             href="/profil-page"
             className={`flex items-center gap-3 ${
               showNotifications ? "px-0 justify-center" : "px-4"
@@ -131,6 +136,9 @@ export default function Navbar() {
 =======
             href="/profil-page"
 >>>>>>> 7ea8f23 (feat : fix pour le merge)
+=======
+            href="/profil-page"
+>>>>>>> d1f66a5 (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
             className={`flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition ${
 >>>>>>> b2fa2f6 (Debut de suppression de flowbite)
               isProfile
@@ -195,6 +203,7 @@ export default function Navbar() {
         <li>
           <Link
 <<<<<<< HEAD
+<<<<<<< HEAD
             href="/messagespage"
 <<<<<<< HEAD
             className={`flex items-center gap-3 ${
@@ -204,6 +213,9 @@ export default function Navbar() {
 =======
             href="/messages"
 >>>>>>> 20c8975 (fix: Correction path pour les messages privés)
+=======
+            href="/messages-page"
+>>>>>>> d1f66a5 (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
             className={`flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition ${
 >>>>>>> b2fa2f6 (Debut de suppression de flowbite)
               isMessages

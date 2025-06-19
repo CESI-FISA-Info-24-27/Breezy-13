@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { HiSearch, HiTrash } from "react-icons/hi";
 import { getComments, deleteComment } from "../../services/CommentsServices";
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import { HiSearch, HiTrash, HiPencil } from "react-icons/hi";
 import { getComments, deleteComment, updateComment } from "../../services/commentsServices";
@@ -51,6 +52,8 @@ import { getComments, deleteComment } from "../../services/CommentsServices";
 >>>>>>> a177e93 (feat : fix pour le merge)
 =======
 >>>>>>> 7ea8f23 (feat : fix pour le merge)
+=======
+>>>>>>> d1f66a5 (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
 
 function ConfirmModal({ open, onConfirm, onCancel, message }) {
   if (!open) return null;
