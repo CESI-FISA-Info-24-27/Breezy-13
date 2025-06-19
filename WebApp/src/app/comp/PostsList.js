@@ -37,13 +37,6 @@ import { useState } from "react";
 export function PostsList({ posts }) {
   const [hovered, setHovered] = useState("");
 
-  // Valeur par défaut pour tester si aucune prop n'est passée
-  const demoPosts = [
-    { _id: "1", username: "elonmuck", avatar: "/logo.png", content: "Achetez mes voitures !" },
-    { _id: "2", username: "billgates", avatar: "/logo.png", content: "Windows c'est mieux." },
-    { _id: "3", username: "terracid", avatar: "/logo.png", content: "TwiX c'était mieux avant." },
-    { _id: "4", username: "arkunir", avatar: "/logo.png", content: "TwiX<Beak" }
-  ];
   const displayPosts = posts && posts.length > 0 ? posts : demoPosts;
 
   if (!displayPosts || displayPosts.length === 0) {
@@ -73,6 +66,9 @@ export function PostsList({ posts }) {
               <span className="mb-0 text-lg font-bold text-[var(--color-rich-black)]">
                 {post.username}
               </span>
+              <span className="text-sm text-[var(--color-rich-black)]/70 ms-2">
+               {post.date}
+              </span>
             </div>
             <span
               onMouseEnter={() => setHovered("useradd" + post._id)}
@@ -93,6 +89,17 @@ export function PostsList({ posts }) {
           </div>
           <div className="mt-5 flex justify-start pt-3 gap-3">
             <span
+              onMouseEnter={() => setHovered("heart" + post._id)}
+              onMouseLeave={() => setHovered("")}
+              className="cursor-pointer"
+            >
+              {hovered === "heart" + post._id ? (
+                <HiHeart className="text-[var(--color-celestial-blue)] text-2xl" />
+              ) : (
+                <HiOutlineHeart className="text-[var(--color-celestial-blue)] text-2xl" />
+              )}
+            </span>
+            <span
               onMouseEnter={() => setHovered("chat" + post._id)}
               onMouseLeave={() => setHovered("")}
               className="cursor-pointer"
@@ -112,17 +119,6 @@ export function PostsList({ posts }) {
                 <HiShare className="text-[var(--color-celestial-blue)] text-2xl" />
               ) : (
                 <HiOutlineShare className="text-[var(--color-celestial-blue)] text-2xl" />
-              )}
-            </span>
-            <span
-              onMouseEnter={() => setHovered("heart" + post._id)}
-              onMouseLeave={() => setHovered("")}
-              className="cursor-pointer"
-            >
-              {hovered === "heart" + post._id ? (
-                <HiHeart className="text-[var(--color-celestial-blue)] text-2xl" />
-              ) : (
-                <HiOutlineHeart className="text-[var(--color-celestial-blue)] text-2xl" />
               )}
             </span>
           </div>

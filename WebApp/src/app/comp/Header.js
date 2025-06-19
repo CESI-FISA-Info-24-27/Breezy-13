@@ -1,6 +1,7 @@
 "use client";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useState, useRef, useEffect } from "react";
 import { HiMenu, HiSearch } from "react-icons/hi";
 import Image from "next/image";
@@ -9,11 +10,19 @@ import Image from "next/image";
 import { HiSearch, HiMenu } from "react-icons/hi";
 import { useState } from "react";
 >>>>>>> 31fcbf1 (Header trop classe)
+=======
+import { useState, useRef, useEffect } from "react";
+import { HiMenu } from "react-icons/hi";
+import Image from "next/image";
+>>>>>>> 3380d16 (ProfilPage finit sans modal)
 import Link from "next/link";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3380d16 (ProfilPage finit sans modal)
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
 
@@ -37,8 +46,11 @@ export default function Header() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [menuOpen]);
+<<<<<<< HEAD
 =======
 >>>>>>> 31fcbf1 (Header trop classe)
+=======
+>>>>>>> 3380d16 (ProfilPage finit sans modal)
 
   return (
     <header className="flex items-center justify-between w-full h-16 px-8 bg-[var(--color-celestial-blue-dark)] shadow z-50">
@@ -49,6 +61,9 @@ export default function Header() {
       </div>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3380d16 (ProfilPage finit sans modal)
       {/* Barre de recherche centrée */}
       <form className="flex items-center flex-1 justify-center max-w-md mx-8">
         <div className="relative w-full">
@@ -63,6 +78,7 @@ export default function Header() {
             className="w-full pl-10 pr-4 py-2 rounded-full bg-seasalt text-rich-black focus:outline-none focus:ring-2 focus:ring-sea-green transition"
           />
 <<<<<<< HEAD
+<<<<<<< HEAD
         </div>
       </form>
 
@@ -75,6 +91,13 @@ export default function Header() {
 
       <div className="flex items-center gap-4">
 >>>>>>> 31fcbf1 (Header trop classe)
+=======
+        </div>
+      </form>
+
+      {/* Profil + menu burger à droite */}
+      <div className="flex items-center gap-4 relative">
+>>>>>>> 3380d16 (ProfilPage finit sans modal)
         <Image
           src="/default-avatar.png"
           alt="Profil"
@@ -84,21 +107,32 @@ export default function Header() {
         />
         <button
 <<<<<<< HEAD
+<<<<<<< HEAD
           ref={buttonRef}
           className="p-2 rounded-full hover:bg-sea-green/20 transition"
           onClick={() => setMenuOpen(open => !open)}
           aria-label="Ouvrir le menu"
           type="button"
 =======
+=======
+          ref={buttonRef}
+>>>>>>> 3380d16 (ProfilPage finit sans modal)
           className="p-2 rounded-full hover:bg-sea-green/20 transition"
-          onClick={() => setMenuOpen(!menuOpen)}
+          onClick={() => setMenuOpen(open => !open)}
           aria-label="Ouvrir le menu"
+<<<<<<< HEAD
 >>>>>>> 31fcbf1 (Header trop classe)
+=======
+          type="button"
+>>>>>>> 3380d16 (ProfilPage finit sans modal)
         >
           <HiMenu className="text-seasalt text-2xl" />
         </button>
         {menuOpen && (
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3380d16 (ProfilPage finit sans modal)
           <div
             ref={menuRef}
             className="absolute right-0 top-16 bg-white rounded shadow-lg py-2 w-40 z-50"
@@ -109,6 +143,7 @@ export default function Header() {
             <Link href="/profilpage" className="block px-4 py-2 hover:bg-sea-green/10">Privacy Policy</Link>
             <Link href="/profilpage" className="block px-4 py-2 hover:bg-sea-green/10">Contact</Link>
             <hr className="w-4/5 mx-auto h-0.5 border-0 bg-folly my-2 rounded" />
+<<<<<<< HEAD
 =======
           <div className="absolute right-8 top-16 bg-white rounded shadow-lg py-2 w-40 z-50">
 <<<<<<< HEAD
@@ -121,6 +156,8 @@ export default function Header() {
 =======
             <Link href="/profil-page" className="block px-4 py-2 hover:bg-sea-green/10">Profil</Link>
 >>>>>>> 7ea8f23 (feat : fix pour le merge)
+=======
+>>>>>>> 3380d16 (ProfilPage finit sans modal)
             <Link href="/logout" className="block px-4 py-2 hover:bg-folly/10">Déconnexion</Link>
           </div>
         )}

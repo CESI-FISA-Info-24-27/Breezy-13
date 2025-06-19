@@ -34,6 +34,7 @@ export default function HomePage() {
   const [isMobile, setIsMobile] = useState(false);
 
   const demoPosts = [
+<<<<<<< HEAD
       { _id: "1", username: "elonmuck", avatar: "/logo.png", content: "Achetez mes voitures !" , date: "2025-06-20T08:55:00Z" },
       { _id: "2", username: "elonmuck", avatar: "/logo.png", content: "Windows c'est mieux." , date: "2025-06-20T04:00:00Z" },
       { _id: "3", username: "elonmuck", avatar: "/logo.png", content: "TwiX c'était mieux avant." , date: "2025-06-19T08:00:00Z" },
@@ -47,6 +48,13 @@ export default function HomePage() {
 =======
   const [isMobile, setIsMobile] = useState(false);
 >>>>>>> 3d47564 (Push de stabilisation apres rebase)
+=======
+      { _id: "1", username: "elonmuck", avatar: "/logo.png", content: "Achetez mes voitures !" , date: "2023-10-01T12:00:00Z" },
+      { _id: "2", username: "elonmuck", avatar: "/logo.png", content: "Windows c'est mieux." , date: "2023-10-01T12:00:00Z" },
+      { _id: "3", username: "elonmuck", avatar: "/logo.png", content: "TwiX c'était mieux avant." , date: "2023-10-01T12:00:00Z" },
+      { _id: "4", username: "elonmuck", avatar: "/logo.png", content: "TwiX<Beak" , date: "2023-10-01T12:00:00Z" }
+    ];
+>>>>>>> 3380d16 (ProfilPage finit sans modal)
 
   useEffect(() => {
     if (headerRef.current) {
@@ -100,6 +108,7 @@ export default function HomePage() {
 >>>>>>> 3d47564 (Push de stabilisation apres rebase)
   return (
     <div className="relative min-h-screen bg-seasalt">
+      {/* Header */}
       <div
         ref={headerRef}
         className="fixed top-0 left-0 w-full z-50 transition-all duration-300"
@@ -112,6 +121,7 @@ export default function HomePage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         {/* Sidebar gauche (desktop/tablette uniquement) */}
 =======
         {/* Sidebar gauche */}
@@ -121,6 +131,9 @@ export default function HomePage() {
 >>>>>>> 7ea8f23 (feat : fix pour le merge)
 =======
 >>>>>>> 3d47564 (Push de stabilisation apres rebase)
+=======
+        {/* Sidebar gauche (desktop/tablette uniquement) */}
+>>>>>>> 3380d16 (ProfilPage finit sans modal)
         <div
           className="hidden md:block fixed left-0 w-64 z-40 transition-all duration-300"
           style={{ top: `${sidebarTop}px`, height: `calc(100vh - ${sidebarTop}px)` }}
@@ -142,6 +155,14 @@ export default function HomePage() {
 =======
           <Navbar />
 >>>>>>> 7ea8f23 (feat : fix pour le merge)
+        </div>
+
+        {/* Sidebar droite (desktop/tablette uniquement) */}
+        <div
+          className="hidden md:block fixed right-0 w-64 z-40 transition-all duration-300"
+          style={{ top: `${sidebarTop}px`, height: `calc(100vh - ${sidebarTop}px)` }}
+        >
+          <SideBarFollow style={{ top: `${sidebarTop}px`, height: `calc(100vh - ${sidebarTop}px)` }} />
         </div>
 
         {/* Contenu principal */}
@@ -177,8 +198,15 @@ export default function HomePage() {
 =======
         >
           <ProfilPreview />
+<<<<<<< HEAD
           <h1>TEST</h1>
 >>>>>>> 3d47564 (Push de stabilisation apres rebase)
+=======
+          <hr className="mt-7 text-rich-black" />
+          <div className="mt-8 mb-4">
+            <PostsList posts={demoPosts} />
+          </div>
+>>>>>>> 3380d16 (ProfilPage finit sans modal)
           <Footer>
             <span>© {new Date().getFullYear()} Mon Footer Personnalisé</span>
           </Footer>

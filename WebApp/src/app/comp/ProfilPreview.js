@@ -1,7 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useState } from "react";
 import { HiPencil } from "react-icons/hi";
 import ProfilEditionModal from "./ProfilEditionModal";
+=======
+import { HiPencil } from "react-icons/hi";
+>>>>>>> 3380d16 (ProfilPage finit sans modal)
 
 export default function ProfilPreview() {
     const [modalOpen, setModalOpen] = useState(false);
@@ -26,11 +30,15 @@ export default function ProfilPreview() {
 
     return (
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3380d16 (ProfilPage finit sans modal)
         <div className="w-full relative flex flex-col items-center bg-[var(--color-celestial-blue)] rounded-xl shadow-lg p-6">
             {/* Bouton édition en haut à droite */}
             <button
                 className="absolute top-4 right-4 p-2 rounded-full bg-celestial-blue text-seasalt hover:bg-folly hover:text-seasalt transition"
                 title="Modifier le profil"
+<<<<<<< HEAD
                 onClick={() => setModalOpen(true)}
             >
                 <HiPencil className="text-xl" />
@@ -38,6 +46,12 @@ export default function ProfilPreview() {
 =======
         <div className="flex flex-col items-center bg-[var(--color-celestial-blue)] rounded-xl shadow-lg p-6 w-80">
 >>>>>>> 8764791 (Init profil page)
+=======
+                onClick={() => alert("Édition du profil")}
+            >
+                <HiPencil className="text-xl" />
+            </button>
+>>>>>>> 3380d16 (ProfilPage finit sans modal)
             <span className="w-20 h-20 rounded-full bg-[var(--color-seasalt)]/30 flex items-center justify-center font-bold uppercase text-[var(--color-celestial-blue)] text-3xl mb-4">
                 {user.username[0]}
             </span>

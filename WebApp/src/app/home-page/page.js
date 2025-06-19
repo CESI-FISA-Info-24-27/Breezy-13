@@ -76,6 +76,7 @@ export default function HomePage() {
   }, []);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   useEffect(() => {
     async function fetchPosts() {
       try {
@@ -90,6 +91,16 @@ export default function HomePage() {
 
 =======
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+  // Définition de demoPosts
+  const demoPosts = [
+    { _id: "1", username: "elonmuck", avatar: "/logo.png", content: "Achetez mes voitures !" , date: "2023-10-01T12:00:00Z" },
+    { _id: "2", username: "BillGrates", avatar: "/logo.png", content: "Windows c'est mieux." , date: "2023-10-01T12:00:00Z" },
+    { _id: "3", username: "Terracist", avatar: "/logo.png", content: "TwiX c'était mieux avant." , date: "2023-10-01T12:00:00Z" },
+    { _id: "4", username: "Arkuni", avatar: "/logo.png", content: "TwiX<Beak" , date: "2023-10-01T12:00:00Z" }
+  ];
+
+>>>>>>> 3380d16 (ProfilPage finit sans modal)
   return (
     <div className="relative min-h-screen bg-seasalt">
       {/* Header */}
@@ -136,10 +147,14 @@ export default function HomePage() {
           <hr className="mt-7 text-rich-black" />
           <div className="mt-8 mb-4">
 <<<<<<< HEAD
+<<<<<<< HEAD
             <PostsList posts={posts} /> {/* <-- Utilise les vrais posts */}
 =======
             <PostsList />
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+            <PostsList posts={demoPosts} />
+>>>>>>> 3380d16 (ProfilPage finit sans modal)
           </div>
           <Footer>
             <span>© {new Date().getFullYear()} Mon Footer Personnalisé</span>
