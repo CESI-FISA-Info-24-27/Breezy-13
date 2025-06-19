@@ -30,6 +30,7 @@ export default function HomePage() {
   const headerRef = useRef(null);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   const [isMobile, setIsMobile] = useState(false);
 
   const demoPosts = [
@@ -43,6 +44,9 @@ export default function HomePage() {
 >>>>>>> a177e93 (feat : fix pour le merge)
 =======
 >>>>>>> 7ea8f23 (feat : fix pour le merge)
+=======
+  const [isMobile, setIsMobile] = useState(false);
+>>>>>>> 3d47564 (Push de stabilisation apres rebase)
 
   useEffect(() => {
     if (headerRef.current) {
@@ -74,6 +78,9 @@ export default function HomePage() {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3d47564 (Push de stabilisation apres rebase)
   useEffect(() => {
     // Fonction pour vérifier la largeur de l'écran
     function handleResize() {
@@ -84,13 +91,15 @@ export default function HomePage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+<<<<<<< HEAD
 =======
 >>>>>>> a177e93 (feat : fix pour le merge)
 =======
 >>>>>>> 7ea8f23 (feat : fix pour le merge)
+=======
+>>>>>>> 3d47564 (Push de stabilisation apres rebase)
   return (
     <div className="relative min-h-screen bg-seasalt">
-      {/* Header */}
       <div
         ref={headerRef}
         className="fixed top-0 left-0 w-full z-50 transition-all duration-300"
@@ -102,6 +111,7 @@ export default function HomePage() {
       <div className="flex pt-[64px] md:pt-0">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         {/* Sidebar gauche (desktop/tablette uniquement) */}
 =======
         {/* Sidebar gauche */}
@@ -109,6 +119,8 @@ export default function HomePage() {
 =======
         {/* Sidebar gauche */}
 >>>>>>> 7ea8f23 (feat : fix pour le merge)
+=======
+>>>>>>> 3d47564 (Push de stabilisation apres rebase)
         <div
           className="hidden md:block fixed left-0 w-64 z-40 transition-all duration-300"
           style={{ top: `${sidebarTop}px`, height: `calc(100vh - ${sidebarTop}px)` }}
@@ -136,11 +148,15 @@ export default function HomePage() {
         <main
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3d47564 (Push de stabilisation apres rebase)
           className="flex-1 md:ml-64 md:mr-64 p-4 sm:p-6 lg:p-8 pb-14 md:pb-0 transition-all duration-300 w-full"
           style={{
             paddingTop: `${sidebarTop + 16}px`,
             paddingBottom: '3.5rem', // 56px pour la MobileNavbar
           }}
+<<<<<<< HEAD
         >
           <ProfilPreview />
           <hr className="mt-7 text-rich-black" />
@@ -158,6 +174,11 @@ export default function HomePage() {
 >>>>>>> a177e93 (feat : fix pour le merge)
 =======
 >>>>>>> 7ea8f23 (feat : fix pour le merge)
+=======
+        >
+          <ProfilPreview />
+          <h1>TEST</h1>
+>>>>>>> 3d47564 (Push de stabilisation apres rebase)
           <Footer>
             <span>© {new Date().getFullYear()} Mon Footer Personnalisé</span>
           </Footer>
@@ -165,6 +186,9 @@ export default function HomePage() {
       </div>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3d47564 (Push de stabilisation apres rebase)
 
       {/* MobileNavbar affichée uniquement sur mobile */}
       <div className="md:hidden">
@@ -173,6 +197,7 @@ export default function HomePage() {
     </div>
   );
 }
+<<<<<<< HEAD
 =======
     </div>
   );
@@ -212,3 +237,5 @@ export default function HomePage() {
   );
 }
 >>>>>>> d1f66a5 (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
+=======
+>>>>>>> 3d47564 (Push de stabilisation apres rebase)
