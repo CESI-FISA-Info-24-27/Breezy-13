@@ -75,6 +75,7 @@ export default function Navbar({ sidebarTop = 64 }) {
 
 export default function Navbar() {
   const pathname = usePathname();
+<<<<<<< HEAD
   const isHome = pathname === "/" || pathname === "/home-page";
   const isProfile = pathname === "/profil-page";
   const isNotifications = pathname === "/notifications-page";
@@ -83,6 +84,12 @@ export default function Navbar() {
 =======
   const isMessages = pathname === "/messages-page";
 >>>>>>> d1f66a5 (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
+=======
+  const isHome = pathname === "/" || pathname === "/homepage";
+  const isProfile = pathname === "/profilpage";
+  const isNotifications = pathname === "/notifiationspage";
+  const isMessages = pathname === "/messagespage";
+>>>>>>> afb6387 (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
 
   return (
     <nav className="h-screen w-64 flex flex-col min-h-screen px-4 py-6 bg-[var(--color-celestial-blue)] shadow-full">
@@ -204,6 +211,7 @@ export default function Navbar() {
           <Link
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             href="/messagespage"
 <<<<<<< HEAD
             className={`flex items-center gap-3 ${
@@ -216,6 +224,9 @@ export default function Navbar() {
 =======
             href="/messages-page"
 >>>>>>> d1f66a5 (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
+=======
+            href="/messagespage"
+>>>>>>> afb6387 (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
             className={`flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition ${
 >>>>>>> b2fa2f6 (Debut de suppression de flowbite)
               isMessages
