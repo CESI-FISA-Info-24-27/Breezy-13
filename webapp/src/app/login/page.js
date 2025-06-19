@@ -43,10 +43,15 @@ export default function Login() {
             path: '/',
         });
 
+<<<<<<< HEAD
         // On redirige l'utilisateur
         router.push('/home-page');
     } catch (error) 
     {
+=======
+        router.push('/homepage'); // par exemple
+    } catch (error) {
+>>>>>>> 471b8f8 (feat: Ajout de l'avatar sur un profil utilisateur (pas fini))
         console.error('Erreur de connexion:', error);
         alert(error.message || "Échec de la connexion");
     }

@@ -2,13 +2,17 @@
 
 import Link from "next/link";
 import Image from "next/image";
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 import { useState } from "react";
 =======
+=======
+>>>>>>> 471b8f8 (feat: Ajout de l'avatar sur un profil utilisateur (pas fini))
 import { useRef, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+<<<<<<< HEAD
 import { createUser, updateUser } from "../../services/UsersServices";
 import { login } from "../../services/AuthServices";
 >>>>>>> Stashed changes
@@ -16,6 +20,12 @@ import { login } from "../../services/AuthServices";
 export default function Register() {
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+import { createUser, updateUser } from "../../services/usersServices";
+import { login } from "../../services/authService";
+
+export default function Register() {
+>>>>>>> 471b8f8 (feat: Ajout de l'avatar sur un profil utilisateur (pas fini))
   const [form, setForm] = useState({
     username: "",
     password: "",
@@ -29,6 +39,7 @@ export default function Register() {
   const [avatarFile, setAvatarFile] = useState(null);
   const fileInputRef = useRef(null);
   const [avatarError, setAvatarError] = useState("");
+<<<<<<< HEAD
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 =======
@@ -59,6 +70,12 @@ export default function Register() {
 =======
   const [errorMsg, setErrorMsg] = useState("");
 >>>>>>> ae7a5a9 (feat: Ajout de l'avatar sur un profil utilisateur (pas fini))
+=======
+
+
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+>>>>>>> 471b8f8 (feat: Ajout de l'avatar sur un profil utilisateur (pas fini))
   const router = useRouter();
   const [passwordError, setPasswordError] = useState("");
 
@@ -68,6 +85,7 @@ export default function Register() {
   function handleAvatarChange(e) {
     const file = e.target.files[0];
     if (file) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
       setAvatarFile(file);
@@ -86,6 +104,9 @@ export default function Register() {
 =======
       setAvatarFile(file);
 >>>>>>> ae7a5a9 (feat: Ajout de l'avatar sur un profil utilisateur (pas fini))
+=======
+      setAvatarFile(file);
+>>>>>>> 471b8f8 (feat: Ajout de l'avatar sur un profil utilisateur (pas fini))
       setAvatarPreview(URL.createObjectURL(file));
     }
   }
@@ -119,6 +140,7 @@ export default function Register() {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     // Validation des mots de passe
     if (!form.password || form.password.length < 8) {
       setPasswordError("Le mot de passe doit contenir au moins 8 caractères.");
@@ -130,6 +152,10 @@ export default function Register() {
     if (!form.password || form.password.length < 8) {
       setPasswordError("Le mot de passe doit contenir au moins 8 caractères.");
 >>>>>>> ae7a5a9 (feat: Ajout de l'avatar sur un profil utilisateur (pas fini))
+=======
+    if (!form.password || form.password.length < 8) {
+      setPasswordError("Le mot de passe doit contenir au moins 8 caractères.");
+>>>>>>> 471b8f8 (feat: Ajout de l'avatar sur un profil utilisateur (pas fini))
       return;
     }
     if (form.password !== form.confirmPassword) {
@@ -141,7 +167,11 @@ export default function Register() {
     try {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       // Création de l'utilisateur avec avatar par défaut
+=======
+      // 1. Création du compte avec avatar par défaut
+>>>>>>> 471b8f8 (feat: Ajout de l'avatar sur un profil utilisateur (pas fini))
       await createUser({
         username: form.username,
         password: form.password,
@@ -150,6 +180,7 @@ export default function Register() {
         bio: form.bio,
       });
 
+<<<<<<< HEAD
       // Connexion automatique
       const { token } = await login(form.email, form.password, true);
       Cookies.set("token", token, { path: "/" });
@@ -202,6 +233,8 @@ export default function Register() {
         bio: form.bio,
       });
 
+=======
+>>>>>>> 471b8f8 (feat: Ajout de l'avatar sur un profil utilisateur (pas fini))
       // 2. Connexion automatique après inscription
       const loginRes = await login(form.email, form.password, true);
       const token = loginRes.token;

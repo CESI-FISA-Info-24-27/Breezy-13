@@ -33,6 +33,9 @@ const ForceGraph2D = dynamic(
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 471b8f8 (feat: Ajout de l'avatar sur un profil utilisateur (pas fini))
 const MAX_USERS_DISPLAYED = 100; // Limite d'utilisateurs affichés sur le graphe
 
 =======
