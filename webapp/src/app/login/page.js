@@ -27,7 +27,7 @@ export default function Login() {
         path: '/', // disponible sur tout le site
         });
 
-        router.push('/homePage'); // par exemple
+        router.push('/homepage'); // par exemple
     } catch (error) {
         console.error('Erreur de connexion:', error);
         alert(error.message || "Échec de la connexion");
