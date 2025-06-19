@@ -20,12 +20,16 @@ const ForceGraph2D = dynamic(
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 const MAX_USERS_DISPLAYED = 100; // Limite d'utilisateurs affichés sur le graphe
 
 =======
 >>>>>>> bbfb259 (Component pour la page admin #22)
 =======
 const MAX_USERS_DISPLAYED = 200; // Limite d'utilisateurs affichés sur le graphe
+=======
+const MAX_USERS_DISPLAYED = 100; // Limite d'utilisateurs affichés sur le graphe
+>>>>>>> ae7a5a9 (feat: Ajout de l'avatar sur un profil utilisateur (pas fini))
 
 >>>>>>> 58dc0b8 (fix: Correction affichage du réseau d'utilisateurs)
 export default function AdminStats() {
