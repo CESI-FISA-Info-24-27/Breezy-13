@@ -1,8 +1,8 @@
 import React from "react";
-import Navbar from "../comp/navbar";
-import ProfilPreview from "../comp/profilPreview";
-import Footer from "../comp/footer";
-import { PostsList } from "../comp/postsList";
+import Navbar from "../comp/Navbar";
+import ProfilPreview from "../comp/ProfilPreview";
+import Footer from "../comp/Footer";
+import { PostsList } from "../comp/PostsList";
 
 export default function HomePage() {
   return (

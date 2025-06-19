@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Cookies from 'js-cookie';
 import { useState } from 'react';
-import { login } from '@/services/authService'; // adapte le chemin si nécessaire
+import { login } from '@/services/AuthService';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
@@ -15,20 +15,22 @@ export default function Login() {
     const router = useRouter();
 
     const handleSubmit = async (e) => {
-    e.preventDefault(); // empêche le rechargement de la page
+    e.preventDefault(); // Empêche le rechargement de la page
     try {
         const data = await login(email, password, rememberMe);
         console.log('Connexion réussie', data);
-        // Rediriger l'utilisateur ou stocker les données selon le contexte
 
+        // On stocke le cookie de connexion
         Cookies.set('token', data.token, {
-        secure: true, // true si HTTPS
-        sameSite: 'Lax', // ou 'Strict' ou 'None'
-        path: '/', // disponible sur tout le site
+            secure: true,
+            sameSite: 'Lax',
+            path: '/',
         });
 
-        router.push('/homepage'); // par exemple
-    } catch (error) {
+        // On redirige l'utilisateur
+        router.push('/home-page');
+    } catch (error) 
+    {
         console.error('Erreur de connexion:', error);
         alert(error.message || "Échec de la connexion");
     }
