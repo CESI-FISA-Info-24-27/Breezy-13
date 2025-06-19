@@ -11,7 +11,7 @@ const ForceGraph2D = dynamic(
   { ssr: false }
 );
 
-const MAX_USERS_DISPLAYED = 200; // Limite d'utilisateurs affichés sur le graphe
+const MAX_USERS_DISPLAYED = 100; // Limite d'utilisateurs affichés sur le graphe
 
 export default function AdminStats() {
   const [userCount, setUserCount] = useState(0);
