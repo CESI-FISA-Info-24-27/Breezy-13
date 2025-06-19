@@ -64,7 +64,6 @@ export default function HomePage() {
 
   return (
     <div className="relative min-h-screen bg-seasalt">
-      {/* Header */}
       <div
         ref={headerRef}
         className="fixed top-0 left-0 w-full z-50 transition-all duration-300"
