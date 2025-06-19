@@ -10,6 +10,7 @@ uploads
 >>>>>>> a177e93 (feat : fix pour le merge)
 =======
 package-lock.json
+.swc
 npm-debug.log
 uploads
 

@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 import { useState } from 'react';
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { login } from '../../services/AuthServices';
 =======
 import { login } from '../../services/authService';
@@ -13,6 +14,9 @@ import { login } from '../../services/authService';
 =======
 import { login } from '@/services/AuthService';
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+import { login } from '@/services/AuthServices';
+>>>>>>> c738c84 (feat : réglage du docker compose de la webapp #42)
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
