@@ -16,10 +16,10 @@ import {
 
 export default function Navbar() {
   const pathname = usePathname();
-  const isHome = pathname === "/" || pathname === "/home-page";
-  const isProfile = pathname === "/profil-page";
-  const isNotifications = pathname === "/notifications-page";
-  const isMessages = pathname === "/messages";
+  const isHome = pathname === "/" || pathname === "/homepage";
+  const isProfile = pathname === "/profilpage";
+  const isNotifications = pathname === "/notifiationspage";
+  const isMessages = pathname === "/messagespage";
 
   return (
     <nav className="h-screen w-64 flex flex-col min-h-screen px-4 py-6 bg-[var(--color-celestial-blue)] shadow-full">
@@ -89,7 +89,7 @@ export default function Navbar() {
         </li>
         <li>
           <Link
-            href="/messages"
+            href="/messagespage"
             className={`flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition ${
               isMessages
                 ? "bg-[var(--color-seasalt)] text-[var(--color-celestial-blue)] shadow"
