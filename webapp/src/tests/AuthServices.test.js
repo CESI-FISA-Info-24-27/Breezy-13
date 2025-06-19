@@ -1,6 +1,10 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+<<<<<<< HEAD
 import { login, refreshToken } from '../services/authServices';
+=======
+import { login, refreshToken } from '../services/AuthServices';
+>>>>>>> 399dbca (feat : Mise en place des tests unitaires sur la web app #42)
 
 jest.mock('axios');
 jest.mock('js-cookie');

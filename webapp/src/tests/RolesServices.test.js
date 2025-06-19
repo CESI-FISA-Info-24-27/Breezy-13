@@ -1,6 +1,10 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+<<<<<<< HEAD
 import * as AuthService from '../services/authServices';
+=======
+import * as AuthService from '../services/AuthServices';
+>>>>>>> 399dbca (feat : Mise en place des tests unitaires sur la web app #42)
 
 import {
   getRoles,
