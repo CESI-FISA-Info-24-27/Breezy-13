@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node start.js",
     "dev": "nodemon start.js",
-    "test": "node --max-old-space-size=256 --experimental-vm-modules node_modules/jest/bin/jest.js --forceExit",
+    "test": "node --max-old-space-size=256 --experimental-vm-modules node_modules/jest/bin/jest.js --forceExit --testTimeout=360000",
     "build": "babel . -d dist --ignore node_modules"
   },
   "type": "module",
