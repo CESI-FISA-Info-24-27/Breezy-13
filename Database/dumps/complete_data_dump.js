@@ -8,13 +8,13 @@ const COMMENTS_PER_USER = 20;
 const ROLE_USER = ObjectId("6849efc6bd8dc2e321172c79");
 
 const AVATAR_URLS = [
-  "http://localhost:5000/files/1749214669771-911823678.gif",
-  "http://localhost:5000/files/1749713669755-621390355.png",
-  "http://localhost:5000/files/1749824531489-54769329.gif",
-  "http://localhost:5000/files/1749864953025-258947954.jpg",
-  "http://localhost:5000/files/1749864963022-518074788.jpg",
-  "http://localhost:5000/files/1749864974040-277207196.PNG",
-  "http://localhost:5000/files/1749865024759-123915179.png"
+  "1749214669771-911823678.gif",
+  "1749713669755-621390355.png",
+  "1749824531489-54769329.gif",
+  "1749864953025-258947954.jpg",
+  "1749864963022-518074788.jpg",
+  "1749864974040-277207196.PNG",
+  "1749865024759-123915179.png"
 ];
 
 // Utils
