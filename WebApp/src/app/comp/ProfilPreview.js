@@ -1,11 +1,17 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useState } from "react";
 import { HiPencil } from "react-icons/hi";
 import ProfilEditionModal from "./ProfilEditionModal";
 =======
 import { HiPencil } from "react-icons/hi";
 >>>>>>> 3380d16 (ProfilPage finit sans modal)
+=======
+import { useState } from "react";
+import { HiPencil } from "react-icons/hi";
+import ProfilEditionModal from "./profilEditionModal";
+>>>>>>> d77b3f2 (Modal de modif et modif affichage horodatage post)
 
 export default function ProfilPreview() {
     const [modalOpen, setModalOpen] = useState(false);
@@ -39,6 +45,7 @@ export default function ProfilPreview() {
                 className="absolute top-4 right-4 p-2 rounded-full bg-celestial-blue text-seasalt hover:bg-folly hover:text-seasalt transition"
                 title="Modifier le profil"
 <<<<<<< HEAD
+<<<<<<< HEAD
                 onClick={() => setModalOpen(true)}
             >
                 <HiPencil className="text-xl" />
@@ -48,6 +55,9 @@ export default function ProfilPreview() {
 >>>>>>> 8764791 (Init profil page)
 =======
                 onClick={() => alert("Édition du profil")}
+=======
+                onClick={() => setModalOpen(true)}
+>>>>>>> d77b3f2 (Modal de modif et modif affichage horodatage post)
             >
                 <HiPencil className="text-xl" />
             </button>
@@ -59,14 +69,20 @@ export default function ProfilPreview() {
             <div className="text-sm text-[var(--color-seasalt)]/80 mb-2">{user.mail}</div>
             <div className="text-base text-[var(--color-seasalt)] text-center">{user.description}</div>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d77b3f2 (Modal de modif et modif affichage horodatage post)
             {/* Modal d'édition du profil */}
             <ProfilEditionModal
                 isOpen={modalOpen}
                 onClose={() => setModalOpen(false)}
                 user={user}
             />
+<<<<<<< HEAD
 =======
 >>>>>>> 8764791 (Init profil page)
+=======
+>>>>>>> d77b3f2 (Modal de modif et modif affichage horodatage post)
         </div>
     );
 }

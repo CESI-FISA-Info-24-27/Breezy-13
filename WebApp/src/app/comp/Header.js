@@ -12,7 +12,7 @@ import { useState } from "react";
 >>>>>>> 31fcbf1 (Header trop classe)
 =======
 import { useState, useRef, useEffect } from "react";
-import { HiMenu } from "react-icons/hi";
+import { HiMenu, HiSearch } from "react-icons/hi";
 import Image from "next/image";
 >>>>>>> 3380d16 (ProfilPage finit sans modal)
 import Link from "next/link";
@@ -68,10 +68,13 @@ export default function Header() {
       <form className="flex items-center flex-1 justify-center max-w-md mx-8">
         <div className="relative w-full">
           <HiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-celestial-blue text-xl pointer-events-none" />
+<<<<<<< HEAD
 =======
       <form className="flex items-center flex-1 justify-center max-w-md mx-8">
         <div className="relative w-full">
 >>>>>>> 31fcbf1 (Header trop classe)
+=======
+>>>>>>> d77b3f2 (Modal de modif et modif affichage horodatage post)
           <input
             type="text"
             placeholder="Rechercher..."
