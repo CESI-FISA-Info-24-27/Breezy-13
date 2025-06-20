@@ -5,8 +5,12 @@ import { HiSearch, HiPencil, HiPlus, HiTrash } from "react-icons/hi";
 import { getRoles, createRole, updateRole, deleteRole } from "../../services/RolesServices";
 =======
 import { HiSearch, HiPencil, HiPlus, HiTrash } from "react-icons/hi";
+<<<<<<< HEAD
 import { getRoles, createRole, updateRole, deleteRole } from "../../services/rolesServices";
 >>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
+=======
+import { getRoles, createRole, updateRole, deleteRole } from "../../services/RolesServices";
+>>>>>>> a177e93 (feat : fix pour le merge)
 
 // Fonction utilitaire pour compléter les permissions manquantes
 function buildCompletePermissions(partialPermissions) {

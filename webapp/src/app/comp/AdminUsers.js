@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { HiSearch, HiUserRemove, HiUserAdd, HiPencil } from "react-icons/hi";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { getUsers, createUser, updateUser, deleteUser } from "../../services/UsersServices";
 import { getRoles } from "../../services/RolesServices";
 import Image from "next/image";
@@ -67,6 +68,10 @@ import { getRoles } from "../../services/rolesServices";
 <<<<<<< HEAD
 >>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
 =======
+=======
+import { getUsers, createUser, updateUser, deleteUser } from "../../services/UsersServices";
+import { getRoles } from "../../services/RolesServices";
+>>>>>>> a177e93 (feat : fix pour le merge)
 import Image from "next/image";
 >>>>>>> 3b5e475 (fix: Correction balise img et  ' dans les titres)
 import Cookies from "js-cookie";

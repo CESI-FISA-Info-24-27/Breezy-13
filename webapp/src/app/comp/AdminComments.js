@@ -42,8 +42,12 @@ function EditModal({ open, comment, onClose, onSave }) {
 >>>>>>> bbfb259 (Component pour la page admin #22)
 =======
 import { HiSearch, HiTrash } from "react-icons/hi";
+<<<<<<< HEAD
 import { getComments, deleteComment } from "../../services/commentsServices";
 >>>>>>> cf34fc3 (feat: Finalisation des components de la page d'administration)
+=======
+import { getComments, deleteComment } from "../../services/CommentsServices";
+>>>>>>> a177e93 (feat : fix pour le merge)
 
 function ConfirmModal({ open, onConfirm, onCancel, message }) {
   if (!open) return null;

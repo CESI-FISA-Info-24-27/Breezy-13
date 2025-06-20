@@ -5,10 +5,14 @@ import Image from "next/image";
 import Cookies from 'js-cookie';
 import { useState } from 'react';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { login } from '../../services/AuthServices';
 =======
 import { login } from '../../services/authService';
 >>>>>>> 20c8975 (fix: Correction path pour les messages privés)
+=======
+import { login } from '@/services/AuthService';
+>>>>>>> a177e93 (feat : fix pour le merge)
 import { useRouter } from 'next/navigation';
 
 export default function Login() {

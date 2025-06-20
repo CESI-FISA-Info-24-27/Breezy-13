@@ -31,10 +31,14 @@ export default function Footer() {
                 <hr className="my-4 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-6" />
                 <span className="block text-xs text-seasalt sm:text-center dark:text-seasalt">
 <<<<<<< HEAD
+<<<<<<< HEAD
                     © {year} <Link href="/home-page" className="hover:underline">TwiX™</Link>. All Rights Reserved.
 =======
                     © {year} <Link href="/#" className="hover:underline">TwiX™</Link>. All Rights Reserved.
 >>>>>>> 2530cdd (Modif footer)
+=======
+                    © {year} <Link href="/home-page" className="hover:underline">TwiX™</Link>. All Rights Reserved.
+>>>>>>> a177e93 (feat : fix pour le merge)
                 </span>
             </div>
         </footer>

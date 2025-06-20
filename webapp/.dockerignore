@@ -1,4 +1,12 @@
 node_modules
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+package-lock.json
+npm-debug.log
+uploads
+=======
+>>>>>>> a177e93 (feat : fix pour le merge)
 .next
 .flowbite-react
 .swc

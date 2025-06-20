@@ -8,7 +8,10 @@ import Footer from "../comp/Footer";
 import Header from "../comp/Header";
 import MobileNavbar from "../comp/MobileNavbar";
 import { PostsList } from "../comp/PostsList";
+<<<<<<< HEAD
 import { getPosts } from "../../services/postsServices";
+=======
+>>>>>>> a177e93 (feat : fix pour le merge)
 
 export default function HomePage() {
   const [headerStyle, setHeaderStyle] = useState({ opacity: 1, transform: "translateY(0)" });
@@ -16,7 +19,10 @@ export default function HomePage() {
   const [sidebarTop, setSidebarTop] = useState(64);
   const headerRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
+<<<<<<< HEAD
   const [posts, setPosts] = useState([]);
+=======
+>>>>>>> a177e93 (feat : fix pour le merge)
 
   useEffect(() => {
     if (headerRef.current) {
@@ -47,14 +53,21 @@ export default function HomePage() {
   }, [headerHeight]);
 
   useEffect(() => {
+<<<<<<< HEAD
     function handleResize() {
       setIsMobile(window.innerWidth < 768);
+=======
+    // Fonction pour vérifier la largeur de l'écran
+    function handleResize() {
+      setIsMobile(window.innerWidth < 768); // 768px = breakpoint "md"
+>>>>>>> a177e93 (feat : fix pour le merge)
     }
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+<<<<<<< HEAD
   useEffect(() => {
     async function fetchPosts() {
       try {
@@ -67,6 +80,8 @@ export default function HomePage() {
     fetchPosts();
   }, []);
 
+=======
+>>>>>>> a177e93 (feat : fix pour le merge)
   return (
     <div className="relative min-h-screen bg-seasalt">
       {/* Header */}
@@ -84,7 +99,11 @@ export default function HomePage() {
           className="hidden md:block fixed left-0 w-64 z-40 transition-all duration-300"
           style={{ top: `${sidebarTop}px`, height: `calc(100vh - ${sidebarTop}px)` }}
         >
+<<<<<<< HEAD
           <Navbar sidebarTop={sidebarTop} />
+=======
+          <Navbar />
+>>>>>>> a177e93 (feat : fix pour le merge)
         </div>
 
         {/* Sidebar droite (desktop/tablette uniquement) */}
@@ -108,7 +127,11 @@ export default function HomePage() {
           <Post />
           <hr className="mt-7 text-rich-black" />
           <div className="mt-8 mb-4">
+<<<<<<< HEAD
             <PostsList posts={posts} /> {/* <-- Utilise les vrais posts */}
+=======
+            <PostsList />
+>>>>>>> a177e93 (feat : fix pour le merge)
           </div>
           <Footer>
             <span>© {new Date().getFullYear()} Mon Footer Personnalisé</span>
