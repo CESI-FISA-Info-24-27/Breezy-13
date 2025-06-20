@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { HiMenu } from "react-icons/hi";
+import { HiMenu, HiSearch } from "react-icons/hi";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -42,6 +42,7 @@ export default function Header() {
       {/* Barre de recherche centrée */}
       <form className="flex items-center flex-1 justify-center max-w-md mx-8">
         <div className="relative w-full">
+          <HiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-celestial-blue text-xl pointer-events-none" />
           <input
             type="text"
             placeholder="Rechercher..."

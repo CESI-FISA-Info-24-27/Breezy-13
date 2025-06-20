@@ -17,10 +17,11 @@ export default function HomePage() {
   const [isMobile, setIsMobile] = useState(false);
 
   const demoPosts = [
-      { _id: "1", username: "elonmuck", avatar: "/logo.png", content: "Achetez mes voitures !" , date: "2023-10-01T12:00:00Z" },
-      { _id: "2", username: "elonmuck", avatar: "/logo.png", content: "Windows c'est mieux." , date: "2023-10-01T12:00:00Z" },
-      { _id: "3", username: "elonmuck", avatar: "/logo.png", content: "TwiX c'était mieux avant." , date: "2023-10-01T12:00:00Z" },
-      { _id: "4", username: "elonmuck", avatar: "/logo.png", content: "TwiX<Beak" , date: "2023-10-01T12:00:00Z" }
+      { _id: "1", username: "elonmuck", avatar: "/logo.png", content: "Achetez mes voitures !" , date: "2025-06-20T08:55:00Z" },
+      { _id: "2", username: "elonmuck", avatar: "/logo.png", content: "Windows c'est mieux." , date: "2025-06-20T04:00:00Z" },
+      { _id: "3", username: "elonmuck", avatar: "/logo.png", content: "TwiX c'était mieux avant." , date: "2025-06-19T08:00:00Z" },
+      { _id: "4", username: "elonmuck", avatar: "/logo.png", content: "TwiX<Beak" , date: "2025-04-01T12:00:00Z" },
+      { _id: "5", username: "elonmuck", avatar: "/logo.png", content: "TwiX<Beak" , date: "2023-04-01T12:00:00Z" }
     ];
 
   useEffect(() => {
