@@ -8,13 +8,15 @@ services:
       - "3000:3000"
     environment:
       - MONGO_URI=mongodb://mongodb:27017/breezy_bdd
-    depends_on:
-      - mongodb
+      - MONGODB_URI=mongodb://mongodb:27017/breezy_bdd
+      - PORT=3000
     volumes:
       - ./API:/app
       - node_modules_api:/app/node_modules
     networks:
       - backend
+    depends_on:
+      - mongodb
     command: ["./wait-for-it.sh", "mongodb", "27017", "npm", "run", "dev"]
 
   mongodb:
@@ -58,9 +60,10 @@ services:
     environment:
       - NODE_ENV=production
     networks:
-      - backend
+      - frontend
     depends_on:
       - api
+      - fileserver
 
 volumes:
   mongo_data:
@@ -68,4 +71,5 @@ volumes:
   fileserver_uploads:
 
 networks:
+  frontend:
   backend:
