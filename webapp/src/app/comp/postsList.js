@@ -9,10 +9,10 @@ export function PostsList({ posts }) {
 
   // Valeur par défaut pour tester si aucune prop n'est passée
   const demoPosts = [
-    { _id: "1", username: "eloncuck", avatar: "/logo.png", content: "Achetez mes voitures !" },
-    { _id: "2", username: "billgrates", avatar: "/logo.png", content: "Windows c'est mieux." },
-    { _id: "3", username: "terracist", avatar: "/logo.png", content: "TwiX c'était mieux avant." },
-    { _id: "4", username: "arkuni", avatar: "/logo.png", content: "TwiX<Beak" }
+    { _id: "1", username: "elonmuck", avatar: "/logo.png", content: "Achetez mes voitures !" },
+    { _id: "2", username: "billgates", avatar: "/logo.png", content: "Windows c'est mieux." },
+    { _id: "3", username: "terracid", avatar: "/logo.png", content: "TwiX c'était mieux avant." },
+    { _id: "4", username: "arkunir", avatar: "/logo.png", content: "TwiX<Beak" }
   ];
   const displayPosts = posts && posts.length > 0 ? posts : demoPosts;
 
@@ -55,10 +55,7 @@ export function PostsList({ posts }) {
               )}
             </span>
           </div>
-          {/* <hr className="border-[var(--color-celestial-blue)]/30" /> */
-          //Je sais pas si on la garde celle la
-          }
-          <div>
+          <div className="bg-white rounded-lg shadow p-4 mb-4">
             <span className="ms-5 me-5 w-full text-lg font-lg text-[var(--color-rich-black)]">
               {post.content}
             </span>

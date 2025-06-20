@@ -19,7 +19,7 @@ export default function Navbar() {
   const isHome = pathname === "/" || pathname === "/home-page";
   const isProfile = pathname === "/profil-page";
   const isNotifications = pathname === "/notifications-page";
-  const isMessages = pathname === "/messages-page";
+  const isMessages = pathname === "/messages";
 
   return (
     <nav className="h-screen w-64 flex flex-col min-h-screen px-4 py-6 bg-[var(--color-celestial-blue)] shadow-full">
@@ -89,7 +89,7 @@ export default function Navbar() {
         </li>
         <li>
           <Link
-            href="/messages-page"
+            href="/messages"
             className={`flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition ${
               isMessages
                 ? "bg-[var(--color-seasalt)] text-[var(--color-celestial-blue)] shadow"
@@ -105,11 +105,6 @@ export default function Navbar() {
           </Link>
         </li>
       </ul>
-      <div className="mt-8">
-        <button className="w-full flex items-center justify-center gap-3 px-4 py-2 rounded-lg bg-[var(--color-folly)] text-[var(--color-seasalt)] font-semibold hover:bg-[var(--color-sea-green)] transition shadow">
-          Déconnexion
-        </button>
-      </div>
     </nav>
   );
 }
