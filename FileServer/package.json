@@ -8,6 +8,7 @@
 <<<<<<< HEAD
     "start": "node start.js",
     "dev": "nodemon start.js",
+<<<<<<< HEAD
     "test": "node --max-old-space-size=256 --experimental-vm-modules node_modules/jest/bin/jest.js --forceExit",
 =======
     "start": "node server.js",
@@ -23,6 +24,9 @@
 =======
     "test": "node --max-old-space-size=256 --experimental-vm-modules node_modules/jest/bin/jest.js --forceExit",
 >>>>>>> 8d85f3f (feat : Test #39 #40)
+=======
+    "test": "node --max-old-space-size=256 --experimental-vm-modules node_modules/jest/bin/jest.js --forceExit --testTimeout=360000",
+>>>>>>> 81e4627 (feat : fix des tests automatiques #39 #44)
     "build": "babel . -d dist --ignore node_modules"
   },
   "type": "module",
