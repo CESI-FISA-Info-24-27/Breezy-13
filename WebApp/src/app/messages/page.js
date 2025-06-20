@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import Navbar from "../comp/Navbar";
-import MobileNavbar from "../comp/MobileNavbar";
-import Header from "../comp/Header";
-import Footer from "../comp/Footer";
+import Navbar from "../comp/navbar";
+import MobileNavbar from "../comp/mobileNavbar";
+import Header from "../comp/header";
+import Footer from "../comp/footer";
 import { GiphyFetch } from "@giphy/js-fetch-api";
 import { Grid } from "@giphy/react-components";
 
