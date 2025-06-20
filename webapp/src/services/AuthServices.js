@@ -17,13 +17,17 @@ export async function login(email, password, rememberMe = false) {
     }
 }
 
-export async function refreshToken() {
-    try {
+export async function refreshToken() 
+{
+    try 
+    {
         const res = await axios.post(REFRESH_URL, {}, { withCredentials: true });
         const newToken = res.data.token;
         Cookies.set("token", newToken);
         return newToken;
-    } catch {
+    } 
+    catch 
+    {
         window.location.href = LOGIN_URL;
         throw new Error("Session expirée");
     }
