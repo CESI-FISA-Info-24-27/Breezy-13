@@ -1,5 +1,7 @@
 node_modules
+uploads
+
 package-lock.json
 npm-debug.log
 file_server_api.Dockerfile
-uploads
+file_server_api.postman_collection.json

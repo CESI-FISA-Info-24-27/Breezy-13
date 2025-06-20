@@ -11,7 +11,15 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 
 const app = express();
+<<<<<<< Updated upstream
 const PORT = process.env.PORT; 
+=======
+
+app.use(cors({
+    origin: "http://localhost:3001",
+    credentials: true
+}));
+>>>>>>> Stashed changes
 
 // Middleware d'authentification
 const authenticateUser = (req, res, next) => {

@@ -2,7 +2,16 @@
 
 import Link from "next/link";
 import Image from "next/image";
+<<<<<<< Updated upstream
 import { useState } from "react";
+=======
+import { useRef, useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { createUser, updateUser } from "../../services/UsersServices";
+import { login } from "../../services/AuthServices";
+>>>>>>> Stashed changes
 
 export default function Register() {
   // Utilise un avatar par défaut en ligne

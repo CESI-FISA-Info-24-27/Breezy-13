@@ -1,0 +1,50 @@
+name: Test Web App
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "**"
+    paths:
+      - "WebApp/**"
+      - ".github/workflows/test_web_app.yml"
+  pull_request:
+    branches:
+      - "**"
+    paths:
+      - "WebApp/**"
+
+jobs:
+  test-web-app:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Check Docker and Docker Compose versions
+        run: |
+          docker --version
+          docker compose version
+
+      - name: Build and Start Web App
+        run: docker compose up -d --build webapp
+
+      - name: Show memory usage before test
+        run: free -h
+
+      - name: Run Web App Tests
+        id: test
+        run: docker compose exec -T webapp npm run test --trace-warning
+
+      - name: Show memory usage after test
+        run: free -h
+
+      - name: Tear down
+        if: always()
+        run: |
+          docker compose down --volumes
+          docker system prune -a -f

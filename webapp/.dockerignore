@@ -1,5 +1,15 @@
 node_modules
+<<<<<<< Updated upstream
 package-lock.json
 npm-debug.log
 file_server_api.Dockerfile
 uploads
+=======
+.next
+.flowbite-react
+.swc
+
+package-lock.json
+npm-debug.log
+breezy_webapp.Dockerfile
+>>>>>>> Stashed changes
