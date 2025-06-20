@@ -1,10 +1,10 @@
 import { HiUserGroup, HiDocumentText, HiChatAlt2 } from "react-icons/hi";
 import dynamic from "next/dynamic";
 import { useRef, useEffect, useState } from "react";
-import { getUsers } from "../../services/usersServices";
-import { getPosts } from "../../services/postsServices";
-import { getComments } from "../../services/commentsServices";
-import { getFollows } from "../../services/followsServices";
+import { getUsers } from "../../services/UsersServices";
+import { getPosts } from "../../services/PostsServices";
+import { getComments } from "../../services/CommentsServices";
+import { getFollows } from "../../services/FollowsServices";
 
 const ForceGraph2D = dynamic(
   () => import('react-force-graph-2d').then(mod => mod.default),

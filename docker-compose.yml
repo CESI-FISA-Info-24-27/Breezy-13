@@ -50,9 +50,9 @@ services:
     
   webapp:
     build:
-      context: ./webapp
+      context: ./WebApp
       dockerfile: breezy_webapp.Dockerfile
-    container_name: breezy-webapp
+    container_name: webapp
     ports:
       - "3001:3000"
     environment:

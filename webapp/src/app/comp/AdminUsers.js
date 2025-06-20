@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { HiSearch, HiUserRemove, HiUserAdd, HiPencil } from "react-icons/hi";
-import { getUsers, createUser, updateUser, deleteUser } from "../../services/usersServices";
-import { getRoles } from "../../services/rolesServices";
+import { getUsers, createUser, updateUser, deleteUser } from "../../services/UsersServices";
+import { getRoles } from "../../services/RolesServices";
 import Image from "next/image";
 import Cookies from "js-cookie";
 

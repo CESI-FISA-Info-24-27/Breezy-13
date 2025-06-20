@@ -44,7 +44,7 @@ export default function Header() {
         </button>
         {menuOpen && (
           <div className="absolute right-8 top-16 bg-white rounded shadow-lg py-2 w-40 z-50">
-            <Link href="/profilpage" className="block px-4 py-2 hover:bg-sea-green/10">Profil</Link>
+            <Link href="/profil-page" className="block px-4 py-2 hover:bg-sea-green/10">Profil</Link>
             <Link href="/logout" className="block px-4 py-2 hover:bg-folly/10">Déconnexion</Link>
           </div>
         )}

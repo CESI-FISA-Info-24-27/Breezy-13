@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { HiSearch, HiTrash } from "react-icons/hi";
-import { getComments, deleteComment } from "../../services/commentsServices";
+import { getComments, deleteComment } from "../../services/CommentsServices";
 
 function ConfirmModal({ open, onConfirm, onCancel, message }) {
   if (!open) return null;
