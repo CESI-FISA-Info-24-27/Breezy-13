@@ -11,6 +11,14 @@ const fieldsRequired = (requiredFields) => {
                 ) {
                     return;
                 }
+                // Exception : role_id n'est pas requis pour PATCH sur /users
+                if (
+                    field === "role_id" &&
+                    req.method === "PATCH" &&
+                    req.path.startsWith("/users")
+                ) {
+                    return;
+                }
                 if (!req.body[field]) {
                     missingFields.push(field);
                 }
