@@ -2,6 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { refreshToken } from "./AuthServices";
 =======
 import { refreshToken } from "./authService";
@@ -9,6 +10,9 @@ import { refreshToken } from "./authService";
 =======
 import { refreshToken } from "./AuthService";
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+import { refreshToken } from "./AuthService";
+>>>>>>> 7ea8f23 (feat : fix pour le merge)
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/posts`;
 

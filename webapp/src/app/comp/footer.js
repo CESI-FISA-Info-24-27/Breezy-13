@@ -32,6 +32,7 @@ export default function Footer() {
                 <span className="block text-xs text-seasalt sm:text-center dark:text-seasalt">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     © {year} <Link href="/home-page" className="hover:underline">TwiX™</Link>. All Rights Reserved.
 =======
                     © {year} <Link href="/#" className="hover:underline">TwiX™</Link>. All Rights Reserved.
@@ -39,6 +40,9 @@ export default function Footer() {
 =======
                     © {year} <Link href="/home-page" className="hover:underline">TwiX™</Link>. All Rights Reserved.
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+                    © {year} <Link href="/home-page" className="hover:underline">TwiX™</Link>. All Rights Reserved.
+>>>>>>> 7ea8f23 (feat : fix pour le merge)
                 </span>
             </div>
         </footer>

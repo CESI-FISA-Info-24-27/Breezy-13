@@ -112,11 +112,15 @@ export default function Header() {
 =======
           <div className="absolute right-8 top-16 bg-white rounded shadow-lg py-2 w-40 z-50">
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Link href="/profilpage" className="block px-4 py-2 hover:bg-sea-green/10">Profil</Link>
 >>>>>>> 31fcbf1 (Header trop classe)
 =======
             <Link href="/profil-page" className="block px-4 py-2 hover:bg-sea-green/10">Profil</Link>
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+            <Link href="/profil-page" className="block px-4 py-2 hover:bg-sea-green/10">Profil</Link>
+>>>>>>> 7ea8f23 (feat : fix pour le merge)
             <Link href="/logout" className="block px-4 py-2 hover:bg-folly/10">Déconnexion</Link>
           </div>
         )}

@@ -5,6 +5,7 @@ node_modules
 <<<<<<< Updated upstream
 package-lock.json
 npm-debug.log
+<<<<<<< HEAD
 uploads
 =======
 >>>>>>> a177e93 (feat : fix pour le merge)
@@ -26,3 +27,6 @@ breezy_webapp.Dockerfile
 =======
 
 >>>>>>> c6f2cca (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
+=======
+uploads
+>>>>>>> 7ea8f23 (feat : fix pour le merge)

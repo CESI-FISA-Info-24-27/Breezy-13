@@ -118,6 +118,7 @@ export default function Navbar() {
           <Link
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             href="/profil-page"
             className={`flex items-center gap-3 ${
               showNotifications ? "px-0 justify-center" : "px-4"
@@ -127,6 +128,9 @@ export default function Navbar() {
 =======
             href="/profil-page"
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+            href="/profil-page"
+>>>>>>> 7ea8f23 (feat : fix pour le merge)
             className={`flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition ${
 >>>>>>> b2fa2f6 (Debut de suppression de flowbite)
               isProfile

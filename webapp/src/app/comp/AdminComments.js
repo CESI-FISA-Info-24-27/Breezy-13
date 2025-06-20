@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 <<<<<<< HEAD
 import { HiSearch, HiTrash } from "react-icons/hi";
 import { getComments, deleteComment } from "../../services/CommentsServices";
+<<<<<<< HEAD
 =======
 import { HiSearch, HiTrash, HiPencil } from "react-icons/hi";
 import { getComments, deleteComment, updateComment } from "../../services/commentsServices";
@@ -48,6 +49,8 @@ import { getComments, deleteComment } from "../../services/commentsServices";
 =======
 import { getComments, deleteComment } from "../../services/CommentsServices";
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+>>>>>>> 7ea8f23 (feat : fix pour le merge)
 
 function ConfirmModal({ open, onConfirm, onCancel, message }) {
   if (!open) return null;

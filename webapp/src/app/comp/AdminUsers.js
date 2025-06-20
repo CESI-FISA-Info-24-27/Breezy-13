@@ -3,6 +3,7 @@ import { HiSearch, HiUserRemove, HiUserAdd, HiPencil } from "react-icons/hi";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { getUsers, createUser, updateUser, deleteUser } from "../../services/UsersServices";
 import { getRoles } from "../../services/RolesServices";
 import Image from "next/image";
@@ -72,6 +73,10 @@ import { getRoles } from "../../services/rolesServices";
 import { getUsers, createUser, updateUser, deleteUser } from "../../services/UsersServices";
 import { getRoles } from "../../services/RolesServices";
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+import { getUsers, createUser, updateUser, deleteUser } from "../../services/UsersServices";
+import { getRoles } from "../../services/RolesServices";
+>>>>>>> 7ea8f23 (feat : fix pour le merge)
 import Image from "next/image";
 >>>>>>> 3b5e475 (fix: Correction balise img et  ' dans les titres)
 import Cookies from "js-cookie";

@@ -9,9 +9,12 @@ import Header from "../comp/Header";
 import MobileNavbar from "../comp/MobileNavbar";
 import { PostsList } from "../comp/PostsList";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { getPosts } from "../../services/postsServices";
 =======
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+>>>>>>> 7ea8f23 (feat : fix pour le merge)
 
 export default function HomePage() {
   const [headerStyle, setHeaderStyle] = useState({ opacity: 1, transform: "translateY(0)" });

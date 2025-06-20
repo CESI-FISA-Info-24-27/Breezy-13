@@ -3,8 +3,11 @@ import { HiSearch, HiTrash, HiPencil } from "react-icons/hi";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+>>>>>>> 7ea8f23 (feat : fix pour le merge)
 import { getPosts, updatePost, deletePost } from "../../services/PostsServices";
 import Image from "next/image";
 =======

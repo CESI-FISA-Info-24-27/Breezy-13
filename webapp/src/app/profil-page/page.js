@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Navbar from "../comp/Navbar";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import SideBarFollow from "../comp/SidebarFollow";
 import Footer from "../comp/Footer";
 import { PostsList } from "../comp/PostsList";
@@ -10,17 +11,23 @@ import Header from "../comp/Header";
 import MobileNavbar from "../comp/MobileNavbar";
 import ProfilPreview from "../comp/ProfilPreview";
 =======
+=======
+>>>>>>> 7ea8f23 (feat : fix pour le merge)
 import Footer from "../comp/Footer";
 import Header from "../comp/Header";
 import ProfilPreview from "../comp/ProfilPreview";
 import { PostsList } from "../comp/PostsList";
+<<<<<<< HEAD
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+>>>>>>> 7ea8f23 (feat : fix pour le merge)
 
 export default function HomePage() {
   const [headerStyle, setHeaderStyle] = useState({ opacity: 1, transform: "translateY(0)" });
   const [headerHeight, setHeaderHeight] = useState(64);
   const [sidebarTop, setSidebarTop] = useState(64);
   const headerRef = useRef(null);
+<<<<<<< HEAD
 <<<<<<< HEAD
   const [isMobile, setIsMobile] = useState(false);
 
@@ -33,6 +40,8 @@ export default function HomePage() {
     ];
 =======
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+>>>>>>> 7ea8f23 (feat : fix pour le merge)
 
   useEffect(() => {
     if (headerRef.current) {
@@ -63,6 +72,7 @@ export default function HomePage() {
   }, [headerHeight]);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   useEffect(() => {
     // Fonction pour vérifier la largeur de l'écran
     function handleResize() {
@@ -75,6 +85,8 @@ export default function HomePage() {
 
 =======
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+>>>>>>> 7ea8f23 (feat : fix pour le merge)
   return (
     <div className="relative min-h-screen bg-seasalt">
       {/* Header */}
@@ -88,14 +100,19 @@ export default function HomePage() {
 
       <div className="flex pt-[64px] md:pt-0">
 <<<<<<< HEAD
+<<<<<<< HEAD
         {/* Sidebar gauche (desktop/tablette uniquement) */}
 =======
         {/* Sidebar gauche */}
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+        {/* Sidebar gauche */}
+>>>>>>> 7ea8f23 (feat : fix pour le merge)
         <div
           className="hidden md:block fixed left-0 w-64 z-40 transition-all duration-300"
           style={{ top: `${sidebarTop}px`, height: `calc(100vh - ${sidebarTop}px)` }}
         >
+<<<<<<< HEAD
 <<<<<<< HEAD
           <Navbar sidebarTop={sidebarTop} />
         </div>
@@ -109,10 +126,14 @@ export default function HomePage() {
 =======
           <Navbar />
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+          <Navbar />
+>>>>>>> 7ea8f23 (feat : fix pour le merge)
         </div>
 
         {/* Contenu principal */}
         <main
+<<<<<<< HEAD
 <<<<<<< HEAD
           className="flex-1 md:ml-64 md:mr-64 p-4 sm:p-6 lg:p-8 pb-14 md:pb-0 transition-all duration-300 w-full"
           style={{
@@ -126,16 +147,22 @@ export default function HomePage() {
             <PostsList posts={demoPosts} />
           </div>
 =======
+=======
+>>>>>>> 7ea8f23 (feat : fix pour le merge)
           className="flex-1 md:ml-64 md:mr-64 p-4 sm:p-6 lg:p-8 pb-20 transition-all duration-300 w-full"
           style={{ paddingTop: `${sidebarTop + 16}px` }}
         >
           <ProfilPreview />
+<<<<<<< HEAD
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+>>>>>>> 7ea8f23 (feat : fix pour le merge)
           <Footer>
             <span>© {new Date().getFullYear()} Mon Footer Personnalisé</span>
           </Footer>
         </main>
       </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 
       {/* MobileNavbar affichée uniquement sur mobile */}
@@ -150,3 +177,8 @@ export default function HomePage() {
   );
 }
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+    </div>
+  );
+}
+>>>>>>> 7ea8f23 (feat : fix pour le merge)

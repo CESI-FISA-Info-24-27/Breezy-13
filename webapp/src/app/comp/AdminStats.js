@@ -3,12 +3,16 @@ import dynamic from "next/dynamic";
 import { useRef, useEffect, useState } from "react";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+>>>>>>> 7ea8f23 (feat : fix pour le merge)
 import { getUsers } from "../../services/UsersServices";
 import { getPosts } from "../../services/PostsServices";
 import { getComments } from "../../services/CommentsServices";
 import { getFollows } from "../../services/FollowsServices";
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 import { getUsers } from "../../services/usersServices";
@@ -18,6 +22,8 @@ import { getFollows } from "../../services/followsServices";
 >>>>>>> bbfb259 (Component pour la page admin #22)
 =======
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+>>>>>>> 7ea8f23 (feat : fix pour le merge)
 
 const ForceGraph2D = dynamic(
   () => import('react-force-graph-2d').then(mod => mod.default),
