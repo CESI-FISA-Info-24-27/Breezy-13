@@ -16,13 +16,26 @@ import {
 
 export default function Navbar() {
   const pathname = usePathname();
-  const isHome = pathname === "/" || pathname === "/homepage";
-  const isProfile = pathname === "/profilpage";
-  const isNotifications = pathname === "/notifiationspage";
+  const isHome = pathname === "/" || pathname === "/home-page";
+  const isProfile = pathname === "/profil-page";
+  const isNotifications = pathname === "/notifications-page";
   const isMessages = pathname === "/messages";
 
   return (
     <nav className="h-screen w-64 flex flex-col min-h-screen px-4 py-6 bg-[var(--color-celestial-blue)] shadow-full">
+      <Link href="/home-page" className="flex items-center mb-7">
+        <Image
+          src="/logo.png"
+          alt="TwiX logo"
+          width={36}
+          height={36}
+          className="rounded-full"
+        />
+        <span className="ml-4 text-2xl font-extrabold tracking-tight text-[var(--color-seasalt)]">
+          TwiX
+        </span>
+      </Link>
+      <hr className="border-[var(--color-seasalt)] mb-6" />
       <ul className="flex-1 flex flex-col gap-2">
         <li>
           <Link
@@ -56,7 +69,7 @@ export default function Navbar() {
         </li>
         <li>
           <Link
-            href="/notifiationspage"
+            href="/notifications-page"
             className={`flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition relative ${
               isNotifications
                 ? "bg-[var(--color-seasalt)] text-[var(--color-celestial-blue)] shadow"

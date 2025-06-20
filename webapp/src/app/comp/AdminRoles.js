@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { HiSearch, HiPencil, HiPlus, HiTrash } from "react-icons/hi";
-import { getRoles, createRole, updateRole, deleteRole } from "../../services/rolesServices";
+import { getRoles, createRole, updateRole, deleteRole } from "../../services/RolesServices";
 
 // Fonction utilitaire pour compléter les permissions manquantes
 function buildCompletePermissions(partialPermissions) {

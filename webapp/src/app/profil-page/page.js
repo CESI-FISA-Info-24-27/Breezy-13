@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import Navbar from "../comp/navbar";
-import SideBarFollow from "../comp/sidebarFollow";
-import Footer from "../comp/footer";
-import { PostsList } from "../comp/postsList";
-import Header from "../comp/header";
-import MobileNavbar from "../comp/mobileNavbar";
-import ProfilPreview from "../comp/profilPreview";
+import Navbar from "../comp/Navbar";
+import SideBarFollow from "../comp/SidebarFollow";
+import Footer from "../comp/Footer";
+import { PostsList } from "../comp/PostsList";
+import Header from "../comp/Header";
+import MobileNavbar from "../comp/MobileNavbar";
+import ProfilPreview from "../comp/ProfilPreview";
 
 export default function HomePage() {
   const [headerStyle, setHeaderStyle] = useState({ opacity: 1, transform: "translateY(0)" });
