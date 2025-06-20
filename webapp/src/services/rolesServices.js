@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { refreshToken } from "./AuthServices";
+import { refreshToken } from "./authServices";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/roles`;
 

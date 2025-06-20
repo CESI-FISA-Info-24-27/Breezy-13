@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { refreshToken } from "./AuthServices";
+import { refreshToken } from "./authServices";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/users`;
 
@@ -21,9 +21,16 @@ async function withAuthRetry(requestFn) {
   }
 }
 
-export async function getUsers() {
+export async function getUsers(filters = {}) {
+  // Nettoie les filtres pour ne garder que les valeurs définies et non vides
+  const params = Object.fromEntries(
+    Object.entries(filters).filter(
+      ([, value]) => value !== undefined && value !== null && value !== ""
+    )
+  );
+
   return withAuthRetry(headers =>
-    axios.get(API_URL, { headers }).then(res => res.data)
+    axios.get(API_URL, { headers, params }).then(res => res.data)
   );
 }
 

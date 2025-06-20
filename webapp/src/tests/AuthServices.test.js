@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { login, refreshToken } from '../services/AuthServices';
+import { login, refreshToken } from '../services/authServices';
 
 jest.mock('axios');
 jest.mock('js-cookie');

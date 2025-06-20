@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { refreshToken } from "./authServices";
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/comments`;
+const API_URL = process.env.NEXT_PUBLIC_FILE_SERVER_URL;
 
 function getAuthHeader() {
   const token = Cookies.get("token") || localStorage.getItem("token");
@@ -21,26 +21,23 @@ async function withAuthRetry(requestFn) {
   }
 }
 
-export async function getComments() {
+export async function getFile(fileName) {
   return withAuthRetry(headers =>
-    axios.get(API_URL, { headers }).then(res => res.data)
+    axios.get(`${API_URL}/files/${fileName}`, { headers, responseType: 'blob' })
+      .then(res => res.data)
   );
 }
 
-export async function createComment(comment) {
-  return withAuthRetry(headers =>
-    axios.post(API_URL, comment, { headers }).then(res => res.data)
-  );
-}
+export async function uploadFile(file) {
+  const formData = new FormData();
+  formData.append('file', file);
 
-export async function updateComment(id, comment) {
   return withAuthRetry(headers =>
-    axios.patch(`${API_URL}/${id}`, comment, { headers }).then(res => res.data)
-  );
-}
-
-export async function deleteComment(id) {
-  return withAuthRetry(headers =>
-    axios.delete(`${API_URL}/${id}`, { headers }).then(res => res.data)
+    axios.post(`${API_URL}/upload`, formData, {
+      headers: {
+        ...headers,
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then(res => res.data)
   );
 }
