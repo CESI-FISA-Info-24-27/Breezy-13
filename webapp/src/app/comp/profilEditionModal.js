@@ -44,7 +44,7 @@ export default function ProfilEditionModal({ isOpen, onClose, user }) {
         onClick={e => e.stopPropagation()}
       >
         <h2 className="text-base sm:text-xl font-bold mb-4 text-celestial-blue">Éditer le profil</h2>
-        <hr className="w-25/26 mx-auto h-0.5 border-0 bg-rich-black my-5 rounded" />
+        <hr className="w-49/50 mx-auto h-0.5 border-0 bg-rich-black my-5 rounded" />
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
             <label className="block text-sm font-semibold mb-1 text-celestial-blue-dark">Nom d'utilisateur</label>
