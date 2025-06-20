@@ -5,6 +5,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Navbar from "../comp/Navbar";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import SideBarFollow from "../comp/SidebarFollow";
 import Footer from "../comp/Footer";
 import { PostsList } from "../comp/PostsList";
@@ -14,14 +15,28 @@ import ProfilPreview from "../comp/ProfilPreview";
 =======
 =======
 >>>>>>> 7ea8f23 (feat : fix pour le merge)
+=======
+<<<<<<< HEAD:WebApp/src/app/profil-page/page.js
+>>>>>>> 02ede59 (feat : fix pour le merge)
 import Footer from "../comp/Footer";
 import Header from "../comp/Header";
 import ProfilPreview from "../comp/ProfilPreview";
 import { PostsList } from "../comp/PostsList";
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> a177e93 (feat : fix pour le merge)
 =======
 >>>>>>> 7ea8f23 (feat : fix pour le merge)
+=======
+=======
+import SideBarFollow from "../comp/SidebarFollow";
+import Footer from "../comp/Footer";
+import { PostsList } from "../comp/PostsList";
+import Header from "../comp/Header";
+import MobileNavbar from "../comp/MobileNavbar";
+import ProfilPreview from "../comp/ProfilPreview";
+>>>>>>> f818b6b (feat : fix pour le merge):webapp/src/app/profil-page/page.js
+>>>>>>> 02ede59 (feat : fix pour le merge)
 
 export default function HomePage() {
   const [headerStyle, setHeaderStyle] = useState({ opacity: 1, transform: "translateY(0)" });

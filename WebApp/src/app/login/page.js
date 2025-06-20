@@ -9,6 +9,7 @@ import { useState } from 'react';
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { login } from '../../services/AuthServices';
 =======
 import { login } from '../../services/authService';
@@ -25,6 +26,13 @@ import { login } from '@/services/AuthService';
 =======
 import { login } from '@/services/AuthService';
 >>>>>>> d1f66a5 (feat : modification des noms des routes pour avoir une bonne nomenclature de projet (PascalCase pour les composants / services / noms de dossiers principaux des différentes apps + kebab-case pour les pages))
+=======
+<<<<<<< HEAD:WebApp/src/app/login/page.js
+import { login } from '@/services/AuthServices';
+=======
+import { login } from '@/services/AuthService';
+>>>>>>> f818b6b (feat : fix pour le merge):webapp/src/app/login/page.js
+>>>>>>> 02ede59 (feat : fix pour le merge)
 import { useRouter } from 'next/navigation';
 
 export default function Login() {

@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { refreshToken } from "./AuthServices";
 =======
 import { refreshToken } from "./authService";
@@ -21,6 +22,13 @@ import { refreshToken } from "./AuthService";
 =======
 import { refreshToken } from "./AuthServices";
 >>>>>>> 399dbca (feat : Mise en place des tests unitaires sur la web app #42)
+=======
+<<<<<<< HEAD:WebApp/src/services/PostsServices.js
+import { refreshToken } from "./AuthServices";
+=======
+import { refreshToken } from "./AuthService";
+>>>>>>> f818b6b (feat : fix pour le merge):webapp/src/services/postsServices.js
+>>>>>>> 02ede59 (feat : fix pour le merge)
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/posts`;
 
