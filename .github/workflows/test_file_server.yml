@@ -50,6 +50,7 @@ jobs:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       - name: Run File Server tests
 <<<<<<< HEAD
         run: docker compose exec -T fileserver npm run test --trace-warning
@@ -63,6 +64,9 @@ jobs:
         run: docker compose exec -T fileserver npm run test --trace-warning
 >>>>>>> 8d85f3f (feat : Test #39 #40)
 =======
+=======
+      - name: Run File Server Tests
+>>>>>>> 30c5cf8 (Fix)
         id: test
         run: docker compose exec -T fileserver npm run test --trace-warning
 

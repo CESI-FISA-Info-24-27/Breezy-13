@@ -14,6 +14,7 @@ dotenv.config();
 
 const app = express();
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 app.use(cors({
     origin: "http://localhost:3001", // autorise ton front
@@ -21,11 +22,17 @@ app.use(cors({
 }));
 =======
 >>>>>>> 40b0c8e (feat : réglage tests unitaires sur le serveur de fichier #39 #40)
+=======
+<<<<<<< Updated upstream
+const PORT = process.env.PORT; 
+=======
+>>>>>>> 30c5cf8 (Fix)
 
 app.use(cors({
-    origin: "http://localhost:3001", // autorise ton front
+    origin: "http://localhost:3001",
     credentials: true
 }));
+>>>>>>> Stashed changes
 
 // Middleware d'authentification
 const authenticateUser = (req, res, next) => {
