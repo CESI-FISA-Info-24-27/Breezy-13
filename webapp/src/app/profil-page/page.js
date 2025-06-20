@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import Navbar from "../comp/navbar";
-import Footer from "../comp/footer";
-import Header from "../comp/header";
-import ProfilPreview from "../comp/profilPreview";
+import Navbar from "../comp/Navbar";
+import Footer from "../comp/Footer";
+import Header from "../comp/Header";
+import ProfilPreview from "../comp/ProfilPreview";
+import { PostsList } from "../comp/PostsList";
 
 export default function HomePage() {
   const [headerStyle, setHeaderStyle] = useState({ opacity: 1, transform: "translateY(0)" });
