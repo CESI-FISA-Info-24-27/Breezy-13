@@ -10,8 +10,12 @@ import { HiPencil } from "react-icons/hi";
 =======
 import { useState } from "react";
 import { HiPencil } from "react-icons/hi";
+<<<<<<< HEAD
 import ProfilEditionModal from "./profilEditionModal";
 >>>>>>> d77b3f2 (Modal de modif et modif affichage horodatage post)
+=======
+import ProfilEditionModal from "./ProfilEditionModal";
+>>>>>>> 926e47e (Je sais plus mais cest bien)
 
 export default function ProfilPreview() {
     const [modalOpen, setModalOpen] = useState(false);
