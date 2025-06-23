@@ -35,8 +35,14 @@ jobs:
       - name: Build and Start API
         run: docker compose up -d --build api
 
+      - name: Show memory usage before test
+        run: docker compose exec -T api free -h
+
       - name: Run API tests
         run: docker compose exec -T api ./wait-for-it.sh mongodb 27017 npm run test --trace-warning
+
+      - name: Show memory usage after test
+        run: docker compose exec -T api free -h
 
       - name: Tear down
         if: always()

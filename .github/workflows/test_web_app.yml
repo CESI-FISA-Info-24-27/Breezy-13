@@ -34,13 +34,13 @@ jobs:
         run: docker compose up -d --build webapp
 
       - name: Show memory usage before test
-        run: free -h
+        run: docker compose exec -T webapp free -h
 
       - name: Run Web App Tests
         run: docker compose exec -T webapp npm run test --trace-warning
 
       - name: Show memory usage after test
-        run: free -h
+        run: docker compose exec -T webapp free -h
 
       - name: Tear down
         if: always()
