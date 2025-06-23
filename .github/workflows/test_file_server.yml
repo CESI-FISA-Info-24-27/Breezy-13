@@ -46,7 +46,7 @@ jobs:
         run: docker compose up -d --build fileserver
 
       - name: Show memory usage before test
-        run: free -h
+        run: docker compose exec -T fileserver free -h
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -54,6 +54,7 @@ jobs:
       - name: Run File Server tests
 <<<<<<< HEAD
         run: docker compose exec -T fileserver npm run test --trace-warning
+<<<<<<< HEAD
 =======
       - name: Run File Server Tests
 <<<<<<< HEAD
@@ -81,8 +82,11 @@ jobs:
 =======
         
 >>>>>>> d60b17c (feat : modification tests unitaires file server #39)
+=======
+
+>>>>>>> 0548374 (feat : vérification de la mémoire disponible dans le conteneur de chaque test #39)
       - name: Show memory usage after test
-        run: free -h
+        run: docker compose exec -T fileserver free -h
 
       - name: Tear down
         if: always()
