@@ -30,6 +30,8 @@ services:
       - MONGO_URI=mongodb://mongodb:27017/breezy_bdd
     volumes:
       - mongo_data:/data/db
+    depends_on:
+      - fileserver
     networks:
       - backend
 
@@ -47,8 +49,6 @@ services:
       - fileserver_uploads:/app/uploads
     networks:
       - backend
-    depends_on:
-      - api
     
   webapp:
     build:

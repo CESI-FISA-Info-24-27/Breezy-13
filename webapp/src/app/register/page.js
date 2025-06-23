@@ -2,16 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
-<<<<<<< Updated upstream
-import { useState } from "react";
-=======
 import { useRef, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { createUser, updateUser } from "../../services/UsersServices";
 import { login } from "../../services/AuthServices";
->>>>>>> Stashed changes
+import { uploadFile } from "../../services/fileServerService";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -28,11 +25,13 @@ export default function Register() {
   const fileInputRef = useRef(null);
   const [avatarError, setAvatarError] = useState("");
 
-
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
   const [passwordError, setPasswordError] = useState("");
+
+  // Utilise la variable d'environnement pour l'URL du serveur de fichiers
+  const FILE_SERVER_URL = process.env.NEXT_PUBLIC_FILE_SERVER_URL;
 
   function handleAvatarChange(e) {
     const file = e.target.files[0];
@@ -61,6 +60,7 @@ export default function Register() {
     return data.path; // ex: "http://localhost:5000/files/1749865024759-123915179.png"
   }
 
+
   function handleChange(e) {
     const { name, value } = e.target;
     setForm(f => ({ ...f, [name]: value }));
@@ -69,6 +69,8 @@ export default function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
+
+    // Validation des mots de passe
     if (!form.password || form.password.length < 8) {
       setPasswordError("Le mot de passe doit contenir au moins 8 caractères.");
       return;
@@ -80,7 +82,7 @@ export default function Register() {
     setPasswordError("");
 
     try {
-      // 1. Création du compte avec avatar par défaut
+      // Création de l'utilisateur avec avatar par défaut
       await createUser({
         username: form.username,
         password: form.password,
@@ -89,53 +91,45 @@ export default function Register() {
         bio: form.bio,
       });
 
-      // 2. Connexion automatique après inscription
-      const loginRes = await login(form.email, form.password, true);
-      const token = loginRes.token;
+      // Connexion automatique
+      const { token } = await login(form.email, form.password, true);
       Cookies.set("token", token, { path: "/" });
 
-      // Vérifie la structure de loginRes pour récupérer l'id utilisateur
-      const userId =
-        loginRes.user?._id ||
-        loginRes.user?.id ||
-        loginRes.id ||
-        loginRes.userId;
+      // Récupération de l'utilisateur créé (filtre par email pour être sûr)
+      const users = await getUsers({ email: form.email });
+      const user = Array.isArray(users) ? users[0] : users;
+      if (!user) throw new Error("Utilisateur non trouvé après inscription.");
 
-      if (!userId) {
-        throw new Error("Impossible de récupérer l'identifiant utilisateur après connexion.");
-      }
-
-      // 3. Upload de l'avatar si un fichier a été sélectionné
+      // Upload de l'avatar si sélectionné
       let avatarPath = "/default-avatar.png";
       if (avatarFile) {
-        const formData = new FormData();
-        formData.append("file", avatarFile);
-
-        const uploadRes = await fetch("http://localhost:5000/upload", {
-          method: "POST",
-          body: formData,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!uploadRes.ok) throw new Error("Erreur upload avatar");
-        const uploadData = await uploadRes.json();
-        avatarPath = uploadData.path;
-
-        // 4. Mise à jour du profil utilisateur avec le nouvel avatar
-        await updateUser(userId, { avatar: avatarPath });
+        const uploadData = await uploadFile(avatarFile);
+        // On récupère le chemin complet depuis l'API, puis on le transforme en URL utilisable
+        if (uploadData?.filePath || uploadData?.path) {
+          // On gère les deux cas selon la réponse de l'API
+          const fileName = (uploadData.filePath || uploadData.path).split("/").pop();
+          avatarPath = `${FILE_SERVER_URL}/files/${fileName}`;
+        }
       }
+
+      // Mise à jour du profil utilisateur avec le nouvel avatar
+      await updateUser(user._id, {
+        username: user.username,
+        email: user.email,
+        password: user.password,
+        avatar: avatarPath,
+        bio: form.bio,
+        role_id: user.role_id
+      });
 
       setSuccessMsg("Compte créé avec succès ! Redirection vers la connexion...");
-      setTimeout(() => {
-        router.push("/login");
-      }, 2000);
+      setTimeout(() => router.push("/login"), 2000);
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.error) {
-        alert("Erreur : " + error.response.data.error);
-      } else {
-        alert("Erreur lors de la création de l'utilisateur");
-      }
+      const msg =
+        error?.response?.data?.error ||
+        error?.message ||
+        "Erreur lors de la création de l'utilisateur";
+      alert("Erreur : " + msg);
     }
   };
 
@@ -214,7 +208,7 @@ export default function Register() {
               pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$"
               title="Au moins 8 caractères, dont une lettre et un chiffre"
               autoComplete="new-password"
-              onChange={e => setPassword(e.target.value)}
+              onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
             />
             <p className="text-xs text-rich-black/60 mt-1">
               Au moins 8 caractères, une lettre et un chiffre.
@@ -232,7 +226,7 @@ export default function Register() {
               className="w-full p-3 rounded-lg border border-sea-green/40 bg-seasalt text-rich-black placeholder:text-rich-black/40 focus:ring-2 focus:ring-sea-green transition-all duration-200 outline-none"
               placeholder="Répétez le mot de passe"
               required
-              onChange={e => setConfirmPassword(e.target.value)}
+              onChange={e => setForm(f => ({ ...f, confirmPassword: e.target.value }))}
             />
             {passwordError && (
               <p className="text-xs text-folly mt-1">{passwordError}</p>
@@ -284,6 +278,7 @@ export default function Register() {
               className="w-full p-3 rounded-lg border border-sea-green/40 bg-seasalt text-rich-black placeholder:text-rich-black/40 focus:ring-2 focus:ring-sea-green transition-all duration-200 outline-none resize-none"
               placeholder="Parlez-nous un peu de vous..."
               maxLength={200}
+              onChange={handleChange}
             />
           </div>
           <button
