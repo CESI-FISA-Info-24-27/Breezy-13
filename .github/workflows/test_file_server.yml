@@ -72,11 +72,15 @@ jobs:
 =======
 >>>>>>> 81e4627 (feat : fix des tests automatiques #39 #44)
         run: docker compose exec -T fileserver npm run test --trace-warning
+<<<<<<< HEAD
 
       - name: Show memory usage after test
         run: free -h
 >>>>>>> 188b741 (feat : ajout vérification mémoire utilisée sur chaque test #39 #40)
 
+=======
+        
+>>>>>>> d60b17c (feat : modification tests unitaires file server #39)
       - name: Show memory usage after test
         run: free -h
 
