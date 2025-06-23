@@ -7,12 +7,14 @@ on:
       - "**"
     paths:
       - "FileServer/**"
+      - "docker-compose.yml"
       - ".github/workflows/test_file_server.yml"
   pull_request:
     branches:
       - "**"
     paths:
       - "FileServer/**"
+      - "docker-compose.yml"
 
 jobs:
   test-file-server:
@@ -44,12 +46,6 @@ jobs:
 
       - name: Build and Start File Server
         run: docker compose up -d --build fileserver
-
-      - name: Check containers status after start
-        run: docker ps -a
-
-      - name: Show fileserver logs after start
-        run: docker compose logs fileserver
 
       - name: Show memory usage before test
         run: docker compose exec -T fileserver free -h

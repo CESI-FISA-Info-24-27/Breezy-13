@@ -7,12 +7,14 @@ on:
       - "**"
     paths:
       - "WebApp/**"
+      - "docker-compose.yml"
       - ".github/workflows/test_web_app.yml"
   pull_request:
     branches:
       - "**"
     paths:
       - "WebApp/**"
+      - "docker-compose.yml"
 
 jobs:
   test-web-app:
