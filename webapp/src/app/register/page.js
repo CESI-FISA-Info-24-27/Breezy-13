@@ -3,10 +3,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import { createUser, updateUser, getUsers } from "../../services/usersServices";
-import { login } from "../../services/authServices";
+import { createUser, updateUser } from "../../services/UsersServices";
+import { login } from "../../services/AuthServices";
 import { uploadFile } from "../../services/fileServerService";
 
 export default function Register() {
@@ -23,6 +24,7 @@ export default function Register() {
   const [avatarFile, setAvatarFile] = useState(null);
   const fileInputRef = useRef(null);
   const [avatarError, setAvatarError] = useState("");
+
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
@@ -39,6 +41,26 @@ export default function Register() {
     }
   }
 
+  async function uploadAvatar() {
+    if (!avatarFile) return "";
+    const formData = new FormData();
+    formData.append("file", avatarFile);
+
+    const token = Cookies.get("token") || localStorage.getItem("token");
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+    const res = await fetch("http://localhost:5000/upload", {
+      method: "POST",
+      body: formData,
+      credentials: "include",
+      headers,
+    });
+    if (!res.ok) throw new Error("Erreur upload avatar");
+    const data = await res.json();
+    return data.path; // ex: "http://localhost:5000/files/1749865024759-123915179.png"
+  }
+
+
   function handleChange(e) {
     const { name, value } = e.target;
     setForm(f => ({ ...f, [name]: value }));
@@ -46,6 +68,7 @@ export default function Register() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
 
     // Validation des mots de passe
     if (!form.password || form.password.length < 8) {

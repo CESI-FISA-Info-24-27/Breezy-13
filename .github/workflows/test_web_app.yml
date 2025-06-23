@@ -1,4 +1,4 @@
-name: Test File Server
+name: Test Web App
 
 on:
   workflow_dispatch:
@@ -6,18 +6,18 @@ on:
     branches:
       - "**"
     paths:
-      - "FileServer/**"
+      - "WebApp/**"
       - "docker-compose.yml"
-      - ".github/workflows/test_file_server.yml"
+      - ".github/workflows/test_web_app.yml"
   pull_request:
     branches:
       - "**"
     paths:
-      - "FileServer/**"
+      - "WebApp/**"
       - "docker-compose.yml"
 
 jobs:
-  test-file-server:
+  test-web-app:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -32,17 +32,17 @@ jobs:
           docker --version
           docker compose version
 
-      - name: Build and Start File Server
-        run: docker compose up -d --build fileserver
+      - name: Build and Start Web App
+        run: docker compose up -d --build webapp
 
       - name: Show memory usage before test
-        run: docker compose exec -T fileserver free -h
+        run: docker compose exec -T webapp free -h
 
-      - name: Run File Server Tests
-        run: docker compose exec -T fileserver npm run test --trace-warning
+      - name: Run Web App Tests
+        run: docker compose exec -T webapp npm run test --trace-warning
 
       - name: Show memory usage after test
-        run: docker compose exec -T fileserver free -h
+        run: docker compose exec -T webapp free -h
 
       - name: Tear down
         if: always()

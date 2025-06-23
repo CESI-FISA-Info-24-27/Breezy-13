@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import * as AuthService from '../services/authServices';
+import * as AuthService from '../services/AuthServices';
+
 import {
   getPosts,
   createPost,

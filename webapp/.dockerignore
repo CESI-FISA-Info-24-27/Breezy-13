@@ -1,4 +1,12 @@
-node_modules
 package-lock.json
 .swc
 npm-debug.log
+uploads
+
+.next
+.flowbite-react
+.swc
+
+package-lock.json
+npm-debug.log
+breezy_webapp.Dockerfile

@@ -11,6 +11,7 @@ const fieldsRequired = (requiredFields) => {
                 ) {
                     return;
                 }
+              
                 // Exception : role_id n'est pas requis pour PATCH sur /users
                 if (
                     field === "role_id" &&
@@ -19,6 +20,7 @@ const fieldsRequired = (requiredFields) => {
                 ) {
                     return;
                 }
+              
                 if (!req.body[field]) {
                     missingFields.push(field);
                 }
