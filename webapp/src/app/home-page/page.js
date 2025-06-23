@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import Navbar from "../comp/navbar";
+import Navbar from "../comp/Navbar";
 import Post from "../comp/post";
 import SideBarFollow from "../comp/sidebarFollow";
-import Footer from "../comp/footer";
-import Header from "../comp/header";
+import Footer from "../comp/Footer";
+import Header from "../comp/Header";
 import MobileNavbar from "../comp/mobileNavbar";
 import { PostsList } from "../comp/postsList";
 

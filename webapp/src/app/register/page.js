@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { createUser, updateUser, getUsers } from "../../services/usersServices";
 import { login } from "../../services/authServices";
-import { uploadFile } from "../../services/fileServerService";
+import { uploadFile } from "../../services/fileServerServices";
 
 export default function Register() {
   const [form, setForm] = useState({

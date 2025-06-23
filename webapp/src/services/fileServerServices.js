@@ -6,7 +6,7 @@ const API_URL = process.env.NEXT_PUBLIC_FILE_SERVER_URL;
 
 function getAuthHeader() {
   const token = Cookies.get("token") || localStorage.getItem("token");
-  return token ? { Authorization: `${token}` } : {};
+  return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
 async function withAuthRetry(requestFn) {
@@ -15,7 +15,7 @@ async function withAuthRetry(requestFn) {
   } catch (err) {
     if (err.response && err.response.status === 401) {
       const newToken = await refreshToken();
-      return await requestFn({ Authorization: `${newToken}` });
+      return await requestFn({ Authorization: `Bearer ${newToken}` });
     }
     throw err;
   }

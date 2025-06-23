@@ -1,38 +1,161 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import Navbar from "../comp/navbar";
+import Navbar from "../comp/Navbar";
 import MobileNavbar from "../comp/mobileNavbar";
-import Header from "../comp/header";
-import Footer from "../comp/footer";
+import Header from "../comp/Header";
+import { getMessages, createMessage } from "../../services/messagesServices";
+import { getUsers } from "../../services/usersServices";
+import { uploadFile, getFile } from "../../services/fileServerServices";
 import { GiphyFetch } from "@giphy/js-fetch-api";
 import { Grid } from "@giphy/react-components";
+import { FiImage, FiSend } from "react-icons/fi";
+import { FaRegSmile } from "react-icons/fa";
+import Cookies from "js-cookie";
 
-// key 8eiWtqYUvKoVmvw2ANUsAmF48I8tltjy
-const gf = new GiphyFetch(""); // Remplace par ta clé Giphy
+// Récupère l'id utilisateur courant (à adapter selon ton auth)
+function getCurrentUserId() {
+    const token = Cookies.get("token");
+    if (!token) return null;
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.userId || payload.id || null;
+}
+
+const gf = new GiphyFetch("8eiWtqYUvKoVmvw2ANUsAmF48I8tltjy");
+
+// Composant pour afficher une image sécurisée via le fileServerServices
+function SecureImage({ fileName, alt, className }) {
+    const [imgSrc, setImgSrc] = useState("/default-avatar.png");
+
+    useEffect(() => {
+        let isMounted = true;
+        if (!fileName) {
+            setImgSrc("/default-avatar.png");
+            return;
+        }
+        getFile(fileName)
+            .then(blob => {
+                if (isMounted) setImgSrc(URL.createObjectURL(blob));
+            })
+            .catch(() => {
+                if (isMounted) setImgSrc("/default-avatar.png");
+            });
+        return () => {
+            isMounted = false;
+            if (imgSrc && imgSrc.startsWith("blob:")) URL.revokeObjectURL(imgSrc);
+        };
+        // eslint-disable-next-line
+    }, [fileName]);
+
+    return (
+        <img
+            src={imgSrc}
+            alt={alt}
+            className={className}
+            style={{ objectFit: "cover" }}
+        />
+    );
+}
+
+// Composant pour afficher une vidéo sécurisée via le fileServerServices
+function SecureVideo({ fileName, className }) {
+    const [videoSrc, setVideoSrc] = useState(null);
+
+    useEffect(() => {
+        let isMounted = true;
+        if (!fileName) {
+            setVideoSrc(null);
+            return;
+        }
+        getFile(fileName)
+            .then(blob => {
+                if (isMounted) setVideoSrc(URL.createObjectURL(blob));
+            })
+            .catch(() => {
+                if (isMounted) setVideoSrc(null);
+            });
+        return () => {
+            isMounted = false;
+            if (videoSrc && videoSrc.startsWith("blob:")) URL.revokeObjectURL(videoSrc);
+        };
+        // eslint-disable-next-line
+    }, [fileName]);
+
+    if (!videoSrc) return null;
+    return (
+        <video
+            src={videoSrc}
+            controls
+            className={className}
+        />
+    );
+}
 
 function GifPicker({ onSelect, onClose }) {
+    const [search, setSearch] = useState("");
+    const fetchGifs = React.useCallback(
+        (offset) =>
+            search
+                ? gf.search(search, { offset, limit: 9 })
+                : gf.trending({ offset, limit: 9 }),
+        [search]
+    );
     return (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-4 shadow-lg max-w-lg w-full relative">
-                <button
-                    className="absolute top-2 right-4 text-folly font-bold text-2xl"
-                    onClick={onClose}
-                >
-                    ×
-                </button>
-                <Grid
-                    width={400}
-                    columns={3}
-                    fetchGifs={offset => gf.trending({ offset, limit: 9 })}
-                    onGifClick={gif => {
-                        onSelect(gif.images.fixed_height.url);
-                        onClose();
-                    }}
-                />
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div className="bg-[#23272a] rounded-2xl shadow-2xl p-4 max-w-lg w-full relative">
+                <div className="flex items-center mb-4 relative">
+                    <input
+                        className="flex-1 px-3 py-2 rounded-lg bg-[#2c2f33] text-white placeholder-gray-400 focus:outline-none"
+                        placeholder="Rechercher un GIF..."
+                        value={search}
+                        onChange={e => setSearch(e.target.value)}
+                    />
+                    <button
+                        className="ml-2 flex items-center justify-center w-8 h-8 rounded-full hover:bg-folly/20 transition"
+                        onClick={onClose}
+                        aria-label="Fermer"
+                        style={{ minWidth: 32, minHeight: 32 }}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-6 h-6 text-white"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                        >
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                    </button>
+                </div>
+                <div className="overflow-y-auto" style={{ maxHeight: 350 }}>
+                    <Grid
+                        key={search}
+                        width={400}
+                        columns={3}
+                        fetchGifs={fetchGifs}
+                        onGifClick={gif => {
+                            onSelect(gif.images.fixed_height.url);
+                            onClose();
+                        }}
+                        noLink
+                        hideAttribution
+                    />
+                </div>
             </div>
         </div>
     );
+}
+
+function timeAgo(date) {
+    const now = new Date();
+    const diff = Math.floor((now - new Date(date)) / 1000);
+    if (diff < 60) return "à l'instant";
+    if (diff < 3600) return `il y a ${Math.floor(diff / 60)} min`;
+    if (diff < 86400) return `il y a ${Math.floor(diff / 3600)} h`;
+    if (diff < 172800) return "hier";
+    return `${Math.floor(diff / 86400)} j`;
 }
 
 export default function MessagesPage() {
@@ -42,24 +165,53 @@ export default function MessagesPage() {
     const headerRef = useRef(null);
     const [isMobile, setIsMobile] = useState(false);
 
-    // Dummy data pour l'affichage
-    const conversations = [
-        { id: 1, user: "billgates", lastMessage: "À bientôt sur TwiX !" },
-        { id: 2, user: "elonmuck", lastMessage: "On se capte pour le projet ?" },
-        { id: 3, user: "arkunir", lastMessage: "Haha, bien vu !" }
-    ];
-    const messages = [
-        { from: "billgates", content: "Salut !", time: "10:00" },
-        { from: "moi", content: "Hello Bill !", time: "10:01" },
-        { from: "billgates", content: "À bientôt sur TwiX !", time: "10:02" }
-    ];
+    const [messages, setMessages] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [users, setUsers] = useState([]);
 
-    // Pour l'envoi de messages, images et GIFs
     const [message, setMessage] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
     const [selectedGif, setSelectedGif] = useState(null);
     const [showGifModal, setShowGifModal] = useState(false);
     const fileInputRef = useRef(null);
+
+    // Conversation sélectionnée (userId du destinataire)
+    const [selectedConv, setSelectedConv] = useState(null);
+
+    const userId = getCurrentUserId();
+
+    // Récupérer les messages de l'utilisateur courant
+    useEffect(() => {
+        async function fetchMsgs() {
+            setLoading(true);
+            try {
+                const msgsFrom = await getMessages({ from: userId });
+                const msgsTo = await getMessages({ to: userId });
+                const allMsgs = [...msgsFrom, ...msgsTo].filter(
+                    (msg, idx, arr) =>
+                        arr.findIndex(m => m._id === msg._id) === idx
+                );
+                setMessages(allMsgs);
+            } catch (e) { }
+            setLoading(false);
+        }
+        if (userId) fetchMsgs();
+    }, [userId]);
+
+    // Récupérer tous les utilisateurs pour afficher username/avatar
+    useEffect(() => {
+        async function fetchUsersList() {
+            try {
+                const res = await getUsers();
+                setUsers(res);
+            } catch (e) {}
+        }
+        fetchUsersList();
+    }, []);
+
+    function getUserInfo(id) {
+        return users.find(u => u._id === id) || {};
+    }
 
     function handleFileChange(e) {
         const file = e.target.files[0];
@@ -72,44 +224,68 @@ export default function MessagesPage() {
 
     async function handleSendMessage(e) {
         e.preventDefault();
+        if (!selectedConv) return;
 
-        // Si image locale
+        let newMsg = { content: message, to: selectedConv };
         if (selectedFile) {
-            const formData = new FormData();
-            formData.append("file", selectedFile);
-            formData.append("message", message);
-
-            await fetch("/api/messages", {
-                method: "POST",
-                body: formData,
-            });
-            setSelectedFile(null);
-            setMessage("");
-            return;
+            // Upload via fileServerServices
+            const uploadRes = await uploadFile(selectedFile);
+            newMsg.images = [uploadRes.fileName || uploadRes.path || uploadRes.url];
         }
-
-        // Si GIF Giphy
         if (selectedGif) {
-            await fetch("/api/messages", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message, gif: selectedGif }),
-            });
-            setSelectedGif(null);
-            setMessage("");
-            return;
+            newMsg.images = [selectedGif];
         }
+        if (!message && !selectedFile && !selectedGif) return;
 
-        // Message texte simple
-        if (message.trim() !== "") {
-            await fetch("/api/messages", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message }),
-            });
-            setMessage("");
-        }
+        await createMessage(newMsg);
+        setMessage("");
+        setSelectedFile(null);
+        setSelectedGif(null);
+
+        // Recharge les messages après envoi
+        const msgsFrom = await getMessages({ from: userId });
+        const msgsTo = await getMessages({ to: userId });
+        const allMsgs = [...msgsFrom, ...msgsTo].filter(
+            (msg, idx, arr) =>
+                arr.findIndex(m => m._id === msg._id) === idx
+        );
+        setMessages(allMsgs);
     }
+
+    // Générer la liste des conversations (par userId autre que soi)
+    const conversations = React.useMemo(() => {
+        const map = {};
+        messages.forEach(msg => {
+            const other = msg.from === userId ? msg.to : msg.from;
+            // On prend le message le plus récent (updatedAt > createdAt si modifié)
+            const lastDate = new Date(msg.updatedAt || msg.createdAt);
+            if (
+                !map[other] ||
+                new Date(map[other].updatedAt || map[other].createdAt) < lastDate
+            ) {
+                map[other] = msg;
+            }
+        });
+        return Object.entries(map)
+            .map(([otherId, msg]) => ({
+                id: otherId,
+                lastMessage: msg.content,
+                lastMessageTime: msg.updatedAt || msg.createdAt,
+            }))
+            .sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime));
+    }, [messages, userId]);
+
+    // Messages de la conversation sélectionnée, triés par date
+    const currentMessages = React.useMemo(() => {
+        if (!selectedConv) return [];
+        return messages
+            .filter(
+                m =>
+                    (m.from === userId && m.to === selectedConv) ||
+                    (m.from === selectedConv && m.to === userId)
+            )
+            .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    }, [messages, selectedConv, userId]);
 
     useEffect(() => {
         if (headerRef.current) {
@@ -149,7 +325,7 @@ export default function MessagesPage() {
     }, []);
 
     return (
-        <div className="relative min-h-screen bg-seasalt">
+        <div className="relative bg-seasalt h-screen">
             {/* Header */}
             <div
                 ref={headerRef}
@@ -159,7 +335,7 @@ export default function MessagesPage() {
                 <Header />
             </div>
 
-            <div className="flex pt-[64px] md:pt-0">
+            <div className="flex pt-[64px] md:pt-0 h-screen">
                 {/* Sidebar gauche */}
                 <div
                     className="hidden md:block fixed left-0 w-64 z-40 transition-all duration-300"
@@ -172,49 +348,116 @@ export default function MessagesPage() {
                 <main
                     className="flex-1 md:ml-64 p-4 sm:p-6 lg:p-8 pb-14 md:pb-0 transition-all duration-300 w-full flex flex-col md:flex-row gap-8"
                     style={{
-                                        paddingTop: `${sidebarTop + 16}px`,
-                                        paddingBottom: '3.5rem',
-                                        minHeight: `calc(100vh - ${sidebarTop + 16}px - 3.5rem)`,
-                                        height: 'auto',
-                                        marginLeft: isMobile ? 0 : '16rem',
-                                    }}
+                        paddingTop: `${sidebarTop + 16}px`,
+                        paddingBottom: '3.5rem',
+                        minHeight: `calc(100vh - ${sidebarTop + 16}px - 3.5rem)`,
+                        height: 'auto',
+                        marginLeft: isMobile ? 0 : '16rem',
+                    }}
                 >
                     {/* Liste des conversations */}
-                    <aside className="w-full md:w-1/4 bg-white rounded-2xl shadow-lg p-4 mb-8 md:mb-0 border-t-4 border-celestial-blue min-w-[180px] max-w-xs flex flex-col"
+                    <aside className="w-full md:w-1/4 bg-white rounded-2xl shadow-lg p-4 border-t-4 border-celestial-blue min-w-[180px] max-w-xs flex flex-col h-full"
                         style={{ height: "100%" }}
                     >
-                        <h2 className="text-xl font-bold text-celestial-blue mb-4">Conversations</h2>
+                        <h2 className="text-xl font-bold text-celestial-blue mb-4 flex items-center gap-2">Listes des conversations</h2>
                         <ul className="divide-y divide-seasalt flex-1 overflow-y-auto">
-                            {conversations.map(conv => (
-                                <li key={conv.id} className="py-3 px-2 hover:bg-celestial-blue/10 rounded cursor-pointer transition">
-                                    <div className="font-semibold text-rich-black">{conv.user}</div>
-                                    <div className="text-xs text-gray-500">{conv.lastMessage}</div>
-                                </li>
-                            ))}
+                            {conversations.map(conv => {
+                                const user = getUserInfo(conv.id);
+                                return (
+                                    <li
+                                        key={conv.id}
+                                        className={`py-3 px-2 hover:bg-celestial-blue/10 rounded cursor-pointer transition ${selectedConv === conv.id ? "bg-celestial-blue/10" : ""}`}
+                                        onClick={() => setSelectedConv(conv.id)}
+                                    >
+                                        <div className="flex justify-between items-center">
+                                            <div className="flex items-center gap-2">
+                                                {user.avatar ? (
+                                                    <SecureImage
+                                                        fileName={user.avatar}
+                                                        alt={user.username}
+                                                        className="w-8 h-8 rounded-full object-cover border"
+                                                    />
+                                                ) : (
+                                                    <img
+                                                        src="/default-avatar.png"
+                                                        alt="avatar"
+                                                        className="w-8 h-8 rounded-full object-cover border"
+                                                    />
+                                                )}
+                                                <div>
+                                                    <div className="font-semibold text-rich-black">{user.username || conv.id}</div>
+                                                    <div className="text-xs text-gray-500">{conv.lastMessage}</div>
+                                                </div>
+                                            </div>
+                                            <div className="text-xs text-gray-400 ml-2 whitespace-nowrap">
+                                                {conv.lastMessageTime && timeAgo(conv.lastMessageTime)}
+                                            </div>
+                                        </div>
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </aside>
 
                     {/* Zone de messages */}
-                    <section className="flex-1 bg-white rounded-2xl shadow-lg p-4 border-t-4 border-sea-green flex flex-col min-w-0"
+                    <section className="flex-1 bg-white rounded-2xl shadow-lg p-4 border-t-4 border-sea-green flex flex-col min-w-0 h-full"
                         style={{ height: "100%" }}
                     >
                         <h2 className="text-xl font-bold text-sea-green mb-4">Messages privés</h2>
                         <div className="flex-1 overflow-y-auto space-y-4 mb-4">
-                            {messages.map((msg, idx) => (
-                                <div
-                                    key={idx}
-                                    className={`flex ${msg.from === "moi" ? "justify-end" : "justify-start"}`}
-                                >
-                                    <div className={`max-w-xs px-4 py-2 rounded-lg shadow ${msg.from === "moi"
-                                        ? "bg-celestial-blue text-seasalt"
-                                        : "bg-seasalt text-rich-black"
-                                        }`}>
-                                        <span>{msg.content}</span>
-                                        <div className="text-xs text-right opacity-60">{msg.time}</div>
+                            {loading ? (
+                                <div>Chargement...</div>
+                            ) : (
+                                currentMessages.map((msg, idx) => (
+                                    <div
+                                        key={msg._id || idx}
+                                        className={`flex ${msg.from === userId ? "justify-end" : "justify-start"}`}
+                                    >
+                                        <div className={`max-w-xs px-4 py-2 rounded-lg shadow ${msg.from === userId
+                                            ? "bg-celestial-blue text-seasalt"
+                                            : "bg-seasalt text-rich-black"
+                                            }`}>
+                                            <span>{msg.content}</span>
+                                            {/* Affichage images sécurisées */}
+                                            {msg.images && msg.images.map((img, i) => (
+                                                img && !img.startsWith("http") ? (
+                                                    <SecureImage
+                                                        key={i}
+                                                        fileName={img}
+                                                        alt="img"
+                                                        className="w-24 h-24 object-cover rounded-lg shadow mt-2"
+                                                    />
+                                                ) : img ? (
+                                                    <img
+                                                        key={i}
+                                                        src={img}
+                                                        alt="img"
+                                                        className="w-24 h-24 object-cover rounded-lg shadow mt-2"
+                                                    />
+                                                ) : null
+                                            ))}
+                                            {/* Affichage vidéos sécurisées */}
+                                            {msg.videos && msg.videos.map((vid, i) => (
+                                                vid && !vid.startsWith("http") ? (
+                                                    <SecureVideo
+                                                        key={i}
+                                                        fileName={vid}
+                                                        className="w-32 h-24 rounded-lg shadow mt-2"
+                                                    />
+                                                ) : vid ? (
+                                                    <video
+                                                        key={i}
+                                                        src={vid}
+                                                        controls
+                                                        className="w-32 h-24 rounded-lg shadow mt-2"
+                                                    />
+                                                ) : null
+                                            ))}
+                                            <div className="text-xs text-right opacity-60">{timeAgo(msg.createdAt)}</div>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                            {/* Affichage de l'image ou du GIF sélectionné avant envoi */}
+                                ))
+                            )}
                             {selectedFile && (
                                 <div className="flex justify-end">
                                     <img
@@ -251,25 +494,26 @@ export default function MessagesPage() {
                             />
                             <button
                                 type="button"
-                                className="px-2 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition"
+                                className="px-2 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition flex items-center justify-center"
                                 onClick={() => fileInputRef.current.click()}
                                 title="Envoyer une image"
                             >
-                                📷
+                                <FiImage size={22} />
                             </button>
                             <button
                                 type="button"
-                                className="px-2 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition"
+                                className="px-2 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition flex items-center justify-center"
                                 onClick={() => setShowGifModal(true)}
                                 title="Envoyer un GIF"
                             >
-                                GIF
+                                <FaRegSmile size={22} />
                             </button>
                             <button
                                 type="submit"
-                                className="px-4 py-2 rounded-lg bg-celestial-blue text-seasalt font-semibold shadow hover:bg-sea-green transition"
+                                className="px-4 py-2 rounded-lg bg-celestial-blue text-seasalt font-semibold shadow hover:bg-sea-green transition flex items-center justify-center"
+                                title="Envoyer"
                             >
-                                Envoyer
+                                <FiSend size={22} />
                             </button>
                         </form>
                         {showGifModal && (
