@@ -1,4 +1,5 @@
 import { HiOutlineUserAdd, HiArrowCircleRight } from "react-icons/hi";
+<<<<<<< HEAD
 import FollowsList from "./FollowsList";
 
 export default function Follows({ showDetails, setShowDetails }) {
@@ -9,6 +10,12 @@ export default function Follows({ showDetails, setShowDetails }) {
     ];
     return <FollowsList onBack={() => setShowDetails(false)} requests={demoRequests} />;
   }
+=======
+import { useState } from "react";
+
+export default function Follows() {
+  const [showDetails, setShowDetails] = useState(false);
+>>>>>>> 90a7db2 (Page de notif avant modif de la navbar)
 
   return (
     <div className="flex items-center m-6">
@@ -20,12 +27,25 @@ export default function Follows({ showDetails, setShowDetails }) {
         <span className="text-gray-500 text-sm">Vous avez une nouvelle demande</span>
       </div>
       <button
+<<<<<<< HEAD
         className="ml-auto text-folly font-semibold text-lg flex items-center focus:outline-none hover:text-sea-green"
         onClick={() => setShowDetails(true)}
         title="Voir plus"
       >
         <HiArrowCircleRight size={40} />
       </button>
+=======
+        className="ml-auto text-sea-green font-semibold text-lg flex items-center focus:outline-none"
+        onClick={() => setShowDetails((v) => !v)}
+        title="Voir plus"
+      >
+        <HiArrowCircleRight size={50} />
+      </button>
+      {showDetails && (
+        <div className="absolute right-0 top-16 bg-white rounded shadow-lg p-4 z-50">
+        </div>
+      )}
+>>>>>>> 90a7db2 (Page de notif avant modif de la navbar)
     </div>
   );
 }

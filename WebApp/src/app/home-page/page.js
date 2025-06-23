@@ -119,10 +119,14 @@ export default function HomePage() {
           style={{ top: `${sidebarTop}px`, height: `calc(100vh - ${sidebarTop}px)` }}
         >
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Navbar sidebarTop={sidebarTop} />
 =======
           <Navbar />
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+          <Navbar sidebarTop={sidebarTop} />
+>>>>>>> 90a7db2 (Page de notif avant modif de la navbar)
         </div>
 
         {/* Sidebar droite (desktop/tablette uniquement) */}

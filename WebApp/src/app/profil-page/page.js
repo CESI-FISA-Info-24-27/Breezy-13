@@ -161,6 +161,7 @@ export default function HomePage() {
         >
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Navbar sidebarTop={sidebarTop} />
         </div>
 
@@ -176,6 +177,9 @@ export default function HomePage() {
 =======
           <Navbar />
 >>>>>>> 7ea8f23 (feat : fix pour le merge)
+=======
+          <Navbar sidebarTop={sidebarTop} />
+>>>>>>> 90a7db2 (Page de notif avant modif de la navbar)
         </div>
 
         {/* Sidebar droite (desktop/tablette uniquement) */}
