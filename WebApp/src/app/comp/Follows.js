@@ -1,5 +1,6 @@
 import { HiOutlineUserAdd, HiArrowCircleRight } from "react-icons/hi";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import FollowsList from "./FollowsList";
 
 export default function Follows({ showDetails, setShowDetails }) {
@@ -16,6 +17,18 @@ import { useState } from "react";
 export default function Follows() {
   const [showDetails, setShowDetails] = useState(false);
 >>>>>>> 90a7db2 (Page de notif avant modif de la navbar)
+=======
+import FollowsList from "./FollowsList";
+
+export default function Follows({ showDetails, setShowDetails }) {
+  if (showDetails) {
+    const demoRequests = [
+      { id: 1, username: "elonmuck", avatar: "/elonmuck.png", date: "2024-06-20T10:00:00Z" },
+      { id: 2, username: "billgrates", avatar: "/billgrates.png", date: "2024-06-19T15:30:00Z" }
+    ];
+    return <FollowsList onBack={() => setShowDetails(false)} requests={demoRequests} />;
+  }
+>>>>>>> 0697950 (Push avant de lier le front a l'api)
 
   return (
     <div className="flex items-center m-6">
@@ -28,6 +41,7 @@ export default function Follows() {
       </div>
       <button
 <<<<<<< HEAD
+<<<<<<< HEAD
         className="ml-auto text-folly font-semibold text-lg flex items-center focus:outline-none hover:text-sea-green"
         onClick={() => setShowDetails(true)}
         title="Voir plus"
@@ -37,15 +51,22 @@ export default function Follows() {
 =======
         className="ml-auto text-sea-green font-semibold text-lg flex items-center focus:outline-none"
         onClick={() => setShowDetails((v) => !v)}
+=======
+        className="ml-auto text-folly font-semibold text-lg flex items-center focus:outline-none hover:text-sea-green"
+        onClick={() => setShowDetails(true)}
+>>>>>>> 0697950 (Push avant de lier le front a l'api)
         title="Voir plus"
       >
-        <HiArrowCircleRight size={50} />
+        <HiArrowCircleRight size={40} />
       </button>
+<<<<<<< HEAD
       {showDetails && (
         <div className="absolute right-0 top-16 bg-white rounded shadow-lg p-4 z-50">
         </div>
       )}
 >>>>>>> 90a7db2 (Page de notif avant modif de la navbar)
+=======
+>>>>>>> 0697950 (Push avant de lier le front a l'api)
     </div>
   );
 }
