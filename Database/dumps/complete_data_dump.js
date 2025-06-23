@@ -14,7 +14,26 @@ const AVATAR_URLS = [
   "1749864953025-258947954.jpg",
   "1749864963022-518074788.jpg",
   "1749864974040-277207196.PNG",
-  "1749865024759-123915179.png"
+  "1749865024759-123915179.png",
+  "1749864985955-515787396.PNG"
+];
+
+const MESSAGE_PHRASES = [
+  "Salut, comment tu vas ?",
+  "On se retrouve ce soir ?",
+  "Tu as vu le dernier épisode ?",
+  "Merci pour ton aide !",
+  "Je t'envoie le document.",
+  "On se capte demain ?",
+  "Haha, bien vu !",
+  "Bonne journée !",
+  "Tu peux m'appeler ?",
+  "C'est validé pour moi.",
+  "Je suis dispo à 18h.",
+  "On avance sur le projet ?",
+  "Top, merci !",
+  "Tu as des nouvelles ?",
+  "À bientôt sur Breezy !"
 ];
 
 // Utils
@@ -30,6 +49,11 @@ function randomSentence(min=5, max=12) {
   let s = [];
   for (let i=0; i<len; i++) s.push(randomWord());
   return s.join(' ');
+}
+function randomDateInLast30Days() {
+  const now = new Date();
+  const past = new Date(now.getTime() - Math.random() * 30 * 24 * 60 * 60 * 1000);
+  return past;
 }
 
 // Génération des utilisateurs
@@ -135,6 +159,34 @@ userIds.forEach(uid => {
 if (comments.length) {
   m_db.comments.insertMany(comments);
   print(`${comments.length} commentaires insérés.`);
+}
+
+// Génération des messages privés cohérents
+let messages = [];
+userIds.forEach(fromId => {
+  // Entre 10 et 15 messages envoyés par utilisateur
+  const nbMessages = 10 + Math.floor(Math.random() * 6);
+  for (let i = 0; i < nbMessages; i++) {
+    // Destinataire différent de l'expéditeur
+    let toId;
+    do {
+      toId = randomItem(userIds);
+    } while (toId.equals(fromId));
+    const content = randomItem(MESSAGE_PHRASES);
+    const createdAt = randomDateInLast30Days();
+    messages.push({
+      from: fromId,
+      to: toId,
+      content,
+      createdAt,
+      updatedAt: createdAt,
+      read: Math.random() < 0.7 // 70% de messages lus
+    });
+  }
+});
+if (messages.length) {
+  m_db.messages.insertMany(messages);
+  print(`${messages.length} messages privés insérés.`);
 }
 
 print("✅ Script terminé.");
