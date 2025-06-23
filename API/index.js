@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import Jwt from 'jsonwebtoken';
+import cookieParser from 'cookie-parser';
 
 import userPath from './App/Path/UsersPath.js';
 import postPath from './App/Path/PostPath.js';
@@ -34,6 +35,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Auth Path (login, logout, refresh)
 app.use('/auth', authPath);

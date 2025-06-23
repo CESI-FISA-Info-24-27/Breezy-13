@@ -3,8 +3,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import Cookies from 'js-cookie';
+import { jwtDecode } from "jwt-decode";
 import { useState } from 'react';
-import { login } from '../../services/authServices';
+import {useEffect} from 'react';
+import { login, refreshToken } from '../../services/AuthServices.js';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
@@ -14,23 +16,49 @@ export default function Login() {
     const [rememberMe, setRememberMe] = useState(false);
     const router = useRouter();
 
+    useEffect(() => {
+        const checkToken = async () => {
+            const token = Cookies.get('token');
+            if (token) {
+                try {
+                    const decoded = jwtDecode(token);
+                    // Vérifie si le token est expiré (exp est en secondes)
+                    if (decoded.exp && decoded.exp * 1000 > Date.now()) {
+                        setTimeout(() => {
+                            router.push('/home-page');
+                        }, 15);
+                    } else {
+                        // Token expiré, tu peux le supprimer si tu veux
+                        Cookies.remove('token');
+                        try {
+                            await refreshToken();
+                            setTimeout(() => {
+                                router.push('/home-page');
+                            }, 15);
+                        }catch{
+                            setTimeout(() => {
+                                router.push('/login');
+                            }, 15);
+                        }
+                    }
+                    } catch (e) {
+                    // Token invalide, tu peux aussi le supprimer
+                    Cookies.remove('token');
+                }
+            }
+        };
+        checkToken();
+    }, [router]);
+
     const handleSubmit = async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
     try {
-        const data = await login(email, password, rememberMe);
-        console.log('Connexion réussie', data);
+        await login(email, password, rememberMe);
+        console.log('Connexion réussie');
 
-        // On stocke le cookie de connexion
-        Cookies.set('token', data.token, {
-            secure: true,
-            sameSite: 'Lax',
-            path: '/',
-        });
-
-        // On redirige l'utilisateur
+        // Rediriger l'utilisateur
         router.push('/home-page');
-    } catch (error) 
-    {
+    } catch (error) {
         console.error('Erreur de connexion:', error);
         alert(error.message || "Échec de la connexion");
     }

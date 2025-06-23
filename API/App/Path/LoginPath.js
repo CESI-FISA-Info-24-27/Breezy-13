@@ -40,7 +40,7 @@ loginPath.post('/', async (req, res) => {
         const permissions = await UsersServices.getPermissions(user[0]._id);
 
         // Génère un token d'accès et un token de rafraîchissement
-        const token = Jwt.sign(
+        const accessToken = Jwt.sign(
             { id: user[0]._id, username: user[0].username, permissions },
             process.env.JWT_SECRET,
             { expiresIn: '2h' }
@@ -49,21 +49,23 @@ loginPath.post('/', async (req, res) => {
         const refreshToken = Jwt.sign(
             { id: user[0]._id, username: user[0].username, permissions },
             process.env.JWT_SECRET_REFRESH,
+            //{ expiresIn: '14d' }
             { expiresIn: '14d' }
         );
 
         if(req.body.rememberMe == true) {
             res.cookie('refreshToken', refreshToken, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'Strict',
-                path: '/refresh-token',
+                //secure: process.env.NODE_ENV === 'production',
+                sameSite: 'none',
+                secure: true,
+                path: '/',
                 maxAge: 14 * 24 * 60 * 60 * 1000 // 14 jours
             });
         }
 
         // Retourne les tokens
-        return res.status(200).json({ token });
+        return res.status(200).json({ token : accessToken });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
