@@ -130,6 +130,7 @@ export function PostsList({ posts }) {
       ))}
     </div>
   );
+<<<<<<< HEAD:webapp/src/app/comp/postsList.js
 <<<<<<< HEAD
 >>>>>>> b2fa2f6 (Debut de suppression de flowbite)
 }
@@ -227,3 +228,6 @@ export function PostsList({ posts }) {
 =======
 >>>>>>> dc16337 (Fin de la page d'accueil)
 }
+=======
+}
+>>>>>>> 7db8774 (Rename postsList.js to PostsList.js):webapp/src/app/comp/PostsList.js
