@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { HiPencil } from "react-icons/hi";
-import ProfilEditionModal from "./profilEditionModal";
+import ProfilEditionModal from "./ProfilEditionModal";
 
 export default function ProfilPreview() {
     const [modalOpen, setModalOpen] = useState(false);

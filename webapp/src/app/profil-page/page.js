@@ -79,7 +79,7 @@ export default function HomePage() {
           className="hidden md:block fixed left-0 w-64 z-40 transition-all duration-300"
           style={{ top: `${sidebarTop}px`, height: `calc(100vh - ${sidebarTop}px)` }}
         >
-          <Navbar />
+          <Navbar sidebarTop={sidebarTop} />
         </div>
 
         {/* Sidebar droite (desktop/tablette uniquement) */}

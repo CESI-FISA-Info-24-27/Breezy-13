@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import Navbar from "../comp/navbar";
-import Post from "../comp/post";
-import SideBarFollow from "../comp/sidebarFollow";
-import Footer from "../comp/footer";
-import Header from "../comp/header";
-import MobileNavbar from "../comp/mobileNavbar";
-import { PostsList } from "../comp/postsList";
+import Navbar from "../comp/Navbar";
+import Post from "../comp/Post";
+import SideBarFollow from "../comp/SidebarFollow";
+import Footer from "../comp/Footer";
+import Header from "../comp/Header";
+import MobileNavbar from "../comp/MobileNavbar";
+import { PostsList } from "../comp/PostsList";
 
 export default function HomePage() {
   const [headerStyle, setHeaderStyle] = useState({ opacity: 1, transform: "translateY(0)" });
@@ -79,7 +79,7 @@ export default function HomePage() {
           className="hidden md:block fixed left-0 w-64 z-40 transition-all duration-300"
           style={{ top: `${sidebarTop}px`, height: `calc(100vh - ${sidebarTop}px)` }}
         >
-          <Navbar />
+          <Navbar sidebarTop={sidebarTop} />
         </div>
 
         {/* Sidebar droite (desktop/tablette uniquement) */}

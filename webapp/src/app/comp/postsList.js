@@ -55,7 +55,7 @@ export function PostsList({ posts }) {
                 {post.username}
               </span>
               <span className="text-sm text-[var(--color-rich-black)]/70 ms-2">
-                {isClient ? timeAgo(post.date) : ""}
+                {isClient ? timeAgo(post.date) : "\u00A0"}
               </span>
             </div>
             <span
