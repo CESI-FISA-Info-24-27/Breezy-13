@@ -1,8 +1,14 @@
 import { HiOutlineUserAdd, HiArrowCircleRight } from "react-icons/hi";
-import { useState } from "react";
+import FollowsList from "./FollowsList";
 
-export default function Follows() {
-  const [showDetails, setShowDetails] = useState(false);
+export default function Follows({ showDetails, setShowDetails }) {
+  if (showDetails) {
+    const demoRequests = [
+      { id: 1, username: "elonmuck", avatar: "/elonmuck.png", date: "2024-06-20T10:00:00Z" },
+      { id: 2, username: "billgrates", avatar: "/billgrates.png", date: "2024-06-19T15:30:00Z" }
+    ];
+    return <FollowsList onBack={() => setShowDetails(false)} requests={demoRequests} />;
+  }
 
   return (
     <div className="flex items-center m-6">
@@ -14,16 +20,12 @@ export default function Follows() {
         <span className="text-gray-500 text-sm">Vous avez une nouvelle demande</span>
       </div>
       <button
-        className="ml-auto text-sea-green font-semibold text-lg flex items-center focus:outline-none"
-        onClick={() => setShowDetails((v) => !v)}
+        className="ml-auto text-folly font-semibold text-lg flex items-center focus:outline-none hover:text-sea-green"
+        onClick={() => setShowDetails(true)}
         title="Voir plus"
       >
-        <HiArrowCircleRight size={50} />
+        <HiArrowCircleRight size={40} />
       </button>
-      {showDetails && (
-        <div className="absolute right-0 top-16 bg-white rounded shadow-lg p-4 z-50">
-        </div>
-      )}
     </div>
   );
 }
