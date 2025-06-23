@@ -18,6 +18,8 @@ on:
 jobs:
   doc-api:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     defaults:
       run:
         working-directory: .
