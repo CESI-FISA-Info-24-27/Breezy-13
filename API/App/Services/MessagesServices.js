@@ -1,4 +1,4 @@
-import { DAOMongoDbFactory } from "../Factory/DAOMongoDbFactory";
+import { DAOMongoDbFactory } from "../Factory/DAOMongoDbFactory.js";
 
 const Factory = new DAOMongoDbFactory();
 const MessagesDAO = Factory.createMessagesDAO();

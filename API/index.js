@@ -9,6 +9,7 @@ import userPath from './App/Path/UsersPath.js';
 import postPath from './App/Path/PostPath.js';
 import commentPath from './App/Path/CommentPath.js';
 import followPath from './App/Path/FollowPath.js';
+import messagePath from './App/Path/MessagePath.js';
 import authPath from './App/Path/LoginPath.js';
 import disconnectPath from './App/Path/DisconnectPath.js';
 import refreshTokenPath from './App/Path/RefreshTokenPath.js';
@@ -77,6 +78,7 @@ app.use('/comments', commentPath);
 app.use('/follows', followPath);
 app.use('/roles', rolePath);
 app.use('/disconnect', disconnectPath);
+app.use('/messages', messagePath);
 
 app.listen(port, () => {
   console.log(`🚀 Server running at ${process.env.WEBAPP_ORIGIN}:${port}`);

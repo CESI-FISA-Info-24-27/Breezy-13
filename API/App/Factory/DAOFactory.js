@@ -44,4 +44,12 @@ export class DAOFactory {
     createFollowsDAO() {
         throw new Error('Non implémenté');
     }
+
+    /**
+     * Crée un objet DAOFactory pour les messages
+     * @returns {MessagesDAO} - Le DAO des messages
+     * */
+    createMessagesDAO() {
+        throw new Error('Non implémenté');
+    }
 }

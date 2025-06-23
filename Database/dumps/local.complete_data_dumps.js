@@ -21,6 +21,17 @@ const AVATAR_URLS = [
   "1749864985955-515787396.PNG"
 ];
 
+const MESSAGE_IMAGE_URLS = [
+  "1749214669771-911823678.gif",
+  "1749713669755-621390355.png",
+  "1749824531489-54769329.gif",
+  "1749864953025-258947954.jpg",
+  "1749864963022-518074788.jpg",
+  "1749864974040-277207196.PNG",
+  "1749865024759-123915179.png",
+  "1749864985955-515787396.PNG"
+];
+
 const MESSAGE_PHRASES = [
   "Salut, comment tu vas ?",
   "On se retrouve ce soir ?",
@@ -166,7 +177,7 @@ async function main() {
     console.log(`${comments.length} commentaires insérés.`);
   }
 
-  // Génération des messages privés cohérents
+  // Génération des messages privés cohérents avec images pour une partie
   let messages = [];
   userIds.forEach(fromId => {
     const nbMessages = 10 + Math.floor(Math.random() * 6);
@@ -177,13 +188,29 @@ async function main() {
       } while (toId.equals(fromId));
       const content = randomItem(MESSAGE_PHRASES);
       const createdAt = randomDateInLast30Days();
+
+      // 30% des messages ont des images
+      let images = [];
+      if (Math.random() < 0.3) {
+        const nbImages = 1 + Math.floor(Math.random() * 2); // 1 ou 2 images
+        images = Array.from({ length: nbImages }, () => randomItem(MESSAGE_IMAGE_URLS));
+      }
+
+      // 10% des messages ont une vidéo (optionnel)
+      let videos = [];
+      if (Math.random() < 0.1) {
+        videos = ["sample-video.mp4"]; // Mets ici tes chemins de vidéos si tu en as
+      }
+
       messages.push({
         from: fromId,
         to: toId,
         content,
         createdAt,
         updatedAt: createdAt,
-        read: Math.random() < 0.7
+        read: Math.random() < 0.7,
+        images,
+        videos
       });
     }
   });
@@ -199,4 +226,6 @@ async function main() {
 
 main().catch(err => {
   console.error("Erreur lors de l'exécution du script :", err);
+}).finally(() => {
+  process.exit(0);
 });
