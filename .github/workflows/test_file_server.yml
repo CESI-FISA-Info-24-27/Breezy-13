@@ -38,10 +38,7 @@ jobs:
 
       - name: Run File Server Tests
         run: docker compose exec -T fileserver npm run test --trace-warning
-
-      - name: Show memory usage after test
-        run: free -h
-
+        
       - name: Show memory usage after test
         run: free -h
 
