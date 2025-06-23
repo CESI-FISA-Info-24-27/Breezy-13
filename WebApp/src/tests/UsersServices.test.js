@@ -34,7 +34,7 @@ describe('UserService', () => {
 
       const result = await getUsers();
 
-      expect(axios.get).toHaveBeenCalledWith(API_URL, { headers: mockHeaders });
+      expect(axios.get).toHaveBeenCalledWith(API_URL, { headers: mockHeaders, params:  {}});
       expect(result).toEqual(mockResponse.data);
     });
 
@@ -48,7 +48,7 @@ describe('UserService', () => {
       const result = await getUsers();
 
       expect(AuthService.refreshToken).toHaveBeenCalled();
-      expect(axios.get).toHaveBeenLastCalledWith(API_URL, { headers: mockNewHeaders });
+      expect(axios.get).toHaveBeenLastCalledWith(API_URL, { headers: mockNewHeaders, params: {}});
       expect(result).toEqual([{ id: 2, name: 'Bob' }]);
     });
 
