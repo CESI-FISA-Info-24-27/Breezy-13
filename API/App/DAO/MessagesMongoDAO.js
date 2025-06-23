@@ -38,16 +38,16 @@ export class MessagesMongoDAO extends MessagesDAO {
      * @param {object} filters - Les filtres à appliquer (id, from, to, read, createdAt, etc.).
      * @returns {Array} - Liste des messages trouvés.
      */
-    async getMessages(filters = {}) {
+    async getMessages(filters) {
         const mongoFilters = {};
-        if (filters.id) mongoFilters._id = new ObjectId(filters.id);
-        if (filters.from) mongoFilters.from = filters.from;
-        if (filters.to) mongoFilters.to = filters.to;
+        if (filters.id && ObjectId.isValid(filters.id)) mongoFilters._id = new ObjectId(filters.id);
+        if (filters.from && ObjectId.isValid(filters.from)) mongoFilters.from = new ObjectId(filters.from);
+        if (filters.to && ObjectId.isValid(filters.to)) mongoFilters.to = new ObjectId(filters.to);
         if (filters.read !== undefined) mongoFilters.read = filters.read;
         if (filters.createdAt) mongoFilters.createdAt = filters.createdAt;
         if (filters.updatedAt) mongoFilters.updatedAt = filters.updatedAt;
 
-        return await this.collection.find(mongoFilters).sort({ createdAt: 1 }).toArray();
+        return await this.collection.find(mongoFilters).toArray();
     }
 
     /**

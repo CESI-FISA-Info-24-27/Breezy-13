@@ -4,6 +4,7 @@ import { RolesMongoDAO } from "../DAO/RolesMongoDAO.js";
 import { PostsMongoDAO } from "../DAO/PostsMongoDAO.js";
 import { CommentsMongoDAO } from "../DAO/CommentsMongoDAO.js";
 import { FollowsMongoDAO } from "../DAO/FollowsMongoDAO.js";
+import { MessagesMongoDAO } from "../DAO/MessagesMongoDAO.js";
 
 /**
  * Représente une Factory pour créer des objets DAO spécifiques à MongoDB
@@ -57,5 +58,13 @@ export class DAOMongoDbFactory extends DAOFactory {
      */
     createFollowsDAO() {
         return new FollowsMongoDAO();
+    }
+    
+    /**
+     * Crée une nouvelle instance de MessagesMongoDAO
+     * @return {MessagesMongoDAO} - Une nouvelle instance de MessagesMongoDAO
+     * */
+    createMessagesDAO() {
+        return new MessagesMongoDAO();
     }
 }
