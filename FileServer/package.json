@@ -10,6 +10,10 @@
     "build": "babel . -d dist --ignore node_modules"
   },
   "type": "module",
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {}
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
