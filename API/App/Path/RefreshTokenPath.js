@@ -17,9 +17,6 @@ refreshPath.post('/', async (req, res) => {
             return res.status(401).json({ error: 'Invalid refresh token' });
         }
 
-        console.log('Decoded Refresh Token:', decoded);
-        console.log('User ID from Refresh Token:', decoded.id);
-
         // récupérer l'utilisateur depuis la base de données
         const user = await UsersServices.getUsers({ id: decoded.id });
 
@@ -28,8 +25,6 @@ refreshPath.post('/', async (req, res) => {
         }
 
         const permissions = await UsersServices.getPermissions(decoded.id);
-
-        console.log('User found:', user[0]);
 
         // Génère un token d'accès et un token de rafraîchissement
         const accessToken = Jwt.sign(
