@@ -26,7 +26,7 @@ export default function Navbar() {
       <ul className="flex-1 flex flex-col gap-2">
         <li>
           <Link
-            href="/homepage"
+            href="/home-page"
             className={`flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition ${
               isHome
                 ? "bg-[var(--color-seasalt)] text-[var(--color-celestial-blue)] shadow"
@@ -39,7 +39,7 @@ export default function Navbar() {
         </li>
         <li>
           <Link
-            href="/profilpage"
+            href="/profil-page"
             className={`flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition ${
               isProfile
                 ? "bg-[var(--color-seasalt)] text-[var(--color-celestial-blue)] shadow"
