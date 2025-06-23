@@ -32,15 +32,17 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
+        working-directory: ./API
         run: npm install
 
       - name: Generate JSDoc
+        working-directory: ./API
         run: npx jsdoc -c jsdoc.json
 
       - name: Deploy documentation to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./doc
+          publish_dir: ./API/doc
           publish_branch: gh-pages
           force_orphan: true
