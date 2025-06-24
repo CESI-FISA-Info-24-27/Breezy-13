@@ -8,6 +8,20 @@ import Link from "next/link";
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
+    const handleDisconnect = async (e) => {
+    e.preventDefault(); // Empêche le rechargement de la page
+    try {
+        await login(email, password, rememberMe);
+        console.log('Déconnexion réussie');
+
+        // Rediriger l'utilisateur
+        router.push('/login');
+    } catch (error) {
+        console.error('Erreur lors de la déconnexion:', error);
+        alert(error.message || "Échec de la déconnexion");
+    }
+    };
+
   return (
     <header className="flex items-center justify-between w-full h-16 px-8 bg-[var(--color-celestial-blue-dark)] shadow z-50">
       {/* Logo à gauche */}
@@ -38,14 +52,14 @@ export default function Header() {
         <button
           className="p-2 rounded-full hover:bg-sea-green/20 transition"
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Ouvrir le menu"
+          aria-label="Ouvrir le menu" 
         >
           <HiMenu className="text-seasalt text-2xl" />
         </button>
         {menuOpen && (
           <div className="absolute right-8 top-16 bg-white rounded shadow-lg py-2 w-40 z-50">
             <Link href="/profil-page" className="block px-4 py-2 hover:bg-sea-green/10">Profil</Link>
-            <Link href="/logout" className="block px-4 py-2 hover:bg-folly/10">Déconnexion</Link>
+            <button onClick={handleDisconnect} className="block px-4 py-2 hover:bg-folly/10">Déconnexion</button>
           </div>
         )}
       </div>
