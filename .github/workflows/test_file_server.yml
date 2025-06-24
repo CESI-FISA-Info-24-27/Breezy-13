@@ -7,12 +7,14 @@ on:
       - "**"
     paths:
       - "FileServer/**"
+      - "docker-compose.yml"
       - ".github/workflows/test_file_server.yml"
   pull_request:
     branches:
       - "**"
     paths:
       - "FileServer/**"
+      - "docker-compose.yml"
 
 jobs:
   test-file-server:
@@ -34,14 +36,13 @@ jobs:
         run: docker compose up -d --build fileserver
 
       - name: Show memory usage before test
-        run: free -h
+        run: docker compose exec -T fileserver free -h
 
-      - name: Run File Server tests
-        id: test
+      - name: Run File Server Tests
         run: docker compose exec -T fileserver npm run test --trace-warning
 
       - name: Show memory usage after test
-        run: free -h
+        run: docker compose exec -T fileserver free -h
 
       - name: Tear down
         if: always()

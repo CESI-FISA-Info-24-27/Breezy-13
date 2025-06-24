@@ -8,6 +8,7 @@ on:
     paths:
       - "API/**"
       - "Database/**"
+      - "docker-compose.yml"
       - ".github/workflows/test_api.yml"
   pull_request:
     branches:
@@ -15,6 +16,7 @@ on:
     paths:
       - "API/**"
       - "Database/**"
+      - "docker-compose.yml"
 
 jobs:
   test-api:
@@ -32,11 +34,17 @@ jobs:
           docker --version
           docker compose version
 
-      - name: Build and Start API + MongoDB
-        run: docker compose up -d --build mongodb api
+      - name: Build and Start API
+        run: docker compose up -d --build api
+
+      - name: Show memory usage before test
+        run: docker compose exec -T api free -h
 
       - name: Run API tests
         run: docker compose exec -T api ./wait-for-it.sh mongodb 27017 npm run test --trace-warning
+
+      - name: Show memory usage after test
+        run: docker compose exec -T api free -h
 
       - name: Tear down
         if: always()
