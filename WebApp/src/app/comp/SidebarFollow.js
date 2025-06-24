@@ -40,7 +40,7 @@ export default function SideBarFollow(props) {
     >
       <div className="mb-4">
         <h2 className="text-xl font-extrabold text-[var(--color-seasalt)] tracking-tight">Comptes suivis</h2>
-        <hr className="border-[var(--color-seasalt)] mt-2 mb-4" />
+            <hr className="w-14/15 mx-auto h-0.5 border-0 bg-seasalt my-5 rounded" />
       </div>
       <ul className="flex-1 flex flex-col gap-2 overflow-y-auto">
       {follows.length === 0 ? (

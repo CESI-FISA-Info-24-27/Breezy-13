@@ -6,12 +6,14 @@ import Footer from "../comp/Footer";
 import Header from "../comp/Header";
 import ProfilPreview from "../comp/ProfilPreview";
 import { PostsList } from "../comp/PostsList";
+import MobileNavbar from "../comp/MobileNavbar";
 
 export default function HomePage() {
   const [headerStyle, setHeaderStyle] = useState({ opacity: 1, transform: "translateY(0)" });
   const [headerHeight, setHeaderHeight] = useState(64);
   const [sidebarTop, setSidebarTop] = useState(64);
   const headerRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (headerRef.current) {
@@ -41,9 +43,18 @@ export default function HomePage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [headerHeight]);
 
+  useEffect(() => {
+    // Fonction pour vérifier la largeur de l'écran
+    function handleResize() {
+      setIsMobile(window.innerWidth < 768); // 768px = breakpoint "md"
+    }
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div className="relative min-h-screen bg-seasalt">
-      {/* Header */}
       <div
         ref={headerRef}
         className="fixed top-0 left-0 w-full z-50 transition-all duration-300"
@@ -53,7 +64,6 @@ export default function HomePage() {
       </div>
 
       <div className="flex pt-[64px] md:pt-0">
-        {/* Sidebar gauche */}
         <div
           className="hidden md:block fixed left-0 w-64 z-40 transition-all duration-300"
           style={{ top: `${sidebarTop}px`, height: `calc(100vh - ${sidebarTop}px)` }}
@@ -63,14 +73,24 @@ export default function HomePage() {
 
         {/* Contenu principal */}
         <main
-          className="flex-1 md:ml-64 md:mr-64 p-4 sm:p-6 lg:p-8 pb-20 transition-all duration-300 w-full"
-          style={{ paddingTop: `${sidebarTop + 16}px` }}
+          className="flex-1 md:ml-64 md:mr-64 p-4 sm:p-6 lg:p-8 pb-14 md:pb-0 transition-all duration-300 w-full"
+          style={{
+            paddingTop: `${sidebarTop + 16}px`,
+            paddingBottom: '3.5rem', // 56px pour la MobileNavbar
+          }}
         >
           <ProfilPreview />
+          <hr className="w-1/2 mx-auto h-0.5 border-0 bg-seasalt my-5 rounded" />
+          <PostsList />
           <Footer>
             <span>© {new Date().getFullYear()} Mon Footer Personnalisé</span>
           </Footer>
         </main>
+      </div>
+
+      {/* MobileNavbar affichée uniquement sur mobile */}
+      <div className="md:hidden">
+        <MobileNavbar />
       </div>
     </div>
   );
