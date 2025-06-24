@@ -4,14 +4,15 @@ import React, { useState, useRef, useEffect } from "react";
 import Navbar from "../comp/Navbar";
 import MobileNavbar from "../comp/mobileNavbar";
 import Header from "../comp/Header";
-import { getMessages, createMessage } from "../../services/MessagesServices";
-import { getUsers } from "../../services/UsersServices";
-import { uploadFile, getFile } from "../../services/FileServerServices";
-import { GiphyFetch } from "@giphy/js-fetch-api";
-import { Grid } from "@giphy/react-components";
+import { getMessages, createMessage } from "../../services/messagesServices";
+import { getUsers } from "../../services/usersServices";
+import { uploadFile } from "../../services/fileServerServices";
 import { FiImage, FiSend } from "react-icons/fi";
 import { FaRegSmile } from "react-icons/fa";
 import Cookies from "js-cookie";
+import GifPicker from "../comp/GifPicker";
+import SecureMedia from "../comp/SecureMedia";
+import { timeOrHour } from "../../services/messagesUtils";
 
 // Récupère l'id utilisateur courant (à adapter selon ton auth)
 function getCurrentUserId() {
@@ -19,143 +20,6 @@ function getCurrentUserId() {
     if (!token) return null;
     const payload = JSON.parse(atob(token.split('.')[1]));
     return payload.userId || payload.id || null;
-}
-
-const gf = new GiphyFetch("8eiWtqYUvKoVmvw2ANUsAmF48I8tltjy");
-
-// Composant pour afficher une image sécurisée via le fileServerServices
-function SecureImage({ fileName, alt, className }) {
-    const [imgSrc, setImgSrc] = useState("/default-avatar.png");
-
-    useEffect(() => {
-        let isMounted = true;
-        if (!fileName) {
-            setImgSrc("/default-avatar.png");
-            return;
-        }
-        getFile(fileName)
-            .then(blob => {
-                if (isMounted) setImgSrc(URL.createObjectURL(blob));
-            })
-            .catch(() => {
-                if (isMounted) setImgSrc("/default-avatar.png");
-            });
-        return () => {
-            isMounted = false;
-            if (imgSrc && imgSrc.startsWith("blob:")) URL.revokeObjectURL(imgSrc);
-        };
-        // eslint-disable-next-line
-    }, [fileName]);
-
-    return (
-        <img
-            src={imgSrc}
-            alt={alt}
-            className={className}
-            style={{ objectFit: "cover" }}
-        />
-    );
-}
-
-// Composant pour afficher une vidéo sécurisée via le fileServerServices
-function SecureVideo({ fileName, className }) {
-    const [videoSrc, setVideoSrc] = useState(null);
-
-    useEffect(() => {
-        let isMounted = true;
-        if (!fileName) {
-            setVideoSrc(null);
-            return;
-        }
-        getFile(fileName)
-            .then(blob => {
-                if (isMounted) setVideoSrc(URL.createObjectURL(blob));
-            })
-            .catch(() => {
-                if (isMounted) setVideoSrc(null);
-            });
-        return () => {
-            isMounted = false;
-            if (videoSrc && videoSrc.startsWith("blob:")) URL.revokeObjectURL(videoSrc);
-        };
-        // eslint-disable-next-line
-    }, [fileName]);
-
-    if (!videoSrc) return null;
-    return (
-        <video
-            src={videoSrc}
-            controls
-            className={className}
-        />
-    );
-}
-
-function GifPicker({ onSelect, onClose }) {
-    const [search, setSearch] = useState("");
-    const fetchGifs = React.useCallback(
-        (offset) =>
-            search
-                ? gf.search(search, { offset, limit: 9 })
-                : gf.trending({ offset, limit: 9 }),
-        [search]
-    );
-    return (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-            <div className="bg-[#23272a] rounded-2xl shadow-2xl p-4 max-w-lg w-full relative">
-                <div className="flex items-center mb-4 relative">
-                    <input
-                        className="flex-1 px-3 py-2 rounded-lg bg-[#2c2f33] text-white placeholder-gray-400 focus:outline-none"
-                        placeholder="Rechercher un GIF..."
-                        value={search}
-                        onChange={e => setSearch(e.target.value)}
-                    />
-                    <button
-                        className="ml-2 flex items-center justify-center w-8 h-8 rounded-full hover:bg-folly/20 transition"
-                        onClick={onClose}
-                        aria-label="Fermer"
-                        style={{ minWidth: 32, minHeight: 32 }}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-6 h-6 text-white"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                        >
-                            <line x1="18" y1="6" x2="6" y2="18" />
-                            <line x1="6" y1="6" x2="18" y2="18" />
-                        </svg>
-                    </button>
-                </div>
-                <div className="overflow-y-auto" style={{ maxHeight: 350 }}>
-                    <Grid
-                        key={search}
-                        width={400}
-                        columns={3}
-                        fetchGifs={fetchGifs}
-                        onGifClick={gif => {
-                            onSelect(gif.images.fixed_height.url);
-                            onClose();
-                        }}
-                        noLink
-                        hideAttribution
-                    />
-                </div>
-            </div>
-        </div>
-    );
-}
-
-function timeAgo(date) {
-    const now = new Date();
-    const diff = Math.floor((now - new Date(date)) / 1000);
-    if (diff < 60) return "à l'instant";
-    if (diff < 3600) return `il y a ${Math.floor(diff / 60)} min`;
-    if (diff < 86400) return `il y a ${Math.floor(diff / 3600)} h`;
-    if (diff < 172800) return "hier";
-    return `${Math.floor(diff / 86400)} j`;
 }
 
 export default function MessagesPage() {
@@ -175,12 +39,13 @@ export default function MessagesPage() {
     const [showGifModal, setShowGifModal] = useState(false);
     const fileInputRef = useRef(null);
 
-    // Conversation sélectionnée (userId du destinataire)
     const [selectedConv, setSelectedConv] = useState(null);
 
     const userId = getCurrentUserId();
 
-    // Récupérer les messages de l'utilisateur courant
+    // Ref pour scroll auto sur le dernier message
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
         async function fetchMsgs() {
             setLoading(true);
@@ -198,7 +63,6 @@ export default function MessagesPage() {
         if (userId) fetchMsgs();
     }, [userId]);
 
-    // Récupérer tous les utilisateurs pour afficher username/avatar
     useEffect(() => {
         async function fetchUsersList() {
             try {
@@ -213,34 +77,44 @@ export default function MessagesPage() {
         return users.find(u => u._id === id) || {};
     }
 
-    function handleFileChange(e) {
+    // Envoi automatique du message dès qu'un fichier est sélectionné
+    async function handleFileChange(e) {
         const file = e.target.files[0];
-        if (file) setSelectedFile(file);
-    }
+        if (!file || !selectedConv) return;
 
-    function handleGifSelect(gifUrl) {
-        setSelectedGif(gifUrl);
-    }
+        const ext = file.name.split('.').pop().toLowerCase();
+        const uploadRes = await uploadFile(file);
+        console.log("Fichier uploadé :", uploadRes);
 
-    async function handleSendMessage(e) {
-        e.preventDefault();
-        if (!selectedConv) return;
-
-        let newMsg = { content: message, to: selectedConv };
-        if (selectedFile) {
-            // Upload via fileServerServices
-            const uploadRes = await uploadFile(selectedFile);
-            newMsg.images = [uploadRes.fileName || uploadRes.path || uploadRes.url];
+        // Récupère juste le nom du fichier depuis le chemin
+        let fileName = "";
+        if (uploadRes.filePath) {
+            fileName = uploadRes.filePath.split("/").pop();
+        } else if (uploadRes.fileName) {
+            fileName = uploadRes.fileName;
+        } else if (uploadRes.path) {
+            fileName = uploadRes.path.split("/").pop();
+        } else if (uploadRes.url) {
+            fileName = uploadRes.url.split("/").pop();
         }
-        if (selectedGif) {
-            newMsg.images = [selectedGif];
-        }
-        if (!message && !selectedFile && !selectedGif) return;
 
-        await createMessage(newMsg);
-        setMessage("");
+        let images = [];
+        let videos = [];
+        if (["mp4", "webm", "ogg"].includes(ext)) {
+            videos.push(fileName);
+        } else {
+            images.push(fileName);
+        }
+
+        await createMessage({
+            content: "",
+            from: userId,
+            to: selectedConv,
+            images: images.length > 0 ? images : [],
+            videos: videos.length > 0 ? videos : []
+        });
+
         setSelectedFile(null);
-        setSelectedGif(null);
 
         // Recharge les messages après envoi
         const msgsFrom = await getMessages({ from: userId });
@@ -252,12 +126,63 @@ export default function MessagesPage() {
         setMessages(allMsgs);
     }
 
-    // Générer la liste des conversations (par userId autre que soi)
+    // Envoi immédiat du GIF dès sélection
+    function handleGifSelect(gifUrl) {
+        if (!selectedConv) return;
+        createMessage({
+            content: "",
+            from: userId,
+            to: selectedConv,
+            images: [gifUrl],
+            videos: []
+        }).then(async () => {
+            setSelectedGif(null);
+            setShowGifModal(false);
+            // Recharge les messages après envoi
+            const msgsFrom = await getMessages({ from: userId });
+            const msgsTo = await getMessages({ to: userId });
+            const allMsgs = [...msgsFrom, ...msgsTo].filter(
+                (msg, idx, arr) =>
+                    arr.findIndex(m => m._id === msg._id) === idx
+            );
+            setMessages(allMsgs);
+        });
+    }
+
+    // Envoi d'un message texte uniquement (pas de GIF ni fichier ici)
+    async function handleSendMessage(e) {
+        e.preventDefault();
+        if (!selectedConv) return;
+
+        let images = [];
+        let videos = [];
+        let contentToSend = message;
+
+        if (!contentToSend && images.length === 0 && videos.length === 0) return;
+
+        await createMessage({
+            content: contentToSend,
+            from: userId,
+            to: selectedConv,
+            images,
+            videos
+        });
+
+        setMessage("");
+
+        const msgsFrom = await getMessages({ from: userId });
+        const msgsTo = await getMessages({ to: userId });
+        const allMsgs = [...msgsFrom, ...msgsTo].filter(
+            (msg, idx, arr) =>
+                arr.findIndex(m => m._id === msg._id) === idx
+        );
+        setMessages(allMsgs);
+    }
+
     const conversations = React.useMemo(() => {
         const map = {};
         messages.forEach(msg => {
             const other = msg.from === userId ? msg.to : msg.from;
-            // On prend le message le plus récent (updatedAt > createdAt si modifié)
             const lastDate = new Date(msg.updatedAt || msg.createdAt);
             if (
                 !map[other] ||
@@ -275,7 +200,6 @@ export default function MessagesPage() {
             .sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime));
     }, [messages, userId]);
 
-    // Messages de la conversation sélectionnée, triés par date
     const currentMessages = React.useMemo(() => {
         if (!selectedConv) return [];
         return messages
@@ -284,8 +208,17 @@ export default function MessagesPage() {
                     (m.from === userId && m.to === selectedConv) ||
                     (m.from === selectedConv && m.to === userId)
             )
-            .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+            .sort((a, b) =>
+                new Date(a.updatedAt || a.createdAt) - new Date(b.updatedAt || b.createdAt)
+            );
     }, [messages, selectedConv, userId]);
+
+    // Scroll auto sur le dernier message
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [currentMessages, selectedConv]);
 
     useEffect(() => {
         if (headerRef.current) {
@@ -372,8 +305,9 @@ export default function MessagesPage() {
                                         <div className="flex justify-between items-center">
                                             <div className="flex items-center gap-2">
                                                 {user.avatar ? (
-                                                    <SecureImage
+                                                    <SecureMedia
                                                         fileName={user.avatar}
+                                                        type="image"
                                                         alt={user.username}
                                                         className="w-8 h-8 rounded-full object-cover border"
                                                     />
@@ -390,7 +324,7 @@ export default function MessagesPage() {
                                                 </div>
                                             </div>
                                             <div className="text-xs text-gray-400 ml-2 whitespace-nowrap">
-                                                {conv.lastMessageTime && timeAgo(conv.lastMessageTime)}
+                                                {conv.lastMessageTime && timeOrHour(conv.lastMessageTime)}
                                             </div>
                                         </div>
                                     </li>
@@ -421,39 +355,43 @@ export default function MessagesPage() {
                                             {/* Affichage images sécurisées */}
                                             {msg.images && msg.images.map((img, i) => (
                                                 img && !img.startsWith("http") ? (
-                                                    <SecureImage
+                                                    <SecureMedia
                                                         key={i}
                                                         fileName={img}
+                                                        type="image"
                                                         alt="img"
-                                                        className="w-24 h-24 object-cover rounded-lg shadow mt-2"
+                                                        className="w-64 h-64 object-cover rounded-lg shadow mt-2"
                                                     />
                                                 ) : img ? (
                                                     <img
                                                         key={i}
                                                         src={img}
                                                         alt="img"
-                                                        className="w-24 h-24 object-cover rounded-lg shadow mt-2"
+                                                        className="w-64 h-64 object-cover rounded-lg shadow mt-2"
                                                     />
                                                 ) : null
                                             ))}
                                             {/* Affichage vidéos sécurisées */}
                                             {msg.videos && msg.videos.map((vid, i) => (
                                                 vid && !vid.startsWith("http") ? (
-                                                    <SecureVideo
+                                                    <SecureMedia
                                                         key={i}
                                                         fileName={vid}
-                                                        className="w-32 h-24 rounded-lg shadow mt-2"
+                                                        type="video"
+                                                        className="w-96 h-64 rounded-lg shadow mt-2"
                                                     />
                                                 ) : vid ? (
                                                     <video
                                                         key={i}
                                                         src={vid}
                                                         controls
-                                                        className="w-32 h-24 rounded-lg shadow mt-2"
+                                                        className="w-96 h-64 rounded-lg shadow mt-2"
                                                     />
                                                 ) : null
                                             ))}
-                                            <div className="text-xs text-right opacity-60">{timeAgo(msg.createdAt)}</div>
+                                            <div className="text-xs text-right opacity-60">
+                                                {timeOrHour(msg.updatedAt || msg.createdAt)}
+                                            </div>
                                         </div>
                                     </div>
                                 ))
@@ -463,7 +401,7 @@ export default function MessagesPage() {
                                     <img
                                         src={URL.createObjectURL(selectedFile)}
                                         alt="Aperçu"
-                                        className="w-24 h-24 object-cover rounded-lg shadow"
+                                        className="w-64 h-64 object-cover rounded-lg shadow"
                                     />
                                 </div>
                             )}
@@ -472,10 +410,12 @@ export default function MessagesPage() {
                                     <img
                                         src={selectedGif}
                                         alt="GIF sélectionné"
-                                        className="w-24 h-24 object-cover rounded-lg shadow"
+                                        className="w-64 h-64 object-cover rounded-lg shadow"
                                     />
                                 </div>
                             )}
+                            {/* Scroll auto sur le dernier message */}
+                            <div ref={messagesEndRef} />
                         </div>
                         <form className="flex gap-2 mt-auto" onSubmit={handleSendMessage}>
                             <input
@@ -487,7 +427,7 @@ export default function MessagesPage() {
                             />
                             <input
                                 type="file"
-                                accept="image/*"
+                                accept="image/*,video/*"
                                 className="hidden"
                                 ref={fileInputRef}
                                 onChange={handleFileChange}
@@ -496,7 +436,7 @@ export default function MessagesPage() {
                                 type="button"
                                 className="px-2 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition flex items-center justify-center"
                                 onClick={() => fileInputRef.current.click()}
-                                title="Envoyer une image"
+                                title="Envoyer une image ou vidéo"
                             >
                                 <FiImage size={22} />
                             </button>
