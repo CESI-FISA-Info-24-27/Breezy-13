@@ -4,6 +4,7 @@ import Image from "next/image";
 import { HiSearch, HiMenu } from "react-icons/hi";
 import { useState } from "react";
 import Link from "next/link";
+import { disconnect } from "../../services/AuthServices";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -11,7 +12,7 @@ export default function Header() {
     const handleDisconnect = async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
     try {
-        await login(email, password, rememberMe);
+        await disconnect();
         console.log('Déconnexion réussie');
 
         // Rediriger l'utilisateur
