@@ -7,7 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { createUser, updateUser } from "../../services/UsersServices";
-import { login } from "../../services/AuthServices";
+import { login } from "../../services/authServices";
 import { uploadFile } from "../../services/fileServerService";
 
 export default function Register() {

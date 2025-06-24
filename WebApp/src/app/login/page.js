@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import { jwtDecode } from "jwt-decode";
 import { useState } from 'react';
 import {useEffect} from 'react';
-import { login, refreshToken } from '../../services/AuthServices.js';
+import { login, refreshToken } from '../../services/authServices.js';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
