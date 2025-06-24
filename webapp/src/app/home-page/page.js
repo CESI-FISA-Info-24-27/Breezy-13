@@ -8,6 +8,7 @@ import Footer from "../comp/Footer";
 import Header from "../comp/Header";
 import MobileNavbar from "../comp/MobileNavbar";
 import { PostsList } from "../comp/PostsList";
+import { getPosts } from "../../services/postsServices";
 
 export default function HomePage() {
   const [headerStyle, setHeaderStyle] = useState({ opacity: 1, transform: "translateY(0)" });
@@ -15,6 +16,7 @@ export default function HomePage() {
   const [sidebarTop, setSidebarTop] = useState(64);
   const headerRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     if (headerRef.current) {
@@ -45,22 +47,25 @@ export default function HomePage() {
   }, [headerHeight]);
 
   useEffect(() => {
-    // Fonction pour vérifier la largeur de l'écran
     function handleResize() {
-      setIsMobile(window.innerWidth < 768); // 768px = breakpoint "md"
+      setIsMobile(window.innerWidth < 768);
     }
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Définition de demoPosts
-  const demoPosts = [
-    { _id: "1", username: "elonmuck", avatar: "/logo.png", content: "Achetez mes voitures !" , date: "2023-10-01T12:00:00Z" },
-    { _id: "2", username: "BillGrates", avatar: "/logo.png", content: "Windows c'est mieux." , date: "2023-10-01T12:00:00Z" },
-    { _id: "3", username: "Terracist", avatar: "/logo.png", content: "TwiX c'était mieux avant." , date: "2023-10-01T12:00:00Z" },
-    { _id: "4", username: "Arkuni", avatar: "/logo.png", content: "TwiX<Beak" , date: "2023-10-01T12:00:00Z" }
-  ];
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        const data = await getPosts();
+        setPosts(data || []);
+      } catch (err) {
+        setPosts([]);
+      }
+    }
+    fetchPosts();
+  }, []);
 
   return (
     <div className="relative min-h-screen bg-seasalt">
@@ -103,7 +108,7 @@ export default function HomePage() {
           <Post />
           <hr className="mt-7 text-rich-black" />
           <div className="mt-8 mb-4">
-            <PostsList posts={demoPosts} />
+            <PostsList posts={posts} /> {/* <-- Utilise les vrais posts */}
           </div>
           <Footer>
             <span>© {new Date().getFullYear()} Mon Footer Personnalisé</span>
