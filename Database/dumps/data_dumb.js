@@ -81,7 +81,7 @@ async function main() {
     users.push({
       username: `user${i}_${Math.floor(Math.random()*10000)}`,
       email: `user${i}@example.com`,
-      password: "choucroute",
+      password: "$2b$10$np5ZM6bsJzb89CrBJdD7mO2jKZhk9Y2kEPy.mwF9FtTL5k2P4tnKy",
       avatar: randomItem(AVATAR_URLS),
       bio: randomSentence(),
       role_id: ROLE_USER,

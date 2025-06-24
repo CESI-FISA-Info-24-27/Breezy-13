@@ -26,3 +26,9 @@ export async function getFollows() {
     axios.get(API_URL, { headers }).then(res => res.data)
   );
 }
+
+export async function getFollowsFrom(id) {
+  return withAuthRetry(headers =>
+    axios.get(API_URL, { headers, id }).then(res => res.data)
+  );
+}

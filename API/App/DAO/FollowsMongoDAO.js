@@ -46,9 +46,9 @@ export class FollowsMongoDAO extends FollowsDAO {
      */
     async getFollows(filters) {
         const mongoFilters = {};
-        if (filters.id) mongoFilters._id = new ObjectId(filters.id);
-        if (filters.follower) mongoFilters.follower = filters.follower;
-        if (filters.following) mongoFilters.following = filters.following;
+        if (filters.id && ObjectId.isValid(filters.id)) mongoFilters._id = new ObjectId(filters.id);
+        if (filters.follower && ObjectId.isValid(filters.follower)) mongoFilters.follower = new ObjectId(filters.follower);
+        if (filters.following && ObjectId.isValid(filters.following)) mongoFilters.following = new ObjectId(filters.following);
         if (filters.createdAt) mongoFilters.createdAt = filters.createdAt;
 
         return await this.collection.find(mongoFilters).toArray();

@@ -1,8 +1,10 @@
-import { useState } from "react";
+"use client"
+import { useState, useEffect } from "react";
+import { getFollows } from "../../services/FollowsServices"
 
 export default function SideBarFollow(props) {
   // Pour la démo, on met des données fictives
-  const follows = [
+  /*const follows = [
     { _id: "1", username: "elonmuck" },
     { _id: "2", username: "billgates" },
     { _id: "3", username: "arkunir" },
@@ -10,9 +12,22 @@ export default function SideBarFollow(props) {
     { _id: "5", username: "user5" },
     { _id: "6", username: "user6" },
     { _id: "7", username: "user7" },
-  ];
+  ];*/
+
+  const [follows, setFollows] = useState([{ _id: "1", username: "elonmuck" },
+    { _id: "2", username: "billgates" },
+    { _id: "3", username: "arkunir" },
+    { _id: "4", username: "terracid" },
+    { _id: "5", username: "user5" },
+    { _id: "6", username: "user6" },
+    { _id: "7", username: "user7" }]);
 
   const [showCount, setShowCount] = useState(5);
+
+  useEffect(async () => {
+    const fetchedFollows = await getFollows();
+    setFollows(fetchedFollows);
+  });
 
   const handleShowMore = () => {
     setShowCount((prev) => Math.min(prev + 5, follows.length));
