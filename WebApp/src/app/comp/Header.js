@@ -33,7 +33,9 @@ export default function Header() {
     }
   }, [menuOpen]);
 
-  const handleDisconnect = async (e) => {
+  /*
+    //Fonction permettant la déconnexion avec la gestion de revoked token
+    const handleDisconnect = async (e) => {
       e.preventDefault(); // Empêche le rechargement de la page
       try {
           await disconnect();
@@ -46,6 +48,8 @@ export default function Header() {
           alert(error.message || "Échec de la déconnexion");
       }
     }
+  
+  */
 
   return (
     <header className="flex items-center justify-between w-full h-16 px-8 bg-[var(--color-celestial-blue-dark)] shadow z-50">
@@ -96,7 +100,7 @@ export default function Header() {
             <Link href="/profil-page" className="block px-4 py-2 hover:bg-sea-green/10">Privacy Policy</Link>
             <Link href="/profil-page" className="block px-4 py-2 hover:bg-sea-green/10">Contact</Link>
             <hr className="w-4/5 mx-auto h-0.5 border-0 bg-folly my-2 rounded" />
-            <button onClick={handleDisconnect} className="block px-4 py-2 hover:bg-folly/10">Déconnexion</Link>
+            <Link href="/disonnect" className="block px-4 py-2 hover:bg-folly/10">Déconnexion</Link>
           </div>
         )}
       </div>
