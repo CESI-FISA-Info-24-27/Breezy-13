@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getFollows } from "../../services/followsServices";
+import { getFollows } from "../../services/FollowsServices";
 
 export default function SideBarFollow(props) {
   const [follows, setFollows] = useState([]);
