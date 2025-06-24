@@ -2,42 +2,18 @@ import MessagesServices from '../Services/MessagesServices.js';
 
 /**
  * Contrôleur pour gérer les opérations liées aux messages privés.
- * Fournit des méthodes pour récupérer, créer, mettre à jour et supprimer des messages.
- * @class MessagesController
  */
 class MessagesController {
     /**
-     * Récupérer les messages selon des filtres (ex: conversation entre deux users).
-     * @param {object} req - L'objet de requête HTTP, contenant les paramètres de recherche dans `req.query`.
-     * @param {object} res - L'objet de réponse HTTP.
-     * @returns {Array} - Un tableau de messages
-     * @throws {Error} 404 - Message non trouvé
-     * @throws {Error} 400 - L'id doit être un nombre
-     * @throws {Error} 400 - L'expéditeur ou le destinataire doit être une chaîne de caractères
-     * @throws {Error} 500 - Erreur inattendue
-     * @throws {Error} 200 - Récupération des messages réussie
+     * Récupère les messages selon des filtres (ex : conversation entre deux utilisateurs).
+     * 
+     * @param {Object} req - Requête Express contenant les filtres dans req.query.
+     * @param {Object} res - Réponse Express.
+     * @returns {Array} Liste des messages correspondant aux filtres.
      */
     async getMessages(req, res) {
         try {
-            // Vérifie que les paramètres sont valides
-            if (req.query.id && isNaN(req.query.id)) {
-                return res.status(400).json({ error: 'L\'id doit être un nombre' });
-            }
-            if (req.query.from && typeof req.query.from !== 'string') {
-                return res.status(400).json({ error: 'L\'expéditeur doit être une chaîne de caractères' });
-            }
-            if (req.query.to && typeof req.query.to !== 'string') {
-                return res.status(400).json({ error: 'Le destinataire doit être une chaîne de caractères' });
-            }
-
-            // Vérifie que l'id existe
-            if (req.query.id) {
-                const message = await MessagesServices.getMessages({ id: req.query.id });
-                if (!message || message.length === 0) {
-                    return res.status(404).json({ error: 'Message non trouvé' });
-                }
-            }
-
+            // On ne vérifie plus le type ici, car on accepte des ObjectId sous forme de string
             const messages = await MessagesServices.getMessages(req.query);
             res.json(messages);
         } catch (error) {
@@ -46,14 +22,20 @@ class MessagesController {
     }
 
     /**
-     * Créer un nouveau message (texte obligatoire, image ou vidéo optionnelles).
-     * @param {object} req - L'objet de requête HTTP, contenant les données du message dans `req.body`.
-     * @param {object} res - L'objet de réponse HTTP.
+     * Crée un nouveau message (texte ou média).
+     * 
+     * @param {Object} req - Requête Express contenant le message dans req.body.
+     * @param {Object} res - Réponse Express.
+     * @returns {Object} Le message créé.
      */
     async createMessage(req, res) {
         try {
-            if (!req.body.content || typeof req.body.content !== 'string' || req.body.content.trim() === '') {
-                return res.status(400).json({ error: 'Le message doit contenir du texte.' });
+            // On autorise un message sans content si images ou vidéos présentes
+            if ((!req.body.content || typeof req.body.content !== 'string' || req.body.content.trim() === '') &&
+                (!Array.isArray(req.body.images) || req.body.images.length === 0) &&
+                (!Array.isArray(req.body.videos) || req.body.videos.length === 0)
+            ) {
+                return res.status(400).json({ error: 'Le message doit contenir du texte, une image ou une vidéo.' });
             }
             if (!req.body.from || !req.body.to) {
                 return res.status(400).json({ error: 'Expéditeur et destinataire requis.' });
@@ -66,9 +48,11 @@ class MessagesController {
     }
 
     /**
-     * Mettre à jour un message existant (ex: marquer comme lu).
-     * @param {object} req - L'objet de requête HTTP, contenant l'ID du message dans `req.params.id` et les nouvelles données dans `req.body`.
-     * @param {object} res - L'objet de réponse HTTP.
+     * Met à jour un message existant (ex : marquer comme lu).
+     * 
+     * @param {Object} req - Requête Express contenant l'ID du message dans req.params.id et les champs à mettre à jour dans req.body.
+     * @param {Object} res - Réponse Express.
+     * @returns {Object} Le message mis à jour.
      */
     async updateMessage(req, res) {
         try {
@@ -80,9 +64,11 @@ class MessagesController {
     }
 
     /**
-     * Supprimer un message.
-     * @param {object} req - L'objet de requête HTTP, contenant l'ID du message dans `req.params.id`.
-     * @param {object} res - L'objet de réponse HTTP.
+     * Supprime un message.
+     * 
+     * @param {Object} req - Requête Express contenant l'ID du message dans req.params.id.
+     * @param {Object} res - Réponse Express.
+     * @returns {Object} Message de confirmation.
      */
     async deleteMessage(req, res) {
         try {

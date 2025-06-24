@@ -21,7 +21,7 @@ messagePath.get('/', MessagesController.getMessages);
 /**
  * Créer un nouveau message (texte ou image).
  */
-messagePath.post('/', fieldsRequired(["from", "to", "content"]), MessagesController.createMessage);
+messagePath.post('/', fieldsRequired(["from", "to"]), MessagesController.createMessage);
 
 /**
  * Mettre à jour un message (ex: marquer comme lu).

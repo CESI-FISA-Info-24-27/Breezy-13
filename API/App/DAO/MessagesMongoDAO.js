@@ -3,10 +3,14 @@ import { MessagesDAO } from './MessagesDAO.js';
 import dotenv from 'dotenv';
 
 /**
- * DAO pour la gestion des messages avec MongoDB.
- * @extends MessagesDAO
+ * DAO (Data Access Object) pour la gestion des messages avec MongoDB.
+ * Fournit des méthodes pour interagir avec la collection "messages" de la base de données.
  */
 export class MessagesMongoDAO extends MessagesDAO {
+    /**
+     * Initialise la connexion MongoDB et configure la base de données.
+     * Les paramètres de connexion sont récupérés depuis les variables d'environnement.
+     */
     constructor() {
         super();
         dotenv.config();
@@ -18,7 +22,7 @@ export class MessagesMongoDAO extends MessagesDAO {
     }
 
     /**
-     * Initialise la connexion à la base de données et à la collection.
+     * Établit la connexion à la base de données et prépare la collection "messages".
      */
     async init() {
         await this.client.connect();
@@ -34,9 +38,9 @@ export class MessagesMongoDAO extends MessagesDAO {
     }
 
     /**
-     * Récupère les messages selon les filtres spécifiés.
-     * @param {object} filters - Les filtres à appliquer (id, from, to, read, createdAt, etc.).
-     * @returns {Array} - Liste des messages trouvés.
+     * Récupère les messages selon les filtres fournis.
+     * @param {Object} filters - Filtres de recherche (id, from, to, read, createdAt, updatedAt).
+     * @returns {Promise<Array>} Liste des messages correspondant aux filtres.
      */
     async getMessages(filters) {
         const mongoFilters = {};
@@ -51,11 +55,20 @@ export class MessagesMongoDAO extends MessagesDAO {
     }
 
     /**
-     * Crée un nouveau message.
-     * @param {object} message - Les données du message à créer.
-     * @returns {object} - Résultat de l'insertion.
+     * Crée un nouveau message dans la base de données.
+     * Les champs from et to sont convertis en ObjectId si besoin.
+     * Les champs createdAt, updatedAt et read sont automatiquement ajoutés.
+     * @param {Object} message - Données du message à insérer.
+     * @returns {Promise<Object>} Résultat de l'insertion.
      */
     async createMessage(message) {
+        // Conversion des champs from/to en ObjectId si besoin
+        if (message.from && typeof message.from === "string" && ObjectId.isValid(message.from)) {
+            message.from = new ObjectId(message.from);
+        }
+        if (message.to && typeof message.to === "string" && ObjectId.isValid(message.to)) {
+            message.to = new ObjectId(message.to);
+        }
         message.createdAt = new Date();
         message.updatedAt = new Date();
         message.read = message.read ?? false;
@@ -63,10 +76,11 @@ export class MessagesMongoDAO extends MessagesDAO {
     }
 
     /**
-     * Met à jour un message existant.
-     * @param {string} id - L'identifiant du message à mettre à jour.
-     * @param {object} message - Les nouvelles données du message.
-     * @returns {object} - Résultat de la mise à jour.
+     * Met à jour un message existant selon son identifiant.
+     * Le champ updatedAt est mis à jour automatiquement.
+     * @param {string} id - Identifiant du message à mettre à jour.
+     * @param {Object} message - Champs à mettre à jour.
+     * @returns {Promise<Object>} Résultat de la mise à jour.
      */
     async updateMessage(id, message) {
         message.updatedAt = new Date();
@@ -77,9 +91,9 @@ export class MessagesMongoDAO extends MessagesDAO {
     }
 
     /**
-     * Supprime un message existant.
-     * @param {string} id - L'identifiant du message à supprimer.
-     * @returns {object} - Résultat de la suppression.
+     * Supprime un message selon son identifiant.
+     * @param {string} id - Identifiant du message à supprimer.
+     * @returns {Promise<Object>} Résultat de la suppression.
      */
     async deleteMessage(id) {
         return await this.collection.deleteOne({ _id: new ObjectId(id) });
