@@ -24,11 +24,18 @@ import { refreshToken } from "./AuthServices";
 >>>>>>> 399dbca (feat : Mise en place des tests unitaires sur la web app #42)
 =======
 <<<<<<< HEAD:WebApp/src/services/FollowsServices.js
+<<<<<<< HEAD:WebApp/src/services/FollowsServices.js
 import { refreshToken } from "./AuthServices";
 =======
 import { refreshToken } from "./AuthService";
 >>>>>>> f818b6b (feat : fix pour le merge):webapp/src/services/followsServices.js
+<<<<<<< HEAD
 >>>>>>> 02ede59 (feat : fix pour le merge)
+=======
+=======
+import { refreshToken } from "./AuthServices";
+>>>>>>> cf6c281 (Debut de liaison):webapp/src/services/followsServices.js
+>>>>>>> fedefd3 (Debut de liaison)
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/follows`;
 

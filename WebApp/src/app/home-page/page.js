@@ -15,11 +15,15 @@ import MobileNavbar from "../comp/MobileNavbar";
 import { PostsList } from "../comp/PostsList";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { getPosts } from "../../services/postsServices";
 =======
 >>>>>>> a177e93 (feat : fix pour le merge)
 =======
 >>>>>>> 7ea8f23 (feat : fix pour le merge)
+=======
+import { getPosts } from "../../services/postsServices";
+>>>>>>> fedefd3 (Debut de liaison)
 
 export default function HomePage() {
   const [headerStyle, setHeaderStyle] = useState({ opacity: 1, transform: "translateY(0)" });
@@ -28,9 +32,13 @@ export default function HomePage() {
   const headerRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
 <<<<<<< HEAD
+<<<<<<< HEAD
   const [posts, setPosts] = useState([]);
 =======
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+  const [posts, setPosts] = useState([]);
+>>>>>>> fedefd3 (Debut de liaison)
 
   useEffect(() => {
     if (headerRef.current) {
@@ -62,6 +70,7 @@ export default function HomePage() {
 
   useEffect(() => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     function handleResize() {
       setIsMobile(window.innerWidth < 768);
 =======
@@ -69,6 +78,10 @@ export default function HomePage() {
     function handleResize() {
       setIsMobile(window.innerWidth < 768); // 768px = breakpoint "md"
 >>>>>>> a177e93 (feat : fix pour le merge)
+=======
+    function handleResize() {
+      setIsMobile(window.innerWidth < 768);
+>>>>>>> fedefd3 (Debut de liaison)
     }
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -77,6 +90,9 @@ export default function HomePage() {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> fedefd3 (Debut de liaison)
   useEffect(() => {
     async function fetchPosts() {
       try {
@@ -88,6 +104,7 @@ export default function HomePage() {
     }
     fetchPosts();
   }, []);
+<<<<<<< HEAD
 
 =======
 >>>>>>> a177e93 (feat : fix pour le merge)
@@ -99,6 +116,8 @@ export default function HomePage() {
     { _id: "3", username: "Terracist", avatar: "/logo.png", content: "TwiX c'était mieux avant." , date: "2023-10-01T12:00:00Z" },
     { _id: "4", username: "Arkuni", avatar: "/logo.png", content: "TwiX<Beak" , date: "2023-10-01T12:00:00Z" }
   ];
+=======
+>>>>>>> fedefd3 (Debut de liaison)
 
 >>>>>>> 3380d16 (ProfilPage finit sans modal)
   return (
@@ -152,6 +171,7 @@ export default function HomePage() {
           <div className="mt-8 mb-4">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <PostsList posts={posts} /> {/* <-- Utilise les vrais posts */}
 =======
             <PostsList />
@@ -159,6 +179,9 @@ export default function HomePage() {
 =======
             <PostsList posts={demoPosts} />
 >>>>>>> 3380d16 (ProfilPage finit sans modal)
+=======
+            <PostsList posts={posts} /> {/* <-- Utilise les vrais posts */}
+>>>>>>> fedefd3 (Debut de liaison)
           </div>
           <Footer>
             <span>© {new Date().getFullYear()} Mon Footer Personnalisé</span>
