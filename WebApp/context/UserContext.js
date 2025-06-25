@@ -1,17 +1,13 @@
-import { createContext, useContext, useState } from "react";
+'use client';
 
-const UserContext = createContext();
+import { createContext, useContext, } from 'react';
+import { jwtDecode } from 'jwt-decode';
 
-export function UserProvider({ children }) {
-  const [user, setUser] = useState(null);
-
-  return (
-    <UserContext.Provider value={{ user, setUser }}>
-      {children}
-    </UserContext.Provider>
-  );
+const UserContext = {
+  userAuthenticated : {} || null,
+  setUserAuthenticated : () => {}
 }
 
-export function useUser() {
-  return useContext(UserContext);
-}
+const AuthContext = createContext(UserContext)
+
+export {AuthContext};

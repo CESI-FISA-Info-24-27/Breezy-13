@@ -8,12 +8,13 @@ import ProfilPreview from "../comp/ProfilPreview";
 import { PostsList } from "../comp/PostsList";
 import MobileNavbar from "../comp/MobileNavbar";
 
-export default function HomePage() {
+export default function ProfilPage() {
   const [headerStyle, setHeaderStyle] = useState({ opacity: 1, transform: "translateY(0)" });
   const [headerHeight, setHeaderHeight] = useState(64);
   const [sidebarTop, setSidebarTop] = useState(64);
   const headerRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
+  const user = {}
 
   useEffect(() => {
     if (headerRef.current) {
@@ -79,7 +80,7 @@ export default function HomePage() {
             paddingBottom: '3.5rem', // 56px pour la MobileNavbar
           }}
         >
-          <ProfilPreview />
+          <ProfilPreview user = {user} />
           <hr className="w-1/2 mx-auto h-0.5 border-0 bg-seasalt my-5 rounded" />
           <PostsList />
           <Footer>
