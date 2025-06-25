@@ -50,25 +50,32 @@ app.use(async (req, res, next) => {
     return next();
   }
 
-  const token = req.headers['authorization'];
+  const rawToken = req.headers['authorization'];
+  let token = null;
 
-  if (!token) {
-      return res.status(401).json({ error: 'No token provided' });
+  //Si le token n'est pas présent, on retourne un code "unauthorized"
+  if (!rawToken) {
+    return res.status(401).json({ error: 'No token provided' });
   }
 
-  // Vérifie si le token est révoqué
-  if (await userService.isTokenRevoked(token)) {
-      return res.status(401).json({ error: 'Token revoked' });
-  }
+  //Si le token est présent, et qu'il commence par "Bearer ", on récupère seulement le token
+  if (rawToken && rawToken.startsWith('Bearer ')) {
+    token = rawToken.split(' ')[1];  
 
-  Jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    Jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
           return res.status(401).json({ error: 'Invalid token' });
       }
 
       req.user = decoded;
       next();
-  });
+    });
+  }
+
+  // Vérifie si le token est révoqué
+  if (await userService.isTokenRevoked(token)) {
+      return res.status(401).json({ error: 'Token revoked' });
+  }
 });
 
 // Path principales
