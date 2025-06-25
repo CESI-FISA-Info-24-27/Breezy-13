@@ -27,8 +27,10 @@ export async function getFollows() {
   );
 }
 
-export async function getFollowsFrom(id) {
+export async function getFollowsFrom(id) 
+{
+  let params = { following: id };
   return withAuthRetry(headers =>
-    axios.get(API_URL, { headers, id }).then(res => res.data)
+    axios.get(API_URL, { headers, params }).then(res => res.data)
   );
 }

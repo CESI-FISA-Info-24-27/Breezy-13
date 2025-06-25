@@ -1,17 +1,12 @@
-import { createContext, useContext, useState } from "react";
+'use client';
 
-const UserContext = createContext();
+import { createContext } from 'react';
 
-export function UserProvider({ children }) {
-  const [user, setUser] = useState(null);
-
-  return (
-    <UserContext.Provider value={{ user, setUser }}>
-      {children}
-    </UserContext.Provider>
-  );
+const UserContext = {
+  userAuthenticated : {} || null,
+  setUserAuth : () => {}
 }
 
-export function useUser() {
-  return useContext(UserContext);
-}
+const AuthContext = createContext(UserContext)
+
+export {AuthContext};

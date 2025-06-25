@@ -1,14 +1,16 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { HiMenu, HiSearch } from "react-icons/hi";
 import Image from "next/image";
 import Link from "next/link";
+import { AuthContext } from '../../../context/UserContext';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
+  const { token } = useContext(AuthContext);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -36,7 +38,7 @@ export default function Header() {
       {/* Logo à gauche */}
       <div className="flex items-center gap-3">
         <Image src="/logo.png" alt="Logo" width={28} height={28} className="rounded-full" />
-        <span className="text-xl font-bold text-seasalt">TwiX</span>
+        <span className="text-xl font-bold text-seasalt">TwiX {token}</span>
       </div>
 
       {/* Barre de recherche centrée */}

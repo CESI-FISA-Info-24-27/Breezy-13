@@ -28,7 +28,6 @@ export async function getUsers(filters = {}) {
       ([, value]) => value !== undefined && value !== null && value !== ""
     )
   );
-
   return withAuthRetry(headers =>
     axios.get(API_URL, { headers, params }).then(res => res.data)
   );
