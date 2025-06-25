@@ -69,7 +69,7 @@ export default function Login() {
             <div className="w-full max-w-md bg-seasalt/90 rounded-2xl shadow-2xl p-8 flex flex-col items-center gap-6 backdrop-blur-md">
                 <Link href="/" className="flex items-center gap-3 mb-2">
                     <Image
-                        className="w-16 rounded-full shadow-lg object-cover"
+                        className="w-16 h-auto rounded-full shadow-lg object-cover"
                         src="/logo.png"
                         alt="logo"
                         width={64}

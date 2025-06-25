@@ -29,15 +29,16 @@ export default function HomePage() {
       const opacity = Math.max(0, 1 - scrollY / 100);
       const translateY = Math.min(scrollY, 100);
 
-      setHeaderStyle({
-        opacity,
-        transform: `translateY(-${translateY}px)`,
-      });
+      setHeaderStyle(prev =>
+        prev.opacity !== opacity || prev.transform !== `translateY(-${translateY}px)`
+          ? { opacity, transform: `translateY(-${translateY}px)` }
+          : prev
+      );
 
       const ACCELERATION = 1.2;
       const sidebarTranslate = Math.min(scrollY * ACCELERATION, 100 * ACCELERATION);
       const visibleHeight = Math.max(headerHeight - sidebarTranslate, 0);
-      setSidebarTop(visibleHeight);
+      setSidebarTop(prev => (prev !== visibleHeight ? visibleHeight : prev));
     }
 
     window.addEventListener("scroll", handleScroll);

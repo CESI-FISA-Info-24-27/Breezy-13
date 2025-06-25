@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { HiOutlineUserAdd, HiUserAdd, HiOutlineShare, HiShare, HiChat, HiOutlineChat, HiOutlineHeart, HiHeart } from "react-icons/hi";
 import { useState, useEffect } from "react";
 
