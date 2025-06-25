@@ -24,7 +24,7 @@ export default function Navbar({ sidebarTop = 64 }) {
 
   const isHome = (pathname === "/" || pathname === "/home-page") && showNotifications === false;
   const isProfile = pathname === "/profil-page" && showNotifications === false;
-  const isMessages = pathname === "/messagespage" && showNotifications === false;
+  const isMessages = pathname === "/messages" && showNotifications === false;
 
   // Fermer le panneau si clic en dehors
   useEffect(() => {
@@ -118,7 +118,7 @@ export default function Navbar({ sidebarTop = 64 }) {
         </li>
         <li>
           <Link
-            href="/messagespage"
+            href="/messages"
             className={`flex items-center gap-3 ${
               showNotifications ? "px-0 justify-center" : "px-4"
             } py-2 rounded-lg font-medium transition ${

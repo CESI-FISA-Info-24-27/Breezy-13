@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { refreshToken } from "./authServices";
+import { refreshToken } from "./AuthServices";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/messages`;
 

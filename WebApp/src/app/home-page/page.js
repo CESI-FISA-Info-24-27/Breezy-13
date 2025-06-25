@@ -8,6 +8,9 @@ import Footer from "../comp/Footer";
 import Header from "../comp/Header";
 import MobileNavbar from "../comp/MobileNavbar";
 import { PostsList } from "../comp/PostsList";
+import { getPosts } from "../../services/PostsServices"
+
+const pagination = 5;
 
 export default function HomePage() {
   const [headerStyle, setHeaderStyle] = useState({ opacity: 1, transform: "translateY(0)" });
@@ -15,6 +18,8 @@ export default function HomePage() {
   const [sidebarTop, setSidebarTop] = useState(64);
   const headerRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [posts, setPosts] = useState([]);
+  const [endID, setEndID] = useState(pagination);
 
   useEffect(() => {
     if (headerRef.current) {
@@ -56,12 +61,21 @@ export default function HomePage() {
   }, []);
 
   // Définition de demoPosts
-  const demoPosts = [
-    { _id: "1", username: "elonmuck", avatar: "/logo.png", content: "Achetez mes voitures !" , date: "2023-10-01T12:00:00Z" },
-    { _id: "2", username: "BillGrates", avatar: "/logo.png", content: "Windows c'est mieux." , date: "2023-10-01T12:00:00Z" },
-    { _id: "3", username: "Terracist", avatar: "/logo.png", content: "TwiX c'était mieux avant." , date: "2023-10-01T12:00:00Z" },
-    { _id: "4", username: "Arkuni", avatar: "/logo.png", content: "TwiX<Beak" , date: "2023-10-01T12:00:00Z" }
-  ];
+  useEffect(() => 
+  {
+    const fetchPosts = async () => 
+    {
+        let tempPosts = await getPosts();
+        setPosts(tempPosts);
+    }
+
+    fetchPosts();
+  }, []);
+
+  function fetchMorePosts()
+  {
+    setEndID(prev => prev + pagination);
+  }
 
   return (
     <div className="relative min-h-screen bg-seasalt">
@@ -104,7 +118,12 @@ export default function HomePage() {
           <Post />
           <hr className="mt-7 text-rich-black" />
           <div className="mt-8 mb-4">
-            <PostsList posts={demoPosts} />
+            <PostsList posts={posts.slice(0, endID)} />
+            <li>
+                <button className="w-full mt-4 px-4 py-2 rounded bg-folly text-seasalt font-semibold hover:bg-sea-green transition" onClick={fetchMorePosts}>
+                    Afficher plus
+                </button>
+            </li>
           </div>
           <Footer>
             <span>© {new Date().getFullYear()} Mon Footer Personnalisé</span>

@@ -2,11 +2,11 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Navbar from "../comp/Navbar";
-import MobileNavbar from "../comp/mobileNavbar";
+import MobileNavbar from "../comp/MobileNavbar";
 import Header from "../comp/Header";
 import { getMessages, createMessage } from "../../services/MessagesServices";
-import { getUsers } from "../../services/usersServices";
-import { uploadFile } from "../../services/fileServerServices";
+import { getUsers } from "../../services/UsersServices";
+import { uploadFile } from "../../services/FileServerServices";
 import { FiImage, FiSend } from "react-icons/fi";
 import { FaRegSmile } from "react-icons/fa";
 import Cookies from "js-cookie";

@@ -8,7 +8,7 @@ const now = new Date();
 const USERS_COUNT = 337;
 const POSTS_PER_USER = 7;
 const COMMENTS_PER_USER = 20;
-const ROLE_USER = new ObjectId("6849efc6bd8dc2e321172c79");
+const ROLE_USER = new ObjectId("685bcbabce71d1f8b469e328");
 
 const AVATAR_URLS = [
   "1749214669771-911823678.gif",
@@ -81,7 +81,7 @@ async function main() {
     users.push({
       username: `user${i}_${Math.floor(Math.random()*10000)}`,
       email: `user${i}@example.com`,
-      password: "choucroute",
+      password: "$2b$10$np5ZM6bsJzb89CrBJdD7mO2jKZhk9Y2kEPy.mwF9FtTL5k2P4tnKy",
       avatar: randomItem(AVATAR_URLS),
       bio: randomSentence(),
       role_id: ROLE_USER,
