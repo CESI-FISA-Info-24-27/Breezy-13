@@ -8,13 +8,43 @@ const COMMENTS_PER_USER = 20;
 const ROLE_USER = ObjectId("6849efc6bd8dc2e321172c79");
 
 const AVATAR_URLS = [
-  "http://localhost:5000/files/1749214669771-911823678.gif",
-  "http://localhost:5000/files/1749713669755-621390355.png",
-  "http://localhost:5000/files/1749824531489-54769329.gif",
-  "http://localhost:5000/files/1749864953025-258947954.jpg",
-  "http://localhost:5000/files/1749864963022-518074788.jpg",
-  "http://localhost:5000/files/1749864974040-277207196.PNG",
-  "http://localhost:5000/files/1749865024759-123915179.png"
+  "1749214669771-911823678.gif",
+  "1749713669755-621390355.png",
+  "1749824531489-54769329.gif",
+  "1749864953025-258947954.jpg",
+  "1749864963022-518074788.jpg",
+  "1749864974040-277207196.PNG",
+  "1749865024759-123915179.png",
+  "1749864985955-515787396.PNG"
+];
+
+const MESSAGE_IMAGE_URLS = [
+  "1749214669771-911823678.gif",
+  "1749713669755-621390355.png",
+  "1749824531489-54769329.gif",
+  "1749864953025-258947954.jpg",
+  "1749864963022-518074788.jpg",
+  "1749864974040-277207196.PNG",
+  "1749865024759-123915179.png",
+  "1749864985955-515787396.PNG"
+];
+
+const MESSAGE_PHRASES = [
+  "Salut, comment tu vas ?",
+  "On se retrouve ce soir ?",
+  "Tu as vu le dernier épisode ?",
+  "Merci pour ton aide !",
+  "Je t'envoie le document.",
+  "On se capte demain ?",
+  "Haha, bien vu !",
+  "Bonne journée !",
+  "Tu peux m'appeler ?",
+  "C'est validé pour moi.",
+  "Je suis dispo à 18h.",
+  "On avance sur le projet ?",
+  "Top, merci !",
+  "Tu as des nouvelles ?",
+  "À bientôt sur Breezy !"
 ];
 
 // Utils
@@ -30,6 +60,11 @@ function randomSentence(min=5, max=12) {
   let s = [];
   for (let i=0; i<len; i++) s.push(randomWord());
   return s.join(' ');
+}
+function randomDateInLast30Days() {
+  const now = new Date();
+  const past = new Date(now.getTime() - Math.random() * 30 * 24 * 60 * 60 * 1000);
+  return past;
 }
 
 // Génération des utilisateurs
@@ -135,6 +170,50 @@ userIds.forEach(uid => {
 if (comments.length) {
   m_db.comments.insertMany(comments);
   print(`${comments.length} commentaires insérés.`);
+}
+
+// Génération des messages privés cohérents avec images/vidéos pour une partie
+let messages = [];
+userIds.forEach(fromId => {
+  // Entre 10 et 15 messages envoyés par utilisateur
+  const nbMessages = 10 + Math.floor(Math.random() * 6);
+  for (let i = 0; i < nbMessages; i++) {
+    // Destinataire différent de l'expéditeur
+    let toId;
+    do {
+      toId = randomItem(userIds);
+    } while (toId.equals(fromId));
+    const content = randomItem(MESSAGE_PHRASES);
+    const createdAt = randomDateInLast30Days();
+
+    // 30% des messages ont des images
+    let images = [];
+    if (Math.random() < 0.3) {
+      const nbImages = 1 + Math.floor(Math.random() * 2); // 1 ou 2 images
+      images = Array.from({ length: nbImages }, () => randomItem(MESSAGE_IMAGE_URLS));
+    }
+
+    // 10% des messages ont une vidéo (optionnel)
+    let videos = [];
+    if (Math.random() < 0.1) {
+      videos = ["sample-video.mp4"]; // Mets ici tes chemins de vidéos si tu en as
+    }
+
+    messages.push({
+      from: fromId,
+      to: toId,
+      content,
+      createdAt,
+      updatedAt: createdAt,
+      read: Math.random() < 0.7, // 70% de messages lus
+      images,
+      videos
+    });
+  }
+});
+if (messages.length) {
+  m_db.messages.insertMany(messages);
+  print(`${messages.length} messages privés insérés.`);
 }
 
 print("✅ Script terminé.");
