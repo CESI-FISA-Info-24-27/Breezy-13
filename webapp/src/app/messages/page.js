@@ -45,140 +45,12 @@ export default function MessagesPage() {
 
     // Ref pour scroll auto sur le dernier message
     const messagesEndRef = useRef(null);
+    const messagesContainerRef = useRef(null);
 
-    useEffect(() => {
-        async function fetchMsgs() {
-            setLoading(true);
-            try {
-                const msgsFrom = await getMessages({ from: userId });
-                const msgsTo = await getMessages({ to: userId });
-                const allMsgs = [...msgsFrom, ...msgsTo].filter(
-                    (msg, idx, arr) =>
-                        arr.findIndex(m => m._id === msg._id) === idx
-                );
-                setMessages(allMsgs);
-            } catch (e) { }
-            setLoading(false);
-        }
-        if (userId) fetchMsgs();
-    }, [userId]);
+    // Pour savoir si l'utilisateur a scrollé manuellement
+    const [userScrolled, setUserScrolled] = useState(false);
 
-    useEffect(() => {
-        async function fetchUsersList() {
-            try {
-                const res = await getUsers();
-                setUsers(res);
-            } catch (e) {}
-        }
-        fetchUsersList();
-    }, []);
-
-    function getUserInfo(id) {
-        return users.find(u => u._id === id) || {};
-    }
-
-    // Envoi automatique du message dès qu'un fichier est sélectionné
-    async function handleFileChange(e) {
-        const file = e.target.files[0];
-        if (!file || !selectedConv) return;
-
-        const ext = file.name.split('.').pop().toLowerCase();
-        const uploadRes = await uploadFile(file);
-        console.log("Fichier uploadé :", uploadRes);
-
-        // Récupère juste le nom du fichier depuis le chemin
-        let fileName = "";
-        if (uploadRes.filePath) {
-            fileName = uploadRes.filePath.split("/").pop();
-        } else if (uploadRes.fileName) {
-            fileName = uploadRes.fileName;
-        } else if (uploadRes.path) {
-            fileName = uploadRes.path.split("/").pop();
-        } else if (uploadRes.url) {
-            fileName = uploadRes.url.split("/").pop();
-        }
-
-        let images = [];
-        let videos = [];
-        if (["mp4", "webm", "ogg"].includes(ext)) {
-            videos.push(fileName);
-        } else {
-            images.push(fileName);
-        }
-
-        await createMessage({
-            content: "",
-            from: userId,
-            to: selectedConv,
-            images: images.length > 0 ? images : [],
-            videos: videos.length > 0 ? videos : []
-        });
-
-        setSelectedFile(null);
-
-        // Recharge les messages après envoi
-        const msgsFrom = await getMessages({ from: userId });
-        const msgsTo = await getMessages({ to: userId });
-        const allMsgs = [...msgsFrom, ...msgsTo].filter(
-            (msg, idx, arr) =>
-                arr.findIndex(m => m._id === msg._id) === idx
-        );
-        setMessages(allMsgs);
-    }
-
-    // Envoi immédiat du GIF dès sélection
-    function handleGifSelect(gifUrl) {
-        if (!selectedConv) return;
-        createMessage({
-            content: "",
-            from: userId,
-            to: selectedConv,
-            images: [gifUrl],
-            videos: []
-        }).then(async () => {
-            setSelectedGif(null);
-            setShowGifModal(false);
-            // Recharge les messages après envoi
-            const msgsFrom = await getMessages({ from: userId });
-            const msgsTo = await getMessages({ to: userId });
-            const allMsgs = [...msgsFrom, ...msgsTo].filter(
-                (msg, idx, arr) =>
-                    arr.findIndex(m => m._id === msg._id) === idx
-            );
-            setMessages(allMsgs);
-        });
-    }
-
-    // Envoi d'un message texte uniquement (pas de GIF ni fichier ici)
-    async function handleSendMessage(e) {
-        e.preventDefault();
-        if (!selectedConv) return;
-
-        let images = [];
-        let videos = [];
-        let contentToSend = message;
-
-        if (!contentToSend && images.length === 0 && videos.length === 0) return;
-
-        await createMessage({
-            content: contentToSend,
-            from: userId,
-            to: selectedConv,
-            images,
-            videos
-        });
-
-        setMessage("");
-
-        const msgsFrom = await getMessages({ from: userId });
-        const msgsTo = await getMessages({ to: userId });
-        const allMsgs = [...msgsFrom, ...msgsTo].filter(
-            (msg, idx, arr) =>
-                arr.findIndex(m => m._id === msg._id) === idx
-        );
-        setMessages(allMsgs);
-    }
-
+    // conversations et currentMessages doivent être déclarés AVANT les useEffect qui les utilisent
     const conversations = React.useMemo(() => {
         const map = {};
         messages.forEach(msg => {
@@ -213,12 +85,191 @@ export default function MessagesPage() {
             );
     }, [messages, selectedConv, userId]);
 
-    // Scroll auto sur le dernier message
-    useEffect(() => {
-        if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    // Fonction pour charger les messages
+    async function fetchMsgs() {
+        setLoading(true);
+        try {
+            const msgsFrom = await getMessages({ from: userId });
+            const msgsTo = await getMessages({ to: userId });
+            const allMsgs = [...msgsFrom, ...msgsTo].filter(
+                (msg, idx, arr) =>
+                    arr.findIndex(m => m._id === msg._id) === idx
+            );
+            setMessages(allMsgs);
+        } catch (e) {
+            console.error("Erreur lors de la récupération des messages :", e);
         }
-    }, [currentMessages, selectedConv]);
+        setLoading(false);
+    }
+
+    // Chargement initial des messages
+    useEffect(() => {
+        if (!userId) return;
+        fetchMsgs();
+    }, [userId]);
+
+    // Scroll tout en bas sauf si l'utilisateur a scrollé manuellement
+    useEffect(() => {
+        if (!userScrolled && messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "auto" });
+        }
+    }, [currentMessages, selectedConv, userScrolled]);
+
+    // Reset le scroll utilisateur quand on change de conversation
+    useEffect(() => {
+        setUserScrolled(false);
+    }, [selectedConv]);
+
+    useEffect(() => {
+        async function fetchUsersList() {
+            try {
+                const res = await getUsers();
+                setUsers(res);
+            } catch (e) {
+                console.error("Erreur lors de la récupération des messages :", e);
+            }
+        }
+        fetchUsersList();
+    }, []);
+
+    function getUserInfo(id) {
+        return users.find(u => u._id === id) || {};
+    }
+
+    // Gestion du scroll utilisateur
+    function handleScrollContainer() {
+        if (!messagesContainerRef.current) return;
+        const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
+        // Si on est à moins de 50px du bas, on considère qu'on veut rester en bas
+        if (scrollHeight - scrollTop - clientHeight < 50) {
+            setUserScrolled(false);
+        } else {
+            setUserScrolled(true);
+        }
+    }
+
+    // Envoi automatique du message dès qu'un fichier est sélectionné
+    async function handleFileChange(e) {
+        const file = e.target.files[0];
+        if (!file || !selectedConv) return;
+
+        const ext = file.name.split('.').pop().toLowerCase();
+        const uploadRes = await uploadFile(file);
+
+        // Récupère juste le nom du fichier depuis le chemin
+        let fileName = "";
+        if (uploadRes.filePath) {
+            fileName = uploadRes.filePath.split("/").pop();
+        } else if (uploadRes.fileName) {
+            fileName = uploadRes.fileName;
+        } else if (uploadRes.path) {
+            fileName = uploadRes.path.split("/").pop();
+        } else if (uploadRes.url) {
+            fileName = uploadRes.url.split("/").pop();
+        }
+
+        let images = [];
+        let videos = [];
+        if (["mp4", "webm", "ogg"].includes(ext)) {
+            videos.push(fileName);
+        } else {
+            images.push(fileName);
+        }
+
+        // Ajout direct du message dans le state sans fetch
+        setMessages(prev => [
+            ...prev,
+            {
+                _id: Math.random().toString(36).slice(2),
+                content: "",
+                from: userId,
+                to: selectedConv,
+                images: images.length > 0 ? images : [],
+                videos: videos.length > 0 ? videos : [],
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+            }
+        ]);
+
+        await createMessage({
+            content: "",
+            from: userId,
+            to: selectedConv,
+            images: images.length > 0 ? images : [],
+            videos: videos.length > 0 ? videos : []
+        });
+
+        setSelectedFile(null);
+        setUserScrolled(false);
+    }
+
+    // Envoi immédiat du GIF dès sélection
+    function handleGifSelect(gifUrl) {
+        if (!selectedConv) return;
+
+        setMessages(prev => [
+            ...prev,
+            {
+                _id: Math.random().toString(36).slice(2),
+                content: "",
+                from: userId,
+                to: selectedConv,
+                images: [gifUrl],
+                videos: [],
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+            }
+        ]);
+
+        createMessage({
+            content: "",
+            from: userId,
+            to: selectedConv,
+            images: [gifUrl],
+            videos: []
+        }).then(() => {
+            setSelectedGif(null);
+            setShowGifModal(false);
+            setUserScrolled(false);
+        });
+    }
+
+    // Envoi d'un message texte uniquement (pas de GIF ni fichier ici)
+    async function handleSendMessage(e) {
+        e.preventDefault();
+        if (!selectedConv) return;
+
+        let images = [];
+        let videos = [];
+        let contentToSend = message;
+
+        if (!contentToSend && images.length === 0 && videos.length === 0) return;
+
+        setMessages(prev => [
+            ...prev,
+            {
+                _id: Math.random().toString(36).slice(2),
+                content: contentToSend,
+                from: userId,
+                to: selectedConv,
+                images,
+                videos,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+            }
+        ]);
+
+        await createMessage({
+            content: contentToSend,
+            from: userId,
+            to: selectedConv,
+            images,
+            videos
+        });
+
+        setMessage("");
+        setUserScrolled(false);
+    }
 
     useEffect(() => {
         if (headerRef.current) {
@@ -297,36 +348,45 @@ export default function MessagesPage() {
                             {conversations.map(conv => {
                                 const user = getUserInfo(conv.id);
                                 return (
-                                    <li
-                                        key={conv.id}
-                                        className={`py-3 px-2 hover:bg-celestial-blue/10 rounded cursor-pointer transition ${selectedConv === conv.id ? "bg-celestial-blue/10" : ""}`}
-                                        onClick={() => setSelectedConv(conv.id)}
-                                    >
-                                        <div className="flex justify-between items-center">
-                                            <div className="flex items-center gap-2">
-                                                {user.avatar ? (
-                                                    <SecureMedia
-                                                        fileName={user.avatar}
-                                                        type="image"
-                                                        alt={user.username}
-                                                        className="w-8 h-8 rounded-full object-cover border"
-                                                    />
-                                                ) : (
-                                                    <img
-                                                        src="/default-avatar.png"
-                                                        alt="avatar"
-                                                        className="w-8 h-8 rounded-full object-cover border"
-                                                    />
-                                                )}
-                                                <div>
-                                                    <div className="font-semibold text-rich-black">{user.username || conv.id}</div>
-                                                    <div className="text-xs text-gray-500">{conv.lastMessage}</div>
+                                    <li key={conv.id} className="list-none">
+                                        <button
+                                            type="button"
+                                            className={`w-full text-left py-3 px-2 hover:bg-celestial-blue/10 rounded cursor-pointer transition ${selectedConv === conv.id ? "bg-celestial-blue/10" : ""}`}
+                                            onClick={() => setSelectedConv(conv.id)}
+                                            onKeyDown={e => {
+                                                if (e.key === "Enter" || e.key === " ") {
+                                                    setSelectedConv(conv.id);
+                                                }
+                                            }}
+                                            aria-pressed={selectedConv === conv.id}
+                                        >
+                                            <div className="flex justify-between items-center">
+                                                <div className="flex items-center gap-2">
+                                                    {user.avatar ? (
+                                                        <SecureMedia
+                                                            fileName={user.avatar}
+                                                            type="image"
+                                                            alt={user.username}
+                                                            className="w-8 h-8 rounded-full object-cover border"
+                                                        />
+                                                    ) : (
+                                                        <SecureMedia
+                                                            fileName="default-avatar.png"
+                                                            type="image"
+                                                            alt="avatar"
+                                                            className="w-8 h-8 rounded-full object-cover border"
+                                                        />
+                                                    )}
+                                                    <div>
+                                                        <div className="font-semibold text-rich-black">{user.username || conv.id}</div>
+                                                        <div className="text-xs text-gray-500">{conv.lastMessage}</div>
+                                                    </div>
+                                                </div>
+                                                <div className="text-xs text-gray-400 ml-2 whitespace-nowrap">
+                                                    {conv.lastMessageTime && timeOrHour(conv.lastMessageTime)}
                                                 </div>
                                             </div>
-                                            <div className="text-xs text-gray-400 ml-2 whitespace-nowrap">
-                                                {conv.lastMessageTime && timeOrHour(conv.lastMessageTime)}
-                                            </div>
-                                        </div>
+                                        </button>
                                     </li>
                                 );
                             })}
@@ -338,7 +398,11 @@ export default function MessagesPage() {
                         style={{ height: "100%" }}
                     >
                         <h2 className="text-xl font-bold text-sea-green mb-4">Messages privés</h2>
-                        <div className="flex-1 overflow-y-auto space-y-4 mb-4">
+                        <div
+                            className="flex-1 overflow-y-auto space-y-4 mb-4"
+                            ref={messagesContainerRef}
+                            onScroll={handleScrollContainer}
+                        >
                             {loading ? (
                                 <div>Chargement...</div>
                             ) : (
@@ -353,42 +417,45 @@ export default function MessagesPage() {
                                             }`}>
                                             <span>{msg.content}</span>
                                             {/* Affichage images sécurisées */}
-                                            {msg.images && msg.images.map((img, i) => (
-                                                img && !img.startsWith("http") ? (
+                                            {msg.images && msg.images.map((img) => {
+                                                if (!img) return null;
+                                                const key = typeof img === "string" ? img : Math.random().toString(36).substr(2, 9);
+                                                return (
                                                     <SecureMedia
-                                                        key={i}
+                                                        key={key}
                                                         fileName={img}
                                                         type="image"
                                                         alt="img"
                                                         className="w-64 h-64 object-cover rounded-lg shadow mt-2"
                                                     />
-                                                ) : img ? (
-                                                    <img
-                                                        key={i}
-                                                        src={img}
-                                                        alt="img"
-                                                        className="w-64 h-64 object-cover rounded-lg shadow mt-2"
-                                                    />
-                                                ) : null
-                                            ))}
+                                                );
+                                            })}
                                             {/* Affichage vidéos sécurisées */}
-                                            {msg.videos && msg.videos.map((vid, i) => (
-                                                vid && !vid.startsWith("http") ? (
-                                                    <SecureMedia
-                                                        key={i}
-                                                        fileName={vid}
-                                                        type="video"
-                                                        className="w-96 h-64 rounded-lg shadow mt-2"
-                                                    />
-                                                ) : vid ? (
-                                                    <video
-                                                        key={i}
-                                                        src={vid}
-                                                        controls
-                                                        className="w-96 h-64 rounded-lg shadow mt-2"
-                                                    />
-                                                ) : null
-                                            ))}
+                                            {msg.videos && msg.videos.map((vid) => {
+                                                if (!vid) return null;
+                                                const key = typeof vid === "string" ? vid : Math.random().toString(36).substr(2, 9);
+                                                if (!vid.startsWith("http")) {
+                                                    return (
+                                                        <SecureMedia
+                                                            key={key}
+                                                            fileName={vid}
+                                                            type="video"
+                                                            className="w-96 h-64 rounded-lg shadow mt-2"
+                                                        />
+                                                    );
+                                                } else {
+                                                    return (
+                                                        <video
+                                                            key={key}
+                                                            src={vid}
+                                                            controls
+                                                            className="w-96 h-64 rounded-lg shadow mt-2"
+                                                        >
+                                                            <track kind="captions" />
+                                                        </video>
+                                                    );
+                                                }
+                                            })}
                                             <div className="text-xs text-right opacity-60">
                                                 {timeOrHour(msg.updatedAt || msg.createdAt)}
                                             </div>
@@ -398,8 +465,9 @@ export default function MessagesPage() {
                             )}
                             {selectedFile && (
                                 <div className="flex justify-end">
-                                    <img
-                                        src={URL.createObjectURL(selectedFile)}
+                                    <SecureMedia
+                                        fileName={URL.createObjectURL(selectedFile)}
+                                        type="image"
                                         alt="Aperçu"
                                         className="w-64 h-64 object-cover rounded-lg shadow"
                                     />
@@ -407,8 +475,9 @@ export default function MessagesPage() {
                             )}
                             {selectedGif && (
                                 <div className="flex justify-end">
-                                    <img
-                                        src={selectedGif}
+                                    <SecureMedia
+                                        fileName={selectedGif}
+                                        type="image"
                                         alt="GIF sélectionné"
                                         className="w-64 h-64 object-cover rounded-lg shadow"
                                     />
