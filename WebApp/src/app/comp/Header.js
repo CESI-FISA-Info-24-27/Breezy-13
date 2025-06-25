@@ -51,6 +51,7 @@ export default function Header() {
   
   */
 
+
   return (
     <header className="flex items-center justify-between w-full h-16 px-8 bg-[var(--color-celestial-blue-dark)] shadow z-50">
       {/* Logo à gauche */}
