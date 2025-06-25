@@ -1,6 +1,7 @@
 import { MongoClient, ObjectId } from 'mongodb';
 import { UsersDAO } from './UsersDAO.js';
 import dotenv from 'dotenv'
+import e from 'express';
 
 /**
  * DAO pour la gestion des utilisateurs avec MongoDB.
@@ -54,7 +55,26 @@ export class UsersMongoDAO extends UsersDAO {
      */
     async getUsers(filters) {
         const mongoFilters = {};
-        if (filters.id) mongoFilters._id = new ObjectId(filters.id);
+        if (filters.id)
+        {
+            // Si ça a l'air d'être une liste
+            if (Array.isArray(filters.id)) 
+            {
+                const validIds = filters.id
+                .filter(id => ObjectId.isValid(id))
+                .map(id => new ObjectId(id));
+
+                if (validIds.length > 0) 
+                {
+                    mongoFilters._id = { $in: validIds };
+                }
+            }
+            // Sinon si c'est un ID
+            else if (ObjectId.isValid(filters.id))
+            {
+                mongoFilters._id = new ObjectId(filters.id);
+            }
+        } 
         if (filters.username) mongoFilters.username = filters.username;
         if (filters.password) mongoFilters.password = filters.password;
         if (filters.email) mongoFilters.email = filters.email;

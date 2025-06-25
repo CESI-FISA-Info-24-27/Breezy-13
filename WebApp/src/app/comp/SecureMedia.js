@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getFile } from "../../services/fileServerServices";
+import { getFile } from "../../services/FileServerServices";
 
 /**
  * Affiche une image ou une vidéo sécurisée selon l'extension du fichier.

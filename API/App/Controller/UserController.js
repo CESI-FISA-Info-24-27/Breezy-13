@@ -23,10 +23,24 @@ class UserController {
      * @throws {Error} 200 - Récupération des utilisateurs réussie
      */
     async getUsers(req, res) {
-        try {
+        try 
+        {
             // Vérifie que les paramètres sont valides
-            if (req.query.id && isNaN(req.query.id)) {
-                return res.status(400).json({ error: 'L\'id doit être un nombre' });
+            let ids = req.query['id[]'] || req.query.id;
+            try 
+            {
+                if (typeof ids === 'string' && ids.trim().startsWith('[')) 
+                {
+                    ids = JSON.parse(ids);
+                    if (!Array.isArray(ids)) 
+                    {
+                        return res.status(400).json({ error: 'id doit être un tableau' });
+                    }
+                }
+            } 
+            catch (err) 
+            {
+                return res.status(400).json({ error: 'id doit être un tableau JSON valide', id: ids });
             }
 
             if (req.query.name && typeof req.query.name !== 'string') {
@@ -34,20 +48,31 @@ class UserController {
             }
 
             // Vérifie que l'id ou le nom existe
-            if (req.query.id) {
-                const user = await UsersServices.getUsers({ id: req.query.id });
-                if (user.length === 0) {
+            if (ids) 
+            {
+                const user = await UsersServices.getUsers({ id: ids });
+                if (user.length === 0)
+                {
                     res.status(404).json({ error: 'Id non trouvé' });
                 }
             }
-            else if (req.query.name) {
+            else if (req.query.name) 
+            {
                 const user = await UsersServices.getUsers({ name: req.query.name });
                 if (user.length === 0) {
                     res.status(404).json({ error: 'Nom non trouvé' });
                 }
             }
 
-            const users = await UsersServices.getUsers(req.query);
+            // On modifie la query
+            const query = { ...req.query };
+            if ('id[]' in query) 
+            {
+                query.id = Array.isArray(query['id[]']) ? query['id[]'] : [query['id[]']];
+                delete query['id[]'];
+            }
+
+            const users = await UsersServices.getUsers(query);
             res.json(users);
         }
         catch (error) {

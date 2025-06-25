@@ -2,12 +2,12 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import Navbar from "../comp/Navbar";
-import Post from "../comp/post";
-import SideBarFollow from "../comp/sidebarFollow";
+import Post from "../comp/Post";
+import SideBarFollow from "../comp/SidebarFollow";
 import Footer from "../comp/Footer";
 import Header from "../comp/Header";
-import MobileNavbar from "../comp/mobileNavbar";
-import { PostsList } from "../comp/postsList";
+import MobileNavbar from "../comp/MobileNavbar";
+import { PostsList } from "../comp/PostsList";
 
 export default function HomePage() {
   const [headerStyle, setHeaderStyle] = useState({ opacity: 1, transform: "translateY(0)" });
