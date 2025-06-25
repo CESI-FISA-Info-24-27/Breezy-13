@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { HiMenu, HiSearch } from "react-icons/hi";
 import Image from "next/image";
 import Link from "next/link";
+import { disconnect } from "../../services/AuthServices";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -20,16 +21,31 @@ export default function Header() {
       ) {
         setMenuOpen(false);
       }
+
+      if (menuOpen) {
+        document.addEventListener("mousedown", handleClickOutside);
+      } else {
+        document.removeEventListener("mousedown", handleClickOutside);
+      }
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
     }
-    if (menuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
   }, [menuOpen]);
+
+  const handleDisconnect = async (e) => {
+      e.preventDefault(); // Empêche le rechargement de la page
+      try {
+          await disconnect();
+          console.log('Déconnexion réussie');
+
+          // Rediriger l'utilisateur
+          router.push('/login');
+      } catch (error) {
+          console.error('Erreur lors de la déconnexion:', error);
+          alert(error.message || "Échec de la déconnexion");
+      }
+    }
 
   return (
     <header className="flex items-center justify-between w-full h-16 px-8 bg-[var(--color-celestial-blue-dark)] shadow z-50">
@@ -80,7 +96,7 @@ export default function Header() {
             <Link href="/profil-page" className="block px-4 py-2 hover:bg-sea-green/10">Privacy Policy</Link>
             <Link href="/profil-page" className="block px-4 py-2 hover:bg-sea-green/10">Contact</Link>
             <hr className="w-4/5 mx-auto h-0.5 border-0 bg-folly my-2 rounded" />
-            <Link href="/logout" className="block px-4 py-2 hover:bg-folly/10">Déconnexion</Link>
+            <button onClick={handleDisconnect} className="block px-4 py-2 hover:bg-folly/10">Déconnexion</Link>
           </div>
         )}
       </div>
