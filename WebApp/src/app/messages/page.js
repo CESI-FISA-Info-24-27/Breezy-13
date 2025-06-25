@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Navbar from "../comp/Navbar";
 import MobileNavbar from "../comp/mobileNavbar";
 import Header from "../comp/Header";
-import { getMessages, createMessage } from "../../services/messagesServices";
+import { getMessages, createMessage } from "../../services/MessagesServices";
 import { getUsers } from "../../services/usersServices";
 import { uploadFile } from "../../services/fileServerServices";
 import { FiImage, FiSend } from "react-icons/fi";
@@ -12,7 +12,7 @@ import { FaRegSmile } from "react-icons/fa";
 import Cookies from "js-cookie";
 import GifPicker from "../comp/GifPicker";
 import SecureMedia from "../comp/SecureMedia";
-import { timeOrHour } from "../../services/messagesUtils";
+import { timeOrHour } from "../../services/MessagesUtils";
 
 // Récupère l'id utilisateur courant (à adapter selon ton auth)
 function getCurrentUserId() {
