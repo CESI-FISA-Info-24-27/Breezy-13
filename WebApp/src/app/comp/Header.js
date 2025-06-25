@@ -11,6 +11,7 @@ export default function Header() {
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
 
+<<<<<<< HEAD
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -21,6 +22,13 @@ export default function Header() {
       ) {
         setMenuOpen(false);
       }
+=======
+    const handleDisconnect = async (e) => {
+    e.preventDefault(); // Empêche le rechargement de la page
+    try {
+        await disconnect();
+        console.log('Déconnexion réussie');
+>>>>>>> 9be683a4cee12a8ab027730b4dbe744b14185b37
 
       if (menuOpen) {
         document.addEventListener("mousedown", handleClickOutside);
