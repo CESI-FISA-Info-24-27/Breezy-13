@@ -6,9 +6,9 @@ import { useRef, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import { createUser, updateUser } from "../../services/UsersServices";
-import { login } from "../../services/authServices";
-import { uploadFile } from "../../services/fileServerServices";
+import { createUser, updateUser, getUsers } from "../../services/UsersServices";
+import { login } from "../../services/AuthServices";
+import { uploadFile } from "../../services/FileServerServices";
 
 export default function Register() {
   const [form, setForm] = useState({
