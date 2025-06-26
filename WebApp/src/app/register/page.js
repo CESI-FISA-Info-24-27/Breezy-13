@@ -2,13 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useRef, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
-import { createUser, updateUser, getUsers } from "../../services/UsersServices";
-import { login } from "../../services/AuthServices";
-import { uploadFile } from "../../services/FileServerServices";
+import { createUser } from "../../services/UsersServices";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -22,42 +18,32 @@ export default function Register() {
 
   const [avatarPreview, setAvatarPreview] = useState("/default-avatar.png");
   const [avatarFile, setAvatarFile] = useState(null);
-  const fileInputRef = useRef(null);
   const [avatarError, setAvatarError] = useState("");
 
   const [successMsg, setSuccessMsg] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
   const [passwordError, setPasswordError] = useState("");
-
-  // Utilise la variable d'environnement pour l'URL du serveur de fichiers
-  const FILE_SERVER_URL = process.env.NEXT_PUBLIC_FILE_SERVER_URL;
 
   function handleAvatarChange(e) {
     const file = e.target.files[0];
     if (file) {
+      // Vérifier la taille du fichier (5 Mo max)
+      if (file.size > 5 * 1024 * 1024) {
+        setAvatarError("Le fichier est trop volumineux. Limite : 5 Mo.");
+        return;
+      }
+      
+      // Vérifier le type de fichier
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/gif'];
+      if (!allowedTypes.includes(file.type)) {
+        setAvatarError("Type de fichier non autorisé. Utilisez PNG, JPEG ou GIF.");
+        return;
+      }
+      
+      setAvatarError(""); // Nettoyer les erreurs
       setAvatarFile(file);
       setAvatarPreview(URL.createObjectURL(file));
     }
-  }
-
-  async function uploadAvatar() {
-    if (!avatarFile) return "";
-    const formData = new FormData();
-    formData.append("file", avatarFile);
-
-    const token = Cookies.get("token") || localStorage.getItem("token");
-    const headers = token ? { Authorization: `Bearer ${token}` } : {};
-
-    const res = await fetch("http://localhost:5000/upload", {
-      method: "POST",
-      body: formData,
-      credentials: "include",
-      headers,
-    });
-    if (!res.ok) throw new Error("Erreur upload avatar");
-    const data = await res.json();
-    return data.path; // ex: "http://localhost:5000/files/1749865024759-123915179.png"
   }
 
 
@@ -100,44 +86,27 @@ export default function Register() {
           const formData = new FormData();
           formData.append("file", avatarFile);
 
-          const uploadRes = await fetch("http://localhost:5000/upload", {
+          const uploadRes = await fetch("http://localhost:5000/upload-avatar-registration", {
             method: "POST",
-            body: formData,
             headers: {
               'X-Temp-Token': user.tempUploadToken,
               'X-User-Id': user.id
-            }
+            },
+            body: formData
           });
 
           if (uploadRes.ok) {
             const uploadData = await uploadRes.json();
-            console.log("Avatar uploadé:", uploadData);
-            
-            const fileName = uploadData.filePath.split("/").pop();
-            const avatarPath = `${FILE_SERVER_URL}/files/${fileName}`;
-
-            // 3. Mettre à jour l'utilisateur avec le chemin de l'avatar
-            const updateRes = await fetch("http://localhost:3000/users/update-avatar", {
-              method: "POST",
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                userId: user.id,
-                avatarPath: avatarPath
-              })
-            });
-
-            if (updateRes.ok) {
-              console.log("Avatar mis à jour dans la base de données");
-            } else {
-              console.error("Erreur mise à jour avatar:", await updateRes.text());
-            }
+            console.log("Avatar uploadé et mis à jour:", uploadData);
+            setAvatarError(""); // Nettoyer les erreurs précédentes
           } else {
-            console.error("Erreur upload:", await uploadRes.text());
+            const errorText = await uploadRes.text();
+            console.error("Erreur upload:", errorText);
+            setAvatarError("Erreur lors de l'upload de l'avatar. Vous pourrez le changer plus tard.");
           }
         } catch (uploadError) {
           console.error("Erreur upload avatar:", uploadError);
+          setAvatarError("Erreur lors de l'upload de l'avatar. Vous pourrez le changer plus tard.");
           // On continue même si l'upload échoue
         }
       }
@@ -152,7 +121,7 @@ export default function Register() {
         error?.response?.data?.error ||
         error?.message ||
         "Erreur lors de la création de l'utilisateur";
-      setErrorMsg("Erreur : " + msg);
+      setPasswordError("Erreur : " + msg);
     }
   };
 
@@ -178,6 +147,12 @@ export default function Register() {
         {successMsg && (
           <div className="mt-4 text-green-600 text-center animate-pulse">
             {successMsg}
+          </div>
+        )}
+        {(passwordError || avatarError) && (
+          <div className="mt-4 text-red-600 text-center text-sm">
+            {passwordError && <p>{passwordError}</p>}
+            {avatarError && <p>{avatarError}</p>}
           </div>
         )}
         <form className="w-full flex flex-col gap-5 animate-fade-in-slow" onSubmit={handleRegister} onChange={handleChange}>
@@ -251,9 +226,6 @@ export default function Register() {
               required
               onChange={e => setForm(f => ({ ...f, confirmPassword: e.target.value }))}
             />
-            {passwordError && (
-              <p className="text-xs text-folly mt-1">{passwordError}</p>
-            )}
           </div>
           <div>
             <label htmlFor="avatar" className="block mb-1 text-sm font-medium text-rich-black">
@@ -283,9 +255,6 @@ export default function Register() {
                 />
               </label>
             </div>
-            {avatarError && (
-              <p className="text-xs text-folly mt-1">{avatarError}</p>
-            )}
             <p className="text-xs text-rich-black/60 mt-1">
               PNG, JPEG ou GIF. 5 Mo max.
             </p>

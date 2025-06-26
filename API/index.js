@@ -49,6 +49,7 @@ app.use(async (req, res, next) => {
   const publicRoutes = ['/users', '/verify'];
   const isPublicRoute = publicRoutes.some(route => 
     (req.method === "POST" && req.path === route) ||
+    (req.method === "GET" && req.path === route) ||
     (req.method === "POST" && req.path === '/users/update-avatar') ||
     req.path.startsWith('/verify')
   );

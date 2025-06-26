@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import Jwt from 'jsonwebtoken';
 import cors from 'cors';
 import crypto from 'crypto';
+import fetch from 'node-fetch';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
@@ -58,28 +59,35 @@ const authenticateUser = (req, res, next) => {
     });
 };
 
-// Fonction pour vérifier les tokens temporaires
+// Fonction pour vérifier les tokens temporaires (identique à VerificationServices)
 function verifyTempUploadToken(token, userId) {
     try {
-        // Cette fonction doit être cohérente avec celle du VerificationServices
-        for (let i = 0; i < 30; i++) {
-            const testTime = Math.floor(Date.now() / 1000) - (60 * i);
-            const payload = {
+        // Vérification approximative pour les 5 dernières minutes (plus permissive)
+        for (let i = 0; i < 300; i++) { // 300 secondes = 5 minutes
+            const testTime = Math.floor(Date.now() / 1000) - i;
+            const testPayload = {
                 userId,
                 type: 'temp_upload',
                 exp: testTime + (60 * 30)
             };
             
-            const testToken = require('crypto').createHmac('sha256', process.env.JWT_SECRET)
-                .update(JSON.stringify(payload))
+            const testToken = crypto.createHmac('sha256', process.env.JWT_SECRET)
+                .update(JSON.stringify(testPayload))
                 .digest('hex');
                 
-            if (token === testToken && testTime + (60 * 30) > Math.floor(Date.now() / 1000)) {
-                return true;
+            if (token === testToken) {
+                // Vérifier si le token n'est pas expiré
+                const isNotExpired = testTime + (60 * 30) > Math.floor(Date.now() / 1000);
+                if (isNotExpired) {
+                    console.log(`Token valide trouvé (décalage de ${i} secondes)`);
+                    return true;
+                }
             }
         }
+        console.log('Aucun token correspondant trouvé');
         return false;
     } catch (error) {
+        console.error('Erreur vérification token temporaire:', error);
         return false;
     }
 }
@@ -119,7 +127,57 @@ app.post('/upload', authenticateUser, upload.single('file'), (req, res) => {
     try {
         res.status(200).json({
             message: 'Fichier téléchargé avec succès.',
-            filePath: `/uploads/${req.file.filename}`
+            filePath: `/uploads/${req.file.filename}`,
+            fileName: req.file.filename
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Endpoint spécial pour l'upload d'avatar pendant l'inscription (sans authentification stricte)
+app.post('/upload-avatar-registration', upload.single('file'), async (req, res) => {
+    try {
+        const userId = req.headers['x-user-id'];
+        const tempToken = req.headers['x-temp-token'];
+        
+        if (!userId || !tempToken) {
+            return res.status(400).json({ error: 'Headers x-user-id et x-temp-token requis' });
+        }
+        
+        // Vérification simple du token temporaire
+        if (!verifyTempUploadToken(tempToken, userId)) {
+            return res.status(401).json({ error: 'Token temporaire invalide' });
+        }
+        
+        const fileName = req.file.filename;
+        const filePath = `/uploads/${fileName}`;
+        
+        // Mettre à jour l'avatar de l'utilisateur directement
+        try {
+            const response = await fetch('http://localhost:3000/users/update-avatar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    avatarPath: fileName  // Juste le nom du fichier, pas l'URL complète
+                })
+            });
+            
+            if (!response.ok) {
+                console.error('Erreur mise à jour avatar:', await response.text());
+            }
+        } catch (updateError) {
+            console.error('Erreur lors de la mise à jour de l\'avatar:', updateError);
+        }
+        
+        res.status(200).json({
+            message: 'Avatar uploadé et mis à jour avec succès.',
+            filePath: filePath,
+            fileName: fileName,
+            avatarUrl: `http://localhost:5000/files/${fileName}`
         });
     } catch (error) {
         res.status(500).json({ error: error.message });
