@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import Navbar from "../comp/Navbar";
 import Post from "../comp/Post";
 import SideBarFollow from "../comp/SidebarFollow";
@@ -23,17 +24,20 @@ export default function HomePage() {
   const [endID, setEndID] = useState(pagination);
   const { userId } = useAuth();
 
+  const searchParams = useSearchParams();
+  let contentFilter = searchParams.get("content") || "";
+
   function triggerRefresh() {
     const fetchPosts = async () => 
     {
-        let tempPosts = await getPosts();
+        let tempPosts = await getPosts({ content: contentFilter });
         setPosts(tempPosts);
     }
 
     fetchPosts();
   }
 
-  useEffect(() => triggerRefresh(), []);
+  useEffect(() => triggerRefresh(), [contentFilter]);
 
   useEffect(() => {
     if (headerRef.current) {
@@ -93,7 +97,7 @@ export default function HomePage() {
         className="fixed top-0 left-0 w-full z-50 transition-all duration-300"
         style={headerStyle}
       >
-        <Header />
+        <Header existingQuery={contentFilter}/>
       </div>
 
       <div className="flex pt-[64px] md:pt-0">
@@ -127,9 +131,11 @@ export default function HomePage() {
           <hr className="mt-7 text-rich-black" />
           <div className="mt-8 mb-4">
             <PostsList posts={posts.slice(0, endID)} />
-            <button className="w-full mt-4 px-4 py-2 rounded bg-folly text-seasalt font-semibold hover:bg-sea-green transition" onClick={fetchMorePosts}>
-                Afficher plus
-            </button>
+            {!posts || endID >= posts.length ? (<div></div>) : (
+              <button className="w-full mt-4 px-4 py-2 rounded bg-folly text-seasalt font-semibold hover:bg-sea-green transition" onClick={fetchMorePosts}>
+                  Afficher plus
+              </button>
+            )}
           </div>
           <Footer>
             <span>© {new Date().getFullYear()} Mon Footer Personnalisé</span>

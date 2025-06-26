@@ -6,11 +6,20 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/:path*', // Toutes les requêtes commençant par /api/
-        destination: 'http://localhost:3000/:path*', // Adresse de l'API (adapter si besoin)
+        source: '/api/:path*',
+        destination: 'http://localhost:3000/:path*',
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/home-page',
+        permanent: false,
+      },
+    ];
+  }
 };
 
 export default withFlowbiteReact(nextConfig);

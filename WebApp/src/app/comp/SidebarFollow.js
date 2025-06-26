@@ -4,6 +4,7 @@ import { getFollowsFrom } from "../../services/FollowsServices"
 import { getUsers } from "../../services/UsersServices"
 import SecureMedia from "../comp/SecureMedia"
 import { useAuth } from "../../../context/UserContext";
+import { useRouter } from "next/navigation";
 
 const pagination = 5;
 
@@ -11,7 +12,8 @@ export default function SideBarFollow(props) {
 
 	const [follows, setFollows] = useState([]);
 	const [hasFollowersToFetch, setHasFollowersToFetch] = useState(true);
-	const { userId } = useAuth()
+	const { userId } = useAuth();
+	const router = useRouter();
 
 	const fetchFollows = async () => 
 	{
@@ -49,6 +51,11 @@ export default function SideBarFollow(props) {
 		}
 	};
 
+	function redirectToProfile(selectedUserId)
+	{
+		router.push(`/profil-page/${selectedUserId}`);
+	}
+
 	useEffect(() => { fetchFollows(); }, []);
 
 	return (
@@ -66,7 +73,7 @@ export default function SideBarFollow(props) {
 		) : (
 			<>
 			{follows.map((follow) =>
-				(<li key={follow._id} className="flex items-center gap-3 px-3 py-2 rounded-lg bg-[var(--color-seasalt)]/10 text-[var(--color-seasalt)] hover:bg-[var(--color-seasalt)]/20 transition font-medium">
+				(<li key={follow._id} onClick={() => redirectToProfile(follow._id)} className="cursor-pointer flex items-center gap-3 px-3 py-2 rounded-lg bg-[var(--color-seasalt)]/10 text-[var(--color-seasalt)] hover:bg-[var(--color-seasalt)]/20 transition font-medium">
 					<SecureMedia fileName={follow.avatar} type="image" alt="avatar" className="w-8 h-8 rounded-full object-cover border" />
 					<span className="truncate">{follow.username}</span>
 				</li>
