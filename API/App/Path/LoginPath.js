@@ -36,6 +36,15 @@ loginPath.post('/', async (req, res) => {
             return res.status(401).send('Mot de passe incorrect');
         }
 
+        // Vérifie si l'utilisateur a vérifié son compte
+        if (!user[0].isVerified) {
+            return res.status(403).json({ 
+                error: 'Compte non vérifié', 
+                message: 'Veuillez vérifier votre email avant de vous connecter',
+                userId: user[0]._id
+            });
+        }
+
         // Génère les permissions de l'utilisateur
         const permissions = await UsersServices.getPermissions(user[0]._id);
 

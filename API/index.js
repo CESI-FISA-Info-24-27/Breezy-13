@@ -13,6 +13,7 @@ import messagePath from './App/Path/MessagePath.js';
 import authPath from './App/Path/LoginPath.js';
 import disconnectPath from './App/Path/DisconnectPath.js';
 import refreshTokenPath from './App/Path/RefreshTokenPath.js';
+import verificationPath from './App/Path/VerificationPath.js';
 
 // Services
 import userService from './App/Services/UsersServices.js';
@@ -40,12 +41,19 @@ app.use(cookieParser());
 // Auth Path (login, logout, refresh)
 app.use('/auth', authPath);
 app.use('/refresh-token', refreshTokenPath);
+app.use('/verify', verificationPath);
 
 // Middleware de vérification du token
-// TODO: Mettre ce middleware dans un fichier séparé pour la réutilisation
 app.use(async (req, res, next) => {
-  if (req.method === "POST" && req.path === "/users") {
-    // Si la requête est pour créer un utilisateur, on ne vérifie pas le token
+  // Routes qui ne nécessitent pas d'authentification
+  const publicRoutes = ['/users', '/verify'];
+  const isPublicRoute = publicRoutes.some(route => 
+    (req.method === "POST" && req.path === route) ||
+    (req.method === "POST" && req.path === '/users/update-avatar') ||
+    req.path.startsWith('/verify')
+  );
+  
+  if (isPublicRoute) {
     return next();
   }
 

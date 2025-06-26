@@ -3,7 +3,19 @@ import { DAOMongoDbFactory } from "../Factory/DAOMongoDbFactory.js";
 const Factory = new DAOMongoDbFactory();
 const UsersDAO = Factory.createUsersDAO();
 
-(async () => await UsersDAO.init())();
+let isInitialized = false;
+
+const ensureInitialized = async () => {
+    if (!isInitialized) {
+        try {
+            await UsersDAO.init();
+            isInitialized = true;
+        } catch (error) {
+            console.error('Erreur d\'initialisation MongoDB:', error);
+            throw error;
+        }
+    }
+};
 
 /**
  * Represents a service for handling users requests
@@ -20,6 +32,7 @@ const UsersServices = {
      * @returns {Array} - An array of users
      */
     getUsers: async (filters) => {
+        await ensureInitialized();
         return await UsersDAO.getUsers(filters);
     },
 
@@ -30,6 +43,7 @@ const UsersServices = {
      * @returns {object} - The user updated
      */
     updateUsers: async (userId, user) => {
+        await ensureInitialized();
         return await UsersDAO.updateUser(userId, user);
     },
 
@@ -39,6 +53,7 @@ const UsersServices = {
      * @returns {object} - The user deleted
      */
     deleteUsers: async (userId) => {
+        await ensureInitialized();
         return await UsersDAO.deleteUser(userId);
     },
 
@@ -48,6 +63,7 @@ const UsersServices = {
      * @returns {object} - The user created
      */
     createUsers: async (user) => {
+        await ensureInitialized();
         return await UsersDAO.createUser(user);
     },
 
@@ -57,8 +73,9 @@ const UsersServices = {
      * @returns {object} - The token added
      * @async
      */
-    addrevokedtoken: async (token) => {
-        return await UsersDAO.addrevokedtoken(token);
+    addRevokedToken: async (token) => {
+        await ensureInitialized();
+        return await UsersDAO.addRevokedToken(token);
     },
 
     /**
@@ -68,6 +85,7 @@ const UsersServices = {
      * @async
      */
     isTokenRevoked: async (token) => {
+        await ensureInitialized();
         return await UsersDAO.isTokenRevoked(token);
     },
 
@@ -78,6 +96,7 @@ const UsersServices = {
      * @async
      */
     getRole: async (userId) => {
+        await ensureInitialized();
         return await UsersDAO.getRole(userId);
     },
 
@@ -88,25 +107,8 @@ const UsersServices = {
      * @async
      */
     getPermissions: async (userId) => {
+        await ensureInitialized();
         return await UsersDAO.getPermissions(userId);
-    },
-
-    /**
-     * Vérifie si un token est révoqué.
-     * @param {string} token - Le token à vérifier.
-     * @returns {boolean} - True si le token est révoqué, sinon false.
-     */
-    isTokenRevoked: async (token) => {
-        return await UsersDAO.isTokenRevoked(token);
-    },
-
-    /**
-     * Ajoute un token révoqué dans la base de données.
-     * @param {string} token - Le token à révoquer.
-     * @returns {object} - Résultat de l'insertion.
-     */
-    addRevokedToken: async (token) => {
-        return await UsersDAO.addRevokedToken(token);
     }
 }
 

@@ -4,6 +4,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import Jwt from 'jsonwebtoken';
 import cors from 'cors';
+import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
@@ -19,9 +20,29 @@ app.use(cors({
     credentials: true
 }));
 
-// Middleware d'authentification
+// Middleware d'authentification avec support des tokens temporaires
 const authenticateUser = (req, res, next) => {
-    const token = req.headers['authorization']?.split(' ')[1]; // Utilisez 'authorization' en minuscules
+    const authHeader = req.headers['authorization'];
+    let token = null;
+    let isTempToken = false;
+
+    if (authHeader) {
+        token = authHeader.split(' ')[1];
+    }
+
+    // Vérifier si c'est un token temporaire (pour upload d'avatar pendant inscription)
+    const tempToken = req.headers['x-temp-token'];
+    const userId = req.headers['x-user-id'];
+
+    if (tempToken && userId) {
+        // Vérification du token temporaire
+        if (verifyTempUploadToken(tempToken, userId)) {
+            req.user = { id: userId, isTempUser: true };
+            return next();
+        } else {
+            return res.status(401).json({ error: 'Token temporaire invalide ou expiré.' });
+        }
+    }
 
     if (!token) {
         return res.status(401).json({ error: 'Accès non autorisé. Token manquant.' });
@@ -32,10 +53,36 @@ const authenticateUser = (req, res, next) => {
             return res.status(401).json({ error: 'Token invalide.' });
         }
 
-        req.user = decoded; // Ajoute les informations utilisateur au req
+        req.user = decoded;
         next();
     });
 };
+
+// Fonction pour vérifier les tokens temporaires
+function verifyTempUploadToken(token, userId) {
+    try {
+        // Cette fonction doit être cohérente avec celle du VerificationServices
+        for (let i = 0; i < 30; i++) {
+            const testTime = Math.floor(Date.now() / 1000) - (60 * i);
+            const payload = {
+                userId,
+                type: 'temp_upload',
+                exp: testTime + (60 * 30)
+            };
+            
+            const testToken = require('crypto').createHmac('sha256', process.env.JWT_SECRET)
+                .update(JSON.stringify(payload))
+                .digest('hex');
+                
+            if (token === testToken && testTime + (60 * 30) > Math.floor(Date.now() / 1000)) {
+                return true;
+            }
+        }
+        return false;
+    } catch (error) {
+        return false;
+    }
+}
 
 // Configuration de multer pour le stockage des fichiers
 const storage = multer.diskStorage({

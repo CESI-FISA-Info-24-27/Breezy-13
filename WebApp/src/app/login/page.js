@@ -62,7 +62,14 @@ export default function Login() {
         router.push('/home-page');
     } catch (error) {
         console.error('Erreur de connexion:', error);
-        alert(error.message || "Échec de la connexion");
+        
+        // Gestion spéciale pour les comptes non vérifiés
+        if (error.response?.status === 403 && error.response?.data?.error === 'Compte non vérifié') {
+            alert("Votre compte n'est pas encore vérifié. Veuillez vérifier votre email.");
+            router.push(`/verify-pending?email=${encodeURIComponent(email)}`);
+        } else {
+            alert(error.message || "Échec de la connexion");
+        }
     }
     };
 

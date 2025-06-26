@@ -69,7 +69,6 @@ export default function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-
     // Validation des mots de passe
     if (!form.password || form.password.length < 8) {
       setPasswordError("Le mot de passe doit contenir au moins 8 caractères.");
@@ -82,8 +81,8 @@ export default function Register() {
     setPasswordError("");
 
     try {
-      // Création de l'utilisateur avec avatar par défaut
-      await createUser({
+      // 1. Création de l'utilisateur avec avatar par défaut
+      const createResult = await createUser({
         username: form.username,
         password: form.password,
         email: form.email,
@@ -91,45 +90,69 @@ export default function Register() {
         bio: form.bio,
       });
 
-      // Connexion automatique
-      const { token } = await login(form.email, form.password, true);
-      Cookies.set("token", token, { path: "/" });
+      console.log("Utilisateur créé:", createResult);
+      const user = createResult.user;
 
-      // Récupération de l'utilisateur créé (filtre par email pour être sûr)
-      const users = await getUsers({ email: form.email });
-      const user = Array.isArray(users) ? users[0] : users;
-      if (!user) throw new Error("Utilisateur non trouvé après inscription.");
+      // 2. Upload de l'avatar si sélectionné
+      if (avatarFile && user.tempUploadToken) {
+        try {
+          console.log("Upload de l'avatar en cours...");
+          const formData = new FormData();
+          formData.append("file", avatarFile);
 
-      // Upload de l'avatar si sélectionné
-      let avatarPath = "/default-avatar.png";
-      if (avatarFile) {
-        const uploadData = await uploadFile(avatarFile);
-        // On récupère le chemin complet depuis l'API, puis on le transforme en URL utilisable
-        if (uploadData?.filePath || uploadData?.path) {
-          // On gère les deux cas selon la réponse de l'API
-          const fileName = (uploadData.filePath || uploadData.path).split("/").pop();
-          avatarPath = `${FILE_SERVER_URL}/files/${fileName}`;
+          const uploadRes = await fetch("http://localhost:5000/upload", {
+            method: "POST",
+            body: formData,
+            headers: {
+              'X-Temp-Token': user.tempUploadToken,
+              'X-User-Id': user.id
+            }
+          });
+
+          if (uploadRes.ok) {
+            const uploadData = await uploadRes.json();
+            console.log("Avatar uploadé:", uploadData);
+            
+            const fileName = uploadData.filePath.split("/").pop();
+            const avatarPath = `${FILE_SERVER_URL}/files/${fileName}`;
+
+            // 3. Mettre à jour l'utilisateur avec le chemin de l'avatar
+            const updateRes = await fetch("http://localhost:3000/users/update-avatar", {
+              method: "POST",
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                userId: user.id,
+                avatarPath: avatarPath
+              })
+            });
+
+            if (updateRes.ok) {
+              console.log("Avatar mis à jour dans la base de données");
+            } else {
+              console.error("Erreur mise à jour avatar:", await updateRes.text());
+            }
+          } else {
+            console.error("Erreur upload:", await uploadRes.text());
+          }
+        } catch (uploadError) {
+          console.error("Erreur upload avatar:", uploadError);
+          // On continue même si l'upload échoue
         }
       }
 
-      // Mise à jour du profil utilisateur avec le nouvel avatar
-      await updateUser(user._id, {
-        username: user.username,
-        email: user.email,
-        password: user.password,
-        avatar: avatarPath,
-        bio: form.bio,
-        role_id: user.role_id
-      });
-
-      setSuccessMsg("Compte créé avec succès ! Redirection vers la connexion...");
-      setTimeout(() => router.push("/login"), 2000);
+      setSuccessMsg(`Compte créé avec succès ! Un email de vérification a été envoyé à ${form.email}. Veuillez vérifier votre boîte de réception.`);
+      
+      // Redirection vers une page de confirmation
+      setTimeout(() => router.push(`/verify-pending?email=${encodeURIComponent(form.email)}`), 3000);
     } catch (error) {
+      console.error("Erreur création compte:", error);
       const msg =
         error?.response?.data?.error ||
         error?.message ||
         "Erreur lors de la création de l'utilisateur";
-      alert("Erreur : " + msg);
+      setErrorMsg("Erreur : " + msg);
     }
   };
 

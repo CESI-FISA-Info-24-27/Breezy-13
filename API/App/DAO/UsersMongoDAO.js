@@ -34,9 +34,11 @@ export class UsersMongoDAO extends UsersDAO {
             this.collection = this.db.collection('users');
 
             console.log('Connexion à MongoDB réussie !');
+            return true;
 
         } catch (error) {
             console.error('Erreur lors de l\'initialisation de la connexion MongoDB:', error);
+            throw error;
         }
     }
 
@@ -80,6 +82,8 @@ export class UsersMongoDAO extends UsersDAO {
         if (filters.email) mongoFilters.email = filters.email;
         if (filters.avatar) mongoFilters.avatar = filters.avatar;
         if (filters.bio) mongoFilters.bio = filters.bio;
+        if (filters.isVerified !== undefined) mongoFilters.isVerified = filters.isVerified;
+        if (filters.verificationToken) mongoFilters.verificationToken = filters.verificationToken;
         if (filters.createdAt) mongoFilters.createdAt = filters.createdAt;
         if (filters.updatedAt) mongoFilters.updatedAt = filters.updatedAt;
 
@@ -93,17 +97,20 @@ export class UsersMongoDAO extends UsersDAO {
      * @returns {object} - Résultat de la mise à jour.
      */
     async updateUser(id, user) {
-        const updateFields = {
-            username: user.username,
-            email: user.email,
-            avatar: user.avatar,
-            bio: user.bio,
-            role_id: user.role_id,
-            updatedAt: user.updatedAt
-        };
-        if (user.password) {
-            updateFields.password = user.password;
-        }
+        const updateFields = {};
+        
+        // Ne mettre à jour que les champs fournis
+        if (user.username !== undefined) updateFields.username = user.username;
+        if (user.email !== undefined) updateFields.email = user.email;
+        if (user.avatar !== undefined) updateFields.avatar = user.avatar;
+        if (user.bio !== undefined) updateFields.bio = user.bio;
+        if (user.role_id !== undefined) updateFields.role_id = user.role_id;
+        if (user.password !== undefined) updateFields.password = user.password;
+        if (user.isVerified !== undefined) updateFields.isVerified = user.isVerified;
+        if (user.verificationToken !== undefined) updateFields.verificationToken = user.verificationToken;
+        if (user.verificationTokenExpires !== undefined) updateFields.verificationTokenExpires = user.verificationTokenExpires;
+        if (user.updatedAt !== undefined) updateFields.updatedAt = user.updatedAt;
+        
         return await this.collection.updateOne(
             { _id: new ObjectId(id) },
             { $set: updateFields }

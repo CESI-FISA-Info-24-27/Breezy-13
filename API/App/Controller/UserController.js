@@ -1,5 +1,6 @@
 import UsersServices from '../Services/UsersServices.js';
 import RolesServices from '../Services/RolesServices.js';
+import VerificationServices from '../Services/VerificationServices.js';
 import bcrypt from 'bcrypt';
 import env from 'dotenv';
 env.config();
@@ -218,12 +219,36 @@ class UserController {
                 newUser.password = bcrypt.hashSync(newUser.password, salt);
             }
 
+            // Générer un token de vérification
+            const verificationToken = VerificationServices.generateVerificationToken();
+            const verificationTokenExpires = VerificationServices.generateTokenExpiration();
+
+            // Ajouter les champs de vérification
+            newUser.isVerified = false;
+            newUser.verificationToken = verificationToken;
+            newUser.verificationTokenExpires = verificationTokenExpires;
+
             // Ajouter la date de création et de mise à jour
             newUser.createdAt = new Date();
             newUser.updatedAt = new Date();
 
             // Crée l'utilisateur
             const createdUser = await UsersServices.createUsers(newUser);
+
+            // Générer un token temporaire pour l'upload d'avatar
+            const tempUploadToken = VerificationServices.generateTempUploadToken(createdUser.insertedId);
+
+            // Envoyer l'email de vérification
+            try {
+                await VerificationServices.sendVerificationEmail(
+                    newUser.email, 
+                    verificationToken, 
+                    newUser.username
+                );
+            } catch (emailError) {
+                console.error('Erreur envoi email:', emailError);
+                // On continue même si l'email échoue
+            }
 
             // Récupère les informations de l'utilisateur créé
             const userInfo = {
@@ -233,11 +258,95 @@ class UserController {
                 avatar: newUser.avatar,
                 bio: newUser.bio,
                 role_id: newUser.role_id,
+                isVerified: newUser.isVerified,
+                tempUploadToken: tempUploadToken, // Token pour upload d'avatar
                 createdAt: newUser.createdAt,
                 updatedAt: newUser.updatedAt
             };
 
-            res.status(201).json({ message: 'Utilisateur créé avec succès', user: userInfo });
+            res.status(201).json({ 
+                message: 'Utilisateur créé avec succès. Veuillez vérifier votre email pour activer votre compte.', 
+                user: userInfo 
+            });
+        } catch (error) {
+            res.status(500).json({ error: error.toString() });
+        }
+    }
+
+    /**
+     * Vérifier un utilisateur avec son token
+     * @param {object} req - La requête
+     * @param {object} res - La réponse
+     */
+    async verifyUser(req, res) {
+        try {
+            const { token } = req.body;
+
+            if (!token) {
+                return res.status(400).json({ error: 'Token de vérification requis' });
+            }
+
+            // Chercher l'utilisateur avec ce token
+            const users = await UsersServices.getUsers({ verificationToken: token });
+            
+            if (users.length === 0) {
+                return res.status(404).json({ error: 'Token de vérification invalide' });
+            }
+
+            const user = users[0];
+
+            // Vérifier que le token n'a pas expiré
+            if (new Date() > user.verificationTokenExpires) {
+                return res.status(400).json({ error: 'Token de vérification expiré' });
+            }
+
+            // Mettre à jour l'utilisateur
+            await UsersServices.updateUsers(user._id, {
+                isVerified: true,
+                verificationToken: null,
+                verificationTokenExpires: null,
+                updatedAt: new Date()
+            });
+
+            res.status(200).json({ message: 'Compte vérifié avec succès' });
+        } catch (error) {
+            res.status(500).json({ error: error.toString() });
+        }
+    }
+
+    /**
+     * Mettre à jour l'avatar d'un utilisateur non vérifié
+     * @param {object} req - La requête
+     * @param {object} res - La réponse
+     */
+    async updateAvatarAfterRegistration(req, res) {
+        try {
+            const { userId, avatarPath } = req.body;
+
+            if (!userId || !avatarPath) {
+                return res.status(400).json({ error: 'userId et avatarPath requis' });
+            }
+
+            // Vérifie que l'utilisateur existe
+            const user = await UsersServices.getUsers({ id: userId });
+            if (user.length === 0) {
+                return res.status(404).json({ error: 'Utilisateur non trouvé' });
+            }
+
+            // Met à jour l'avatar
+            const updateResult = await UsersServices.updateUsers(userId, {
+                avatar: avatarPath,
+                updatedAt: new Date()
+            });
+
+            if (updateResult.modifiedCount === 0) {
+                return res.status(400).json({ error: 'Aucune modification effectuée' });
+            }
+
+            res.status(200).json({ 
+                message: 'Avatar mis à jour avec succès',
+                avatarPath: avatarPath
+            });
         } catch (error) {
             res.status(500).json({ error: error.toString() });
         }
