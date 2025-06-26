@@ -1,11 +1,8 @@
 "use client";
 
-<<<<<<< deconnexion
+
 import { disconnect } from "../../services/AuthServices"; //Import nécessaire pour la déconnexion avec gestion des revoked token
-import { useState, useRef, useEffect } from "react";
-=======
 import { useState, useRef, useEffect, useContext } from "react";
->>>>>>> main
 import { HiMenu, HiSearch } from "react-icons/hi";
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
@@ -16,12 +13,10 @@ import { AuthContext } from '../../../context/UserContext';
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const buttonRef = useRef(null);
-<<<<<<< deconnexion
   const menuRef = useRef(null);
   const router = useRouter();
-=======
   const { token } = useContext(AuthContext);
->>>>>>> main
+
 
   useEffect(() => {
     function handleClickOutside(event) {

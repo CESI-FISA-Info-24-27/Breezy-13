@@ -6,8 +6,8 @@ import MobileNavbar from "../comp/MobileNavbar";
 import Header from "../comp/Header";
 import { getMessages, createMessage } from "../../services/MessagesServices";
 import { getUsers } from "../../services/UsersServices";
-import { uploadFile } from "../../services/FileServerService";
-import { FiImage, FiSend, FiUserPlus } from "react-icons/fi";
+import { uploadFile } from "../../services/FileServerServices";
+import { FiImage, FiSend } from "react-icons/fi";
 import { FaRegSmile } from "react-icons/fa";
 import Cookies from "js-cookie";
 import GifPicker from "../comp/GifPicker";
@@ -41,10 +41,6 @@ export default function MessagesPage() {
 
     const [selectedConv, setSelectedConv] = useState(null);
 
-    // Pour la modale d'ajout de conversation
-    const [showNewConvModal, setShowNewConvModal] = useState(false);
-    const [newConvUserId, setNewConvUserId] = useState("");
-
     const userId = getCurrentUserId();
 
     // Ref pour scroll auto sur le dernier message
@@ -53,9 +49,6 @@ export default function MessagesPage() {
 
     // Pour savoir si l'utilisateur a scrollé manuellement
     const [userScrolled, setUserScrolled] = useState(false);
-
-    // Ajout pour la navigation mobile : vue liste ou vue conversation
-    const [showMobileConv, setShowMobileConv] = useState(false);
 
     // conversations et currentMessages doivent être déclarés AVANT les useEffect qui les utilisent
     const conversations = React.useMemo(() => {
@@ -315,304 +308,6 @@ export default function MessagesPage() {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    // Affiche la conversation quand on sélectionne une conv sur mobile
-    useEffect(() => {
-        if (isMobile && selectedConv) setShowMobileConv(true);
-    }, [isMobile, selectedConv]);
-
-    // Retour à la liste sur mobile
-    function handleBackMobile() {
-        setShowMobileConv(false);
-        setSelectedConv(null);
-    }
-
-    // --- MODALE NOUVELLE CONVERSATION ---
-    function NewConversationModal({ open, onClose, users, onSelect }) {
-        if (!open) return null;
-        return (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-xs relative">
-                    <button
-                        className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-xl"
-                        onClick={onClose}
-                        aria-label="Fermer"
-                    >
-                        ×
-                    </button>
-                    <h3 className="text-lg font-bold mb-4 text-celestial-blue flex items-center gap-2">
-                        <FiUserPlus /> Nouvelle conversation
-                    </h3>
-                    <div>
-                        <select
-                            className="w-full rounded border px-2 py-2 mb-4"
-                            value={newConvUserId}
-                            onChange={e => setNewConvUserId(e.target.value)}
-                        >
-                            <option value="">Choisir un utilisateur...</option>
-                            {users.map(u => (
-                                <option key={u._id} value={u._id}>
-                                    {u.username || u.email || u._id}
-                                </option>
-                            ))}
-                        </select>
-                        <button
-                            className="w-full bg-celestial-blue text-seasalt rounded-lg py-2 font-semibold hover:bg-sea-green transition"
-                            disabled={!newConvUserId}
-                            onClick={() => {
-                                if (newConvUserId) {
-                                    onSelect(newConvUserId);
-                                    setNewConvUserId("");
-                                    onClose();
-                                }
-                            }}
-                        >
-                            Démarrer la conversation
-                        </button>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-    // --- FIN MODALE ---
-
-    // --- INTERFACE MOBILE ---
-    if (isMobile) {
-        return (
-            <div className="relative bg-seasalt min-h-screen flex flex-col">
-                <div
-                    ref={headerRef}
-                    className="fixed top-0 left-0 w-full z-50 transition-all duration-300"
-                    style={headerStyle}
-                >
-                    <Header />
-                </div>
-                <div className="flex-1 pt-[64px] pb-[70px] flex flex-col">
-                    {/* Liste des conversations */}
-                    {!showMobileConv && (
-                        <div className="flex flex-col h-full">
-                            <div className="flex items-center justify-between px-4 py-3 border-b">
-                                <h2 className="text-lg font-bold text-celestial-blue">Conversations</h2>
-                                <button
-                                    className="flex items-center gap-2 px-3 py-2 bg-celestial-blue text-seasalt rounded-lg font-semibold shadow hover:bg-sea-green transition text-sm"
-                                    onClick={() => setShowNewConvModal(true)}
-                                >
-                                    <FiUserPlus /> Nouvelle
-                                </button>
-                            </div>
-                            <ul className="flex-1 overflow-y-auto divide-y divide-seasalt">
-                                {conversations.map(conv => {
-                                    const user = getUserInfo(conv.id);
-                                    return (
-                                        <li key={conv.id} className="list-none">
-                                            <button
-                                                type="button"
-                                                className={`w-full text-left py-3 px-4 hover:bg-celestial-blue/10 flex items-center gap-3 ${selectedConv === conv.id ? "bg-celestial-blue/10" : ""}`}
-                                                onClick={() => {
-                                                    setSelectedConv(conv.id);
-                                                    setShowMobileConv(true);
-                                                }}
-                                            >
-                                                <SecureMedia
-                                                    fileName={user.avatar || "default-avatar.png"}
-                                                    type="image"
-                                                    alt={user.username}
-                                                    className="w-10 h-10 rounded-full object-cover border"
-                                                />
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="font-semibold text-rich-black truncate">{user.username || conv.id}</div>
-                                                    <div className="text-xs text-gray-500 truncate">{conv.lastMessage}</div>
-                                                </div>
-                                                <div className="text-xs text-gray-400 ml-2 whitespace-nowrap">
-                                                    {conv.lastMessageTime && timeOrHour(conv.lastMessageTime)}
-                                                </div>
-                                            </button>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </div>
-                    )}
-
-                    {/* Conversation mobile */}
-                    {showMobileConv && (
-                        <div className="flex flex-col h-full fixed inset-0 z-50 bg-white">
-                            {/* Header conv mobile */}
-                            <div className="flex items-center gap-2 px-2 py-3 border-b bg-white sticky top-0 z-10">
-                                <button
-                                    className="p-2 rounded-full hover:bg-seasalt"
-                                    onClick={handleBackMobile}
-                                    aria-label="Retour"
-                                >
-                                    <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>
-                                </button>
-                                {selectedConv && (
-                                    <>
-                                        <SecureMedia
-                                            fileName={getUserInfo(selectedConv).avatar || "default-avatar.png"}
-                                            type="image"
-                                            alt={getUserInfo(selectedConv).username}
-                                            className="w-8 h-8 rounded-full object-cover border"
-                                        />
-                                        <span className="font-semibold text-rich-black">
-                                            {getUserInfo(selectedConv).username || getUserInfo(selectedConv).email || selectedConv}
-                                        </span>
-                                    </>
-                                )}
-                            </div>
-                            {/* Messages */}
-                            <div
-                                className="flex-1 overflow-y-auto space-y-2 px-2 pt-2 pb-[104px]"
-                                ref={messagesContainerRef}
-                                onScroll={handleScrollContainer}
-                            >
-                                {loading ? (
-                                    <div>Chargement...</div>
-                                ) : (
-                                    currentMessages.map((msg, idx) => (
-                                        <div
-                                            key={msg._id || idx}
-                                            className={`flex ${msg.from === userId ? "justify-end" : "justify-start"}`}
-                                        >
-                                            <div className={`max-w-[90vw] px-2 py-2 rounded-lg shadow ${msg.from === userId
-                                                ? "bg-celestial-blue text-seasalt"
-                                                : "bg-seasalt text-rich-black"
-                                                }`}>
-                                                <span>{msg.content}</span>
-                                                {msg.images && msg.images.map((img) => {
-                                                    if (!img) return null;
-                                                    const key = typeof img === "string" ? img : Math.random().toString(36).substr(2, 9);
-                                                    return (
-                                                        <SecureMedia
-                                                            key={key}
-                                                            fileName={img}
-                                                            type="image"
-                                                            alt="img"
-                                                            className="w-40 h-40 object-cover rounded-lg shadow mt-2"
-                                                        />
-                                                    );
-                                                })}
-                                                {msg.videos && msg.videos.map((vid) => {
-                                                    if (!vid) return null;
-                                                    const key = typeof vid === "string" ? vid : Math.random().toString(36).substr(2, 9);
-                                                    if (!vid.startsWith("http")) {
-                                                        return (
-                                                            <SecureMedia
-                                                                key={key}
-                                                                fileName={vid}
-                                                                type="video"
-                                                                className="w-60 h-40 rounded-lg shadow mt-2"
-                                                            />
-                                                        );
-                                                    } else {
-                                                        return (
-                                                            <video
-                                                                key={key}
-                                                                src={vid}
-                                                                controls
-                                                                className="w-60 h-40 rounded-lg shadow mt-2"
-                                                            >
-                                                                <track kind="captions" />
-                                                            </video>
-                                                        );
-                                                    }
-                                                })}
-                                                <div className="text-xs text-right opacity-60">
-                                                    {timeOrHour(msg.updatedAt || msg.createdAt)}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))
-                                )}
-                                {selectedFile && (
-                                    <div className="flex justify-end">
-                                        <SecureMedia
-                                            fileName={URL.createObjectURL(selectedFile)}
-                                            type="image"
-                                            alt="Aperçu"
-                                            className="w-40 h-40 object-cover rounded-lg shadow"
-                                        />
-                                    </div>
-                                )}
-                                {selectedGif && (
-                                    <div className="flex justify-end">
-                                        <SecureMedia
-                                            fileName={selectedGif}
-                                            type="image"
-                                            alt="GIF sélectionné"
-                                            className="w-40 h-40 object-cover rounded-lg shadow"
-                                        />
-                                    </div>
-                                )}
-                                <div ref={messagesEndRef} />
-                            </div>
-                            {/* Barre d'envoi mobile FIXÉE EN BAS AU-DESSUS DE LA NAV */}
-                            <form
-                                className="flex gap-2 px-2 py-2 border-t bg-white fixed bottom-[56px] left-0 w-full z-50"
-                                style={{ maxWidth: "100vw" }}
-                                onSubmit={handleSendMessage}
-                            >
-                                <input
-                                    type="text"
-                                    className="flex-1 rounded-lg border border-sea-green px-3 py-2 focus:outline-none focus:ring-2 focus:ring-celestial-blue"
-                                    placeholder="Écrire un message..."
-                                    value={message}
-                                    onChange={e => setMessage(e.target.value)}
-                                />
-                                <input
-                                    type="file"
-                                    accept="image/*,video/*"
-                                    className="hidden"
-                                    ref={fileInputRef}
-                                    onChange={handleFileChange}
-                                />
-                                <button
-                                    type="button"
-                                    className="px-2 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition flex items-center justify-center"
-                                    onClick={() => fileInputRef.current.click()}
-                                    title="Envoyer une image ou vidéo"
-                                >
-                                    <FiImage size={22} />
-                                </button>
-                                <button
-                                    type="button"
-                                    className="px-2 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition flex items-center justify-center"
-                                    onClick={() => setShowGifModal(true)}
-                                    title="Envoyer un GIF"
-                                >
-                                    <FaRegSmile size={22} />
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="px-4 py-2 rounded-lg bg-celestial-blue text-seasalt font-semibold shadow hover:bg-sea-green transition flex items-center justify-center"
-                                    title="Envoyer"
-                                >
-                                    <FiSend size={22} />
-                                </button>
-                            </form>
-                            {showGifModal && (
-                                <GifPicker
-                                    onSelect={handleGifSelect}
-                                    onClose={() => setShowGifModal(false)}
-                                />
-                            )}
-                        </div>
-                    )}
-                </div>
-                <div className="md:hidden">
-                    <MobileNavbar />
-                </div>
-                <NewConversationModal
-                    open={showNewConvModal}
-                    onClose={() => setShowNewConvModal(false)}
-                    users={users.filter(u => u._id !== userId && !conversations.some(c => c.id === u._id))}
-                    onSelect={id => setSelectedConv(id)}
-                />
-            </div>
-        );
-    }
-    // --- FIN INTERFACE MOBILE ---
-
-    // --- INTERFACE DESKTOP (inchangée) ---
     return (
         <div className="relative bg-seasalt h-screen">
             {/* Header */}
@@ -623,6 +318,7 @@ export default function MessagesPage() {
             >
                 <Header />
             </div>
+
             <div className="flex pt-[64px] md:pt-0 h-screen">
                 {/* Sidebar gauche */}
                 <div
@@ -631,6 +327,7 @@ export default function MessagesPage() {
                 >
                     <Navbar />
                 </div>
+
                 {/* Contenu principal */}
                 <main
                     className="flex-1 md:ml-64 p-4 sm:p-6 lg:p-8 pb-14 md:pb-0 transition-all duration-300 w-full flex flex-col md:flex-row gap-8"
@@ -647,13 +344,6 @@ export default function MessagesPage() {
                         style={{ height: "100%" }}
                     >
                         <h2 className="text-xl font-bold text-celestial-blue mb-4 flex items-center gap-2">Listes des conversations</h2>
-                        {/* Bouton flottant pour nouvelle conversation */}
-                        <button
-                            className="flex items-center gap-2 mb-4 px-4 py-2 bg-celestial-blue text-seasalt rounded-lg font-semibold shadow hover:bg-sea-green transition"
-                            onClick={() => setShowNewConvModal(true)}
-                        >
-                            <FiUserPlus /> Nouvelle conversation
-                        </button>
                         <ul className="divide-y divide-seasalt flex-1 overflow-y-auto">
                             {conversations.map(conv => {
                                 const user = getUserInfo(conv.id);
@@ -702,6 +392,7 @@ export default function MessagesPage() {
                             })}
                         </ul>
                     </aside>
+
                     {/* Zone de messages */}
                     <section className="flex-1 bg-white rounded-2xl shadow-lg p-4 border-t-4 border-sea-green flex flex-col min-w-0 h-full"
                         style={{ height: "100%" }}
@@ -846,13 +537,6 @@ export default function MessagesPage() {
             <div className="md:hidden">
                 <MobileNavbar />
             </div>
-            {/* Modale nouvelle conversation */}
-            <NewConversationModal
-                open={showNewConvModal}
-                onClose={() => setShowNewConvModal(false)}
-                users={users.filter(u => u._id !== userId && !conversations.some(c => c.id === u._id))}
-                onSelect={id => setSelectedConv(id)}
-            />
         </div>
     );
 }
