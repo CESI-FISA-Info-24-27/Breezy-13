@@ -7,14 +7,23 @@ import Header from "../comp/Header";
 import ProfilPreview from "../comp/ProfilPreview";
 import { PostsList } from "../comp/PostsList";
 import MobileNavbar from "../comp/MobileNavbar";
+import { getUsers } from "../../services/UsersServices"
+import { getPosts } from "../../services/PostsServices"
 
-export default function ProfilPage() {
+const pagination = 5;
+
+export default function ProfilPage() 
+{
+  let userID = "685c057e357c56a715532772"
+
   const [headerStyle, setHeaderStyle] = useState({ opacity: 1, transform: "translateY(0)" });
   const [headerHeight, setHeaderHeight] = useState(64);
   const [sidebarTop, setSidebarTop] = useState(64);
   const headerRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
-  const user = {}
+  const [user, setUser] = useState({});
+  const [myPosts, setMyPosts] = useState([]);
+  const [endID, setEndID] = useState(pagination);
 
   useEffect(() => {
     if (headerRef.current) {
@@ -54,6 +63,23 @@ export default function ProfilPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedUser = await getUsers({ id: userID });
+      setUser(fetchedUser[0]);
+
+      const fetchedPost = await getPosts({ author: userID });
+      setMyPosts(fetchedPost);
+    };
+
+    fetchData();
+  }, [userID]);
+
+  function fetchMorePosts()
+  {
+    setEndID(prev => prev + pagination);
+  }
+
   return (
     <div className="relative min-h-screen bg-seasalt">
       <div
@@ -80,9 +106,12 @@ export default function ProfilPage() {
             paddingBottom: '3.5rem', // 56px pour la MobileNavbar
           }}
         >
-          <ProfilPreview user = {user} />
+          <ProfilPreview user={user} />
           <hr className="w-1/2 mx-auto h-0.5 border-0 bg-seasalt my-5 rounded" />
-          <PostsList />
+          <PostsList posts={myPosts.slice(0, endID)} />
+          <button className="w-full mt-4 px-4 py-2 rounded bg-folly text-seasalt font-semibold hover:bg-sea-green transition" onClick={fetchMorePosts}>
+              Afficher plus
+          </button>
           <Footer>
             <span>© {new Date().getFullYear()} Mon Footer Personnalisé</span>
           </Footer>
