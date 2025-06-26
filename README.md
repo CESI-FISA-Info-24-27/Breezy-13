@@ -11,7 +11,7 @@ Breezy est un réseau social léger et réactif, inspiré de Twitter/X, conçu p
 
 ## Installation
 
-1. Cloné le repo:
+1. Cloner le repo:
 
      ```bash
      git clone https://github.com/CESI-FISA-Info-24-27/Breezy-13.git
@@ -45,6 +45,8 @@ Breezy est un réseau social léger et réactif, inspiré de Twitter/X, conçu p
      cd FileServer
      npm run dev
      ```
+## Architecture Technique
+    ### Front-End
 
 ## Contributors
 * **Sacha COLBERT-LISBONA** _alias_ [@Sunit34140](https://github.com/Sunit34140)
