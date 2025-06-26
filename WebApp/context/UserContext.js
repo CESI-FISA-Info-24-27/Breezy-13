@@ -16,23 +16,20 @@ export function AuthProvider({ children }) {
   const [userId, setUserId] = useState(null);
   const [user, setUser] = useState(null);
 
-  const fetchUser = useCallback(async (jwt, id) => {
+  // Fonction permettant de récupérer l'utilisateur à partir de l'id
+  const fetchUser = useCallback(async (id) => {
     try {
       const data = await getUsers({ id });
       setUser(Array.isArray(data) ? data[0] : data);
-    } 
-    catch (error) 
-    {
+    } catch (error) {
       console.error("Erreur récupération utilisateur", error);
       setUser(null);
     }
   }, []);
 
+  // Use-Effect qui permet de récupérer l'utilisateur si jamais on a un userID
   useEffect(() => {
-    setToken(localStorage.getItem("token"));
-    setUserId(localStorage.getItem("userId"));
-
-    if (token && userId) 
+    if (userId) 
     {
       fetchUser(token, userId);
     } 
@@ -40,9 +37,9 @@ export function AuthProvider({ children }) {
     {
       setUser(null);
     }
+  }, [userId, fetchUser]);
 
-  }, [token, userId, fetchUser]);
-
+  // Fonction permettant de se login
   const login = useCallback(
     async (jwt, id) => {
       setToken(jwt);
@@ -54,6 +51,7 @@ export function AuthProvider({ children }) {
     [fetchUser]
   );
 
+  // Fonction permettant de se logout
   const logout = useCallback(() => {
     setToken(null);
     setUserId(null);
@@ -62,6 +60,16 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("userId");
   }, []);
 
+  // Mettre en place le statut initial (on récupère le token et le userId)
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    const storedUserId = localStorage.getItem("userId");
+
+    if (storedToken && storedUserId) {
+      login(storedToken, storedUserId);
+    }
+  }, [login]);
+  
   return (
     <AuthContext.Provider value={{ token, userId, user, login, logout }}>
       {children}

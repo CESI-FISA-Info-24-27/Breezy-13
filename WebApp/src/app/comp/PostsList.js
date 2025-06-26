@@ -11,8 +11,10 @@ import {
   HiHeart,
 } from "react-icons/hi";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { getUsers } from "../../services/UsersServices";
 import { updatePost } from "../../services/PostsServices";
+import { getFollowsFrom } from "../../services/FollowsServices";
 import SecureMedia from "../comp/SecureMedia";
 import { useAuth } from "../../../context/UserContext";
 
@@ -38,14 +40,42 @@ function timeAgo(dateString) {
 
 export function PostsList({ posts }) {
   const [hovered, setHovered] = useState("");
+  const [follows, setFollows] = useState([]);
   const [displayPosts, setDisplayPosts] = useState([]);
-  const [isClient, setIsClient] = useState(false);
 
-  const { userId } = useAuth()
+  const { userId } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => 
+  { 
+    const fetchFollows = async () => 
+    {
+      try 
+      {
+        // On récupère les followers
+        let fetchedFollows = await getFollowsFrom(userId);
+        // On récupère les ids des followers
+        let usersID = fetchedFollows.map(item => item.follower);
+
+        // On met à jour les followers
+        setFollows(usersID);
+      } 
+      catch (error) 
+      {
+        console.error("Erreur lors du chargement des follows :", error);
+      }
+    };
+
+    fetchFollows(); 
+  }, [userId]);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      if (!posts || posts.length === 0) return;
+      if (!posts || posts.length === 0)
+      {
+        setDisplayPosts([]);
+        return;
+      }
 
       // On veut formatter les postes en fonction de ce qu'on doit afficher
       // On commence par récupérer la liste d'utilisateur
@@ -74,7 +104,6 @@ export function PostsList({ posts }) {
     };
 
     fetchPosts();
-    setIsClient(true);
   }, [posts]);
 
   function likePost(postId) {
@@ -104,6 +133,27 @@ export function PostsList({ posts }) {
     );
   }
 
+  function redirectToProfile(selectedUserID)
+  {
+    router.push(`/profil-page/${selectedUserID}`);
+  }
+
+  function subscribe(selectedUserID) 
+  {
+    setDisplayPosts((prevPosts) => {
+      // On met à jour la liste des follows
+      const isFollowing = follows.includes(selectedUserID);
+      const updatedFollows = isFollowing ? follows.filter(id => id !== selectedUserID) : [...follows, selectedUserID];
+      setFollows(updatedFollows);
+
+      // On appelle l'api pour subscribe
+      if(isFollowing)
+      {
+
+      }
+    });
+  }
+
   if (!displayPosts || displayPosts.length === 0) {
     return (
       <div className="w-full max-w-full bg-[var(--color-celestial-blue)] rounded-lg shadow p-6 mb-6 text-[var(--color-seasalt)] opacity-70">
@@ -123,7 +173,7 @@ export function PostsList({ posts }) {
           className="flex flex-col gap-4 w-full bg-[var(--color-outer-space)] rounded-xl shadow-lg p-6 border-2 border-[var(--color-sea-green)]"
         >
           <div className="flex items-center mb-2 justify-between">
-            <div className="flex items-center">
+            <div className="cursor-pointer flex items-center" onClick={() => redirectToProfile(post.authorID)}>
               <li
                 key={post._id}
                 className="flex items-center gap-3 px-3 py-2 rounded-lg bg-[var(--color-seasalt)]/10 text-[var(--color-seasalt)] hover:bg-[var(--color-seasalt)]/20 transition font-medium"
@@ -139,20 +189,22 @@ export function PostsList({ posts }) {
                 </span>
               </li>
               <span className="text-sm text-[var(--color-rich-black)]/70 ms-2">
-                {isClient ? timeAgo(post.createdAt) : ""}
+                {timeAgo(post.createdAt)}
               </span>
             </div>
-            <span
-              onMouseEnter={() => setHovered("useradd" + post._id)}
-              onMouseLeave={() => setHovered("")}
-              className="cursor-pointer"
-            >
-              {hovered === "useradd" + post._id ? (
-                <HiUserAdd className="text-[var(--color-celestial-blue)] text-2xl" />
-              ) : (
-                <HiOutlineUserAdd className="text-[var(--color-celestial-blue)] text-2xl" />
-              )}
-            </span>
+            {post.authorID == userId ? (<div></div>) : (
+              <span
+                onMouseEnter={() => setHovered("useradd" + post._id)}
+                onMouseLeave={() => setHovered("")}
+                className="cursor-pointer"
+              >
+                {hovered === "useradd" + post._id || follows.includes(post.authorID) ? (
+                  <HiUserAdd className="text-[var(--color-celestial-blue)] text-2xl" />
+                ) : (
+                  <HiOutlineUserAdd className="text-[var(--color-celestial-blue)] text-2xl" />
+                )}
+              </span>
+            )}
           </div>
           <div className="bg-white rounded-lg p-4 mb-4">
             {post.image ? (
@@ -205,6 +257,7 @@ export function PostsList({ posts }) {
                 <HiOutlineChat className="text-[var(--color-celestial-blue)] text-2xl" />
               )}
             </span>
+            
             {/*<span
               onMouseEnter={() => setHovered("share" + post._id)}
               onMouseLeave={() => setHovered("")}

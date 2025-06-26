@@ -21,12 +21,12 @@ async function withAuthRetry(requestFn) {
   }
 }
 
-export async function getPosts(filters = {}) {
-  const params = Object.fromEntries(
-    Object.entries(filters || {}).filter(
+export async function getPosts(filters) {
+  const params = filters ? Object.fromEntries(
+    Object.entries(filters).filter(
       ([, value]) => value !== undefined && value !== null && value !== ""
     )
-  );
+  ) : {};
   return withAuthRetry(headers =>
     axios.get(API_URL, { headers, params }).then(res => res.data)
   );

@@ -49,7 +49,7 @@ export class PostsMongoDAO extends PostsDAO {
         const mongoFilters = {};
         if (filters.id) mongoFilters._id = new ObjectId(filters.id);
         if (filters.author && ObjectId.isValid(filters.author)) mongoFilters.author = new ObjectId(filters.author);
-        if (filters.content) mongoFilters.content = filters.content;
+        if (filters.content) mongoFilters.content = { $regex: filters.content, $options: "i" };
         if (filters.image) mongoFilters.image = filters.image;
         if (filters.likes) mongoFilters.likes = filters.likes;
         if (filters.createdAt) mongoFilters.createdAt = filters.createdAt;

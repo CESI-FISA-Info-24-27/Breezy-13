@@ -14,6 +14,7 @@ import {
 } from "react-icons/hi";
 import Notifications from "./Notifications";
 import { useEffect, useRef, useState } from "react";
+import { useAuth } from "../../../context/UserContext"
 
 export default function Navbar({ sidebarTop = 64 }) {
   const pathname = usePathname();
@@ -21,6 +22,8 @@ export default function Navbar({ sidebarTop = 64 }) {
   const [showNotifications, setShowNotifications] = useState(false);
   const notifBtnRef = useRef(null);
   const [notifPanelVisible, setNotifPanelVisible] = useState(false);
+  const { userId } = useAuth();
+  let profilPageURI = `/profil-page/${userId}`
 
   const isHome = (pathname === "/" || pathname === "/home-page") && showNotifications === false;
   const isProfile = pathname === "/profil-page" && showNotifications === false;
@@ -77,7 +80,7 @@ export default function Navbar({ sidebarTop = 64 }) {
         </li>
         <li>
           <Link
-            href="/profil-page"
+            href={profilPageURI}
             className={`flex items-center gap-3 ${
               showNotifications ? "px-0 justify-center" : "px-4"
             } py-2 rounded-lg font-medium transition ${
