@@ -100,9 +100,9 @@ export default function Header() {
           >
             <Link href="/profil-page" className="block px-4 py-2 hover:bg-celestial-blue/10">Profil</Link>
             <hr className="w-4/5 mx-auto h-0.5 border-0 bg-sea-green my-2 rounded" />
-            <Link href="/profil-page" className="block px-4 py-2 hover:bg-sea-green/10">About</Link>
-            <Link href="/profil-page" className="block px-4 py-2 hover:bg-sea-green/10">Privacy Policy</Link>
-            <Link href="/profil-page" className="block px-4 py-2 hover:bg-sea-green/10">Contact</Link>
+            <Link href="/about" className="block px-4 py-2 hover:bg-sea-green/10">About</Link>
+            <Link href="/privacy-policy" className="block px-4 py-2 hover:bg-sea-green/10">Privacy Policy</Link>
+            <Link href="/contact" className="block px-4 py-2 hover:bg-sea-green/10">Contact</Link>
             <hr className="w-4/5 mx-auto h-0.5 border-0 bg-folly my-2 rounded" />
             <button onClick={handleDisconnect} className="block px-4 py-2 hover:bg-folly/10">Déconnexion</button>
           </div>
