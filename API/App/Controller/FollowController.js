@@ -32,10 +32,6 @@ class FollowController {
      */
     async createFollow(req, res) {
         try {
-            if (!req.body.follower_id || !req.body.following_id) {
-                return res.status(400).json({ error: 'Les identifiants follower_id et following_id sont requis' });
-            }
-
             const newFollow = await FollowsServices.createFollow(req.body);
             res.status(201).json(newFollow);
         } catch (error) {

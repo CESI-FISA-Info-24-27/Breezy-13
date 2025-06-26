@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getUsers } from "../../services/UsersServices";
 import { updatePost } from "../../services/PostsServices";
-import { getFollowsFrom } from "../../services/FollowsServices";
+import { getFollows, getFollowsFrom, createFollow, deleteFollow } from "../../services/FollowsServices";
 import SecureMedia from "../comp/SecureMedia";
 import { useAuth } from "../../../context/UserContext";
 
@@ -38,7 +38,7 @@ function timeAgo(dateString) {
   return `il y a ${y} an${y > 1 ? "s" : ""}`;
 }
 
-export function PostsList({ posts }) {
+export function PostsList({ posts, renderSubs }) {
   const [hovered, setHovered] = useState("");
   const [follows, setFollows] = useState([]);
   const [displayPosts, setDisplayPosts] = useState([]);
@@ -140,18 +140,29 @@ export function PostsList({ posts }) {
 
   function subscribe(selectedUserID) 
   {
-    setDisplayPosts((prevPosts) => {
-      // On met à jour la liste des follows
-      const isFollowing = follows.includes(selectedUserID);
-      const updatedFollows = isFollowing ? follows.filter(id => id !== selectedUserID) : [...follows, selectedUserID];
-      setFollows(updatedFollows);
-
-      // On appelle l'api pour subscribe
-      if(isFollowing)
-      {
-
-      }
-    });
+    // Si on follow déjà l'utilisateur
+    if(follows.includes(selectedUserID))
+    {
+      // On récupère le following en question
+      getFollows({ following: userId, follower: selectedUserID }).then((followsToDelete) => {
+        // Si on l'a trouvé, on le delete
+        if(followsToDelete && followsToDelete.length > 0)
+        {
+          deleteFollow(followsToDelete[0]._id).then(() => {
+            // Après la suppression, on met à jour les follows
+            setFollows(prev => prev.filter(id => id !== selectedUserID));
+          })
+        }
+      });
+    }
+    else
+    {
+      // Sinon on crée le follow
+      createFollow({ following: userId, follower: selectedUserID }).then(() => {
+        // Et on met à jour la liste des followers
+        setFollows(prev => [...prev, selectedUserID]);
+      });
+    }
   }
 
   if (!displayPosts || displayPosts.length === 0) {
@@ -192,8 +203,9 @@ export function PostsList({ posts }) {
                 {timeAgo(post.createdAt)}
               </span>
             </div>
-            {post.authorID == userId ? (<div></div>) : (
+            {post.authorID == userId || !renderSubs ? (<div></div>) : (
               <span
+                onClick={() => subscribe(post.authorID)}
                 onMouseEnter={() => setHovered("useradd" + post._id)}
                 onMouseLeave={() => setHovered("")}
                 className="cursor-pointer"

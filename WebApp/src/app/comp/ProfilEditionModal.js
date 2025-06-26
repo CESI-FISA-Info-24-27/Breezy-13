@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { uploadFile } from "../../services/FileServerServices"; // adapte le chemin si besoin
 import { updateUser } from "../../services/UsersServices";
 import SecureMedia from "./SecureMedia";
 
@@ -21,6 +22,21 @@ export default function ProfilEditionModal({
   const [initialUser, setInitialUser] = useState({
     username: "", mail: "", description: "", avatar: "",
   });
+
+  async function uploadAvatar () {     
+    if (avatarFile) {
+      try {
+        const uploadData = await uploadFile(avatarFile);
+        // On suppose que l'URL du fichier est dans uploadData.url ou uploadData.avatar
+        return uploadData.filePath;
+      } catch (uploadError) {
+        console.error("Erreur upload avatar:", uploadError);
+        setAvatarError("Erreur lors de l'upload de l'avatar. Vous pourrez le changer plus tard.");
+        return user.avatar; // On garde l'ancien avatar si échec
+      }
+    }
+    return user.avatar; // Pas de nouveau fichier, on garde l'ancien
+  }
 
   /* bloque le scroll lorsque la modal est ouverte */
   useEffect(() => {
@@ -58,13 +74,19 @@ export default function ProfilEditionModal({
 
     try {
       let payload;
+
       if (avatarFile) {
-        payload = new FormData();
-        payload.append("avatar", avatarFile);
-        payload.append("username", username);
-        payload.append("email", mail);
-        payload.append("bio", description);
-        payload.append("role_id", user.role_id);
+        const newAvatarURL = await uploadAvatar();
+        const avatarName = newAvatarURL.split('/').pop();
+
+        payload = {
+          username,
+          email: mail,
+          bio: description,
+          avatar: avatarName,
+          role_id: user.role_id,
+        };
+
       } else {
         payload = {
           username,
@@ -114,6 +136,19 @@ export default function ProfilEditionModal({
               onChange={(e) => {
                 const file = e.target.files?.[0];
                 if (file) {
+
+                  // Vérifier la taille du fichier (5 Mo max)
+                  if (file.size > 5 * 1024 * 1024) {
+                    setAvatarError("Le fichier est trop volumineux. Limite : 5 Mo.");
+                    return;
+                  }
+                  
+                  const allowedTypes = ['image/png', 'image/jpeg', 'image/gif'];
+                  if (!allowedTypes.includes(file.type)) {
+                    setAvatarError("Type de fichier non autorisé. Utilisez PNG, JPEG ou GIF.");
+                    return;
+                  }
+
                   setAvatarFile(file);
                   setAvatarURL(URL.createObjectURL(file));
                 }
