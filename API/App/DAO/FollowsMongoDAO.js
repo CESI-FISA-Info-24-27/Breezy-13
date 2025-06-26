@@ -63,7 +63,7 @@ export class FollowsMongoDAO extends FollowsDAO {
     async updateFollow(id, follow) {
         return await this.collection.updateOne(
             { _id: new ObjectId(id) },
-            { $set: { follower: follow.follower, following: follow.following } }
+            { $set: { follower: new ObjectId(follow.follower), following: new ObjectId(follow.following) } }
         );
     }
 
@@ -82,6 +82,15 @@ export class FollowsMongoDAO extends FollowsDAO {
      * @returns {object} - Résultat de l'insertion.
      */
     async createFollow(follow) {
-        return await this.collection.insertOne(follow);
+        let newFollow = {};
+        if (follow.follower) 
+        {
+            newFollow.follower = new ObjectId(follow.follower);
+        }
+        if (follow.following) 
+        {
+            newFollow.following = new ObjectId(follow.following);
+        }
+        return await this.collection.insertOne(newFollow);
     }
 }

@@ -130,7 +130,7 @@ export default function HomePage() {
           <Post onPostCreated={triggerRefresh} />
           <hr className="mt-7 text-rich-black" />
           <div className="mt-8 mb-4">
-            <PostsList posts={posts.slice(0, endID)} />
+            <PostsList posts={posts.slice(0, endID)} renderSubs={true} />
             {!posts || endID >= posts.length ? (<div></div>) : (
               <button className="w-full mt-4 px-4 py-2 rounded bg-folly text-seasalt font-semibold hover:bg-sea-green transition" onClick={fetchMorePosts}>
                   Afficher plus

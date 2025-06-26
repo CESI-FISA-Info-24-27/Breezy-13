@@ -113,7 +113,7 @@ export default function ProfilPage()
         >
           <ProfilPreview user={user} />
           <hr className="w-1/2 mx-auto h-0.5 border-0 bg-seasalt my-5 rounded" />
-          <PostsList posts={myPosts.slice(0, endID)} />
+          <PostsList posts={myPosts.slice(0, endID)} renderSubs={false} />
           {!myPosts || endID >= myPosts.length ? (<div></div>) : (
               <button className="w-full mt-4 px-4 py-2 rounded bg-folly text-seasalt font-semibold hover:bg-sea-green transition" onClick={fetchMorePosts}>
                   Afficher plus
