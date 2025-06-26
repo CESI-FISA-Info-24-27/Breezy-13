@@ -20,11 +20,28 @@ export function AuthProvider({ children }) {
     try {
       const data = await getUsers({ id });
       setUser(Array.isArray(data) ? data[0] : data);
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error("Erreur récupération utilisateur", error);
       setUser(null);
     }
   }, []);
+
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+    setUserId(localStorage.getItem("userId"));
+
+    if (token && userId) 
+    {
+      fetchUser(token, userId);
+    } 
+    else 
+    {
+      setUser(null);
+    }
+
+  }, [token, userId, fetchUser]);
 
   const login = useCallback(
     async (jwt, id) => {
@@ -44,17 +61,6 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
   }, []);
-
-  // Recharger les données depuis localStorage au premier rendu
-  useEffect(() => {
-    const savedToken = localStorage.getItem("token");
-    const savedUserId = localStorage.getItem("userId");
-
-    if (savedToken && savedUserId) {
-      // On utilise login ici pour garder la logique centralisée
-      login(savedToken, savedUserId);
-    }
-  }, [login]);
 
   return (
     <AuthContext.Provider value={{ token, userId, user, login, logout }}>

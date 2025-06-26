@@ -9,6 +9,7 @@ import Header from "../comp/Header";
 import MobileNavbar from "../comp/MobileNavbar";
 import { PostsList } from "../comp/PostsList";
 import { getPosts } from "../../services/PostsServices"
+import { useAuth } from "../../../context/UserContext";
 
 const pagination = 5;
 
@@ -20,6 +21,7 @@ export default function HomePage() {
   const [isMobile, setIsMobile] = useState(false);
   const [posts, setPosts] = useState([]);
   const [endID, setEndID] = useState(pagination);
+  const { userId } = useAuth();
 
   function triggerRefresh() {
     const fetchPosts = async () => 
@@ -75,6 +77,12 @@ export default function HomePage() {
   function fetchMorePosts()
   {
     setEndID(prev => prev + pagination);
+  }
+
+  // On attend le chargement de l'utilisateur avant d'afficher la page
+  if (!userId) 
+  {
+    return <div>Chargement...</div>;
   }
 
   return (

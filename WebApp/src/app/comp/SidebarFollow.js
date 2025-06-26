@@ -31,7 +31,12 @@ export default function SideBarFollow(props) {
 
 				// On récupère les infos sur ces utilisateurs
 				let newUsers = await getUsers({ id: filteredUsersID });
-				setFollows(prev => [...prev, ...newUsers]);
+				setFollows(prev => {
+					const map = new Map();
+					prev.forEach(user => map.set(user._id, user));
+					newUsers.forEach(user => map.set(user._id, user));
+					return Array.from(map.values());
+				});
 			}
 			else
 			{

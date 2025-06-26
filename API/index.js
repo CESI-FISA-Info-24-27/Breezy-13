@@ -22,7 +22,6 @@ dotenv.config();
 
 // Connexion à la base MongoDB
 mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true
 }).then(() => console.log('✅ Connected to MongoDB'))
   .catch(err => console.error('❌ MongoDB connection error:', err));
 
