@@ -4,7 +4,7 @@
     <p><em>Un réseau social léger et performant inspiré de Twitter/X</em></p>
 </div>
 
-[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com) 
+[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
 [![forthebadge](http://forthebadge.com/images/badges/powered-by-electricity.svg)](http://forthebadge.com)
 
 ---
@@ -35,7 +35,9 @@
 Le projet Breezy adopte une architecture microservices modulaire avec quatre services principaux :
 
 #### 🌐 WebApp (Frontend - Next.js)
+
 **Port : 3001** | **Framework : Next.js 15**
+
 - **Technologies** : React 19, Next.js App Router, Tailwind CSS, Flowbite React
 - **État** : Context API pour l'authentification et gestion d'état globale
 - **HTTP Client** : Axios avec intercepteurs automatiques pour refresh tokens
@@ -43,7 +45,9 @@ Le projet Breezy adopte une architecture microservices modulaire avec quatre ser
 - **Intégrations** : API Giphy, React Force Graph 2D, Recharts pour analytics
 
 #### 🚀 API (Backend - Node.js)
+
 **Port : 3000** | **Framework : Express.js**
+
 - **Architecture** : Pattern MVC avec DAO/Factory pour l'abstraction des données
 - **Base de données** : MongoDB avec Mongoose ODM
 - **Authentification** : JWT avec refresh tokens, révocation de tokens
@@ -52,18 +56,22 @@ Le projet Breezy adopte une architecture microservices modulaire avec quatre ser
 - **Tests** : Jest avec couverture complète (Controllers, Services, Middlewares)
 
 #### 📁 FileServer (Stockage - Express.js)
+
 **Port : 5000** | **Service dédié aux médias**
+
 - **Upload** : Multer avec validation stricte des types MIME et tailles
 - **Support** : Images (JPEG, PNG, GIF, WebP), vidéos (MP4, MOV, AVI, WebM)
 - **Sécurité** : Authentification par tokens JWT, validation des permissions
-- **Fonctionnalités** : 
+- **Fonctionnalités** :
   - Upload d'avatar avec token temporaire (avant vérification email)
   - Gestion des URLs externes (Giphy, médias tiers)
   - Limitation de taille et validation de format
   - Stockage sécurisé avec nommage unique
 
 #### 🗄️ Database (MongoDB)
+
 **Port : 27018** | **Base de données NoSQL**
+
 - **Collections** : users, posts, comments, follows, messages, roles
 - **Scripts** : Initialisation automatique, migrations, données de test
 - **Indexation** : Index optimisés pour les requêtes fréquentes
@@ -74,6 +82,7 @@ Le projet Breezy adopte une architecture microservices modulaire avec quatre ser
 ## 🚀 Installation et Configuration
 
 ### Prérequis
+
 - **Node.js** v18+ (recommandé v20 LTS)
 - **MongoDB** v6.0+ (local ou MongoDB Atlas)
 - **Docker** (optionnel, pour déploiement containerisé)
@@ -89,6 +98,7 @@ cd Breezy-13
 ### 2. ⚙️ Configuration des variables d'environnement
 
 #### API (.env dans /API)
+
 ```env
 # Base de données MongoDB
 MONGO_URI=mongodb://localhost:27017/breezy_bdd
@@ -113,6 +123,7 @@ EMAIL_FROM=noreply@breezy.com
 ```
 
 #### WebApp (.env.local dans /webapp)
+
 ```env
 # URLs des services
 NEXT_PUBLIC_API_URL=http://localhost:3000
@@ -126,6 +137,7 @@ NEXT_PUBLIC_GIPHY_API_KEY=votre_cle_api_giphy_optionnelle
 ```
 
 #### FileServer (.env dans /FileServer)
+
 ```env
 # Configuration serveur de fichiers
 PORT=5000
@@ -235,6 +247,7 @@ Les données de test incluent un compte administrateur :
 - **Rôle** : Administrateur (permissions complètes)
 
 **Utilisateurs de test** :
+
 - `alice.martin@example.com` / `password123`
 - `bob.dupont@example.com` / `password123`
 - `charlie.bernard@example.com` / `password123`
@@ -244,11 +257,13 @@ Les données de test incluent un compte administrateur :
 ## 📡 API Documentation
 
 ### 📖 Documentation complète
+
 **Documentation interactive disponible** : [https://cesi-fisa-info-24-27.github.io/Breezy-13/](https://cesi-fisa-info-24-27.github.io/Breezy-13/)
 
 ### Endpoints principaux
 
 #### 🔐 Authentification
+
 ```http
 POST /auth                    # Connexion
 POST /refresh-token           # Renouvellement token
@@ -258,6 +273,7 @@ POST /verify/resend          # Renvoyer email vérification
 ```
 
 #### 👥 Utilisateurs
+
 ```http
 GET    /users                # Liste des utilisateurs
 POST   /users                # Création d'utilisateur
@@ -267,6 +283,7 @@ POST   /users/update-avatar  # Update avatar après inscription
 ```
 
 #### 📝 Posts
+
 ```http
 GET    /posts                # Liste des posts (avec filtres)
 POST   /posts                # Création de post
@@ -276,6 +293,7 @@ GET    /posts/:id            # Commentaires d'un post
 ```
 
 #### 💬 Commentaires
+
 ```http
 GET    /comments             # Liste des commentaires
 POST   /comments             # Création de commentaire
@@ -284,6 +302,7 @@ DELETE /comments/:id         # Suppression
 ```
 
 #### 👥 Abonnements (Follows)
+
 ```http
 GET    /follows              # Liste des abonnements
 POST   /follows              # Créer un abonnement
@@ -291,6 +310,7 @@ DELETE /follows/:id          # Se désabonner
 ```
 
 #### 💌 Messages
+
 ```http
 GET    /messages             # Liste des messages (avec filtres)
 POST   /messages             # Envoyer un message
@@ -299,6 +319,7 @@ DELETE /messages/:id         # Supprimer un message
 ```
 
 #### 🛡️ Rôles (Admin)
+
 ```http
 GET    /roles                # Liste des rôles
 POST   /roles                # Créer un rôle
@@ -307,6 +328,7 @@ DELETE /roles/:id            # Supprimer un rôle
 ```
 
 #### 📁 FileServer
+
 ```http
 GET    /files/:filename      # Récupérer un fichier
 POST   /upload               # Upload de fichier (authentifié)
@@ -317,6 +339,80 @@ POST   /upload-avatar-registration  # Upload avatar avec token temporaire
 
 Toutes les routes protégées nécessitent un header `Authorization: Bearer <token>`.
 Les tokens JWT expirent après 2h et peuvent être renouvelés via `/refresh-token`.
+
+---
+
+## 📊 Statistiques CI/CD et Empreinte Carbone
+
+### Workflows GitHub Actions
+
+Notre pipeline CI/CD comprend 5 workflows automatisés qui garantissent la qualité et la fiabilité du code :
+
+| Workflow                   | Runs          | Succès       | Durée moy.     | Min total       | Jobs          | ❌ Échecs   |
+| -------------------------- | ------------- | ------------- | --------------- | --------------- | ------------- | ------------ |
+| `test_api.yml`           | 79            | 33%           | 1m 16s          | 100.2           | 79            | 53           |
+| `test_web_app.yml`       | 57            | 98%           | 1m 51s          | 105.7           | 57            | 1            |
+| `test_file_server.yml`   | 38            | 66%           | 39s             | 24.7            | 76            | 13           |
+| `doc_api.yml`            | 30            | 93%           | 30s             | 15.0            | 30            | 2            |
+| `pages-build-deployment` | 26            | 100%          | 32s             | 13.9            | 78            | 0            |
+| **TOTAL**            | **230** | **70%** | **1m 8s** | **259.5** | **320** | **69** |
+
+### 📈 Métriques de performance
+
+- **Temps d'exécution moyen global** : 1m 8s
+- **Temps d'attente en queue** : ~4s
+- **Taux d'échec global** : 30% (69/230 runs)
+- **Temps perdu sur échecs** : ~78 min
+- **Workflow le plus fiable** : `pages-build-deployment` (100% succès)
+- **Workflow critique** : `test_api.yml` (33% succès, 53 échecs)
+
+### 🌱 Empreinte Carbone CI/CD - Analyse Comparative
+
+#### 🔬 Méthodologie
+
+**Base de calcul :**
+
+- **Temps total CPU** : 259,5 minutes (4h 19m)
+- **Consommation estimée** : 0,008 kWh/min (standard GitHub Actions)
+- **Énergie totale** : 259,5 × 0,008 = **2,08 kWh**
+
+#### Impact par région d'exécution
+
+| Région                        | Mix énergétique        | CO₂/kWh        | Émissions totales     | vs. France      |
+| ------------------------------ | ------------------------ | --------------- | ---------------------- | --------------- |
+| 🇫🇷**France (Central)** | **Nucléaire 67%** | **0,056** | **0,12 kg CO₂** | **1,0×** |
+| 🇳🇱 West Europe (Pays-Bas)    | Gaz 50%                  | 0,210           | 0,44 kg CO₂           | 3,7×           |
+| 🇮🇪 North Europe (Irlande)    | Gaz 51%                  | 0,290           | 0,60 kg CO₂           | 5,0×           |
+| 🇺🇸 East US (Virginie)        | Charbon 19%              | 0,450           | 0,94 kg CO₂           | 7,8×           |
+| 🇺🇸 South Central US (Texas)  | Gaz 47%                  | 0,500           | 1,04 kg CO₂           | 8,7×           |
+
+> **📊 Calcul** : Émissions = 2,08 kWh × Facteur régional CO₂
+
+#### 💡 Insights et Optimisations
+
+**🎯 Impact majeur du choix régional :**
+
+- **Optimum** : France = **0,12 kg CO₂/mois** (mix nucléaire)
+- **Défaut GitHub** : US East = 0,94 kg CO₂/mois (**+683%** 🚨)
+- **Économie potentielle** : **-0,82 kg CO₂/mois** en migrant vers la France
+
+**⚡ Points critiques identifiés :**
+
+1. **🔧 Fiabilité des workflows**
+
+   - `test_api.yml` : 53 échecs → **+40 min CPU gaspillé** → +0,018 kg CO₂
+   - `test_file_server.yml` : 13 échecs → **+8 min** → +0,004 kg CO₂
+   - **Gain stabilisation** : -0,022 kg CO₂/mois (-18%)
+2. **🌐 Optimisation géographique**
+
+   - Configurer `runs-on: ubuntu-latest-france` (si disponible)
+   - Alternative : `carbon-aware-scheduler` pour les tâches non-critiques
+3. **⏰ Planification intelligente**
+
+   - Décaler les runs batch vers 2h-6h (pic nucléaire français)
+   - Éviter 19h-21h (pic fossile européen)
+
+**📝 Note méthodologique** : Facteurs d'émission basés sur les moyennes 2023 d'[electricityMap](https://electricitymap.org) et études GitHub. Consommation CPU estimée à partir des benchmarks [Green Software Foundation](https://greensoftware.foundation/).
 
 ---
 
@@ -356,16 +452,16 @@ services:
   # MongoDB avec initialisation automatique
   mongodb:
     ports: "27018:27017"
-    
+  
   # API Backend
   api:
     ports: "3001:3000"
     depends_on: [mongodb]
-    
+  
   # FileServer  
   fileserver:
     ports: "5000:5000"
-    
+  
   # WebApp Frontend
   webapp:
     ports: "3002:3000"
@@ -445,6 +541,7 @@ Breezy-13/
 ## 🛠️ Technologies utilisées
 
 ### Backend
+
 - **Node.js** v18+ avec **Express.js** 5.x
 - **MongoDB** 6.x avec **Mongoose** ODM
 - **JWT** pour l'authentification avec refresh tokens
@@ -454,7 +551,8 @@ Breezy-13/
 - **Jest** pour les tests unitaires et d'intégration
 - **JSDoc** pour la documentation du code
 
-### Frontend  
+### Frontend
+
 - **Next.js** 15 avec **App Router**
 - **React** 19 avec hooks et Context API
 - **Tailwind CSS** 3.x pour le styling
@@ -465,6 +563,7 @@ Breezy-13/
 - **@giphy/react-components** pour l'intégration Giphy
 
 ### DevOps & Outils
+
 - **Docker** et **Docker Compose** pour la containerisation
 - **ESLint** et **Prettier** pour la qualité du code
 - **Jest** pour les tests
@@ -476,6 +575,7 @@ Breezy-13/
 ## 🚀 Fonctionnalités avancées
 
 ### Workflow d'inscription sécurisé
+
 1. **Création de compte** : L'utilisateur s'inscrit avec email/mot de passe
 2. **Utilisateur en base** : Création immédiate avec `isVerified: false`
 3. **Token temporaire** : Génération d'un token pour upload d'avatar
@@ -485,17 +585,20 @@ Breezy-13/
 7. **Connexion autorisée** : Uniquement après validation email
 
 ### Gestion des médias
+
 - **Upload sécurisé** : Validation MIME type, taille, nom de fichier unique
 - **URLs externes** : Gestion des GIFs Giphy sans proxification
 - **Compression** : Optimisation automatique des images
 - **Avatar par défaut** : Image par défaut en cas d'absence
 
 ### Système de rôles granulaire
+
 - **Rôles configurables** : Admin, Utilisateur, Invité
 - **Permissions détaillées** : Par endpoint et méthode HTTP
 - **Middleware de contrôle** : Vérification automatique des autorisations
 
 ### Performance et sécurité
+
 - **Refresh tokens** : Renouvellement automatique côté client
 - **Révocation de tokens** : Blacklist pour tokens compromis
 - **Rate limiting** : Protection contre le spam (à implémenter)
@@ -507,6 +610,7 @@ Breezy-13/
 ## 🤝 Contribution
 
 ### Standards de développement
+
 1. **Tests** : Couvrir tout nouveau code avec des tests
 2. **ESLint** : Respecter les règles de style configurées
 3. **JSDoc** : Documenter toutes les fonctions publiques
@@ -514,6 +618,7 @@ Breezy-13/
 5. **Pull Requests** : Review obligatoire avant merge
 
 ### Structure des commits
+
 ```
 type(scope): description
 
@@ -528,12 +633,14 @@ test(users): ajout tests création utilisateur
 ## 📞 Support et contact
 
 ### Équipe de développement
+
 - **Sacha COLBERT-LISBONA** - [@Sunit34140](https://github.com/Sunit34140)
-- **Trystan JULIEN** - [@Trystancesi](https://github.com/trystancesi)  
+- **Trystan JULIEN** - [@Trystancesi](https://github.com/trystancesi)
 - **Dylan BEROUD** - [@Dylan](https://github.com/Beroud-Dylan)
 - **Loïc SERRE** - [@LoicSERRE](https://github.com/LoicSERRE)
 
 ### Ressources
+
 - **Repository** : [GitHub - Breezy-13](https://github.com/CESI-FISA-Info-24-27/Breezy-13)
 - **Documentation API** : [https://cesi-fisa-info-24-27.github.io/Breezy-13/](https://cesi-fisa-info-24-27.github.io/Breezy-13/)
 - **Issues** : [GitHub Issues](https://github.com/CESI-FISA-Info-24-27/Breezy-13/issues)
