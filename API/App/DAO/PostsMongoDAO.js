@@ -55,7 +55,7 @@ export class PostsMongoDAO extends PostsDAO {
         if (filters.createdAt) mongoFilters.createdAt = filters.createdAt;
         if (filters.updatedAt) mongoFilters.updatedAt = filters.updatedAt;
 
-        return await this.collection.find(mongoFilters).toArray();
+        return await this.collection.find(mongoFilters).sort({ createdAt: -1 }).toArray();
     }
 
     /**
@@ -67,7 +67,7 @@ export class PostsMongoDAO extends PostsDAO {
     async updatePost(id, post) {
         return await this.collection.updateOne(
             { _id: new ObjectId(id) },
-            { $set: { author: post.author, content: post.content, image: post.image, likes: post.likes, updatedAt: post.updatedAt } }
+            { $set: { author: new ObjectId(post.author), content: post.content, image: post.image, likes: post.likes, updatedAt: post.updatedAt } }
         );
     }
 

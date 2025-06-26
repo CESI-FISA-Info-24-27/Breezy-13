@@ -21,6 +21,18 @@ export default function HomePage() {
   const [posts, setPosts] = useState([]);
   const [endID, setEndID] = useState(pagination);
 
+  function triggerRefresh() {
+    const fetchPosts = async () => 
+    {
+        let tempPosts = await getPosts();
+        setPosts(tempPosts);
+    }
+
+    fetchPosts();
+  }
+
+  useEffect(() => triggerRefresh(), []);
+
   useEffect(() => {
     if (headerRef.current) {
       setHeaderHeight(headerRef.current.offsetHeight);
@@ -58,18 +70,6 @@ export default function HomePage() {
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  // Définition de demoPosts
-  useEffect(() => 
-  {
-    const fetchPosts = async () => 
-    {
-        let tempPosts = await getPosts();
-        setPosts(tempPosts);
-    }
-
-    fetchPosts();
   }, []);
 
   function fetchMorePosts()
@@ -115,7 +115,7 @@ export default function HomePage() {
         >
           <h1 className="text-2xl font-bold pb-5">Page d&apos;accueil</h1>
           <hr className="pb-5" />
-          <Post />
+          <Post onPostCreated={triggerRefresh} />
           <hr className="mt-7 text-rich-black" />
           <div className="mt-8 mb-4">
             <PostsList posts={posts.slice(0, endID)} />
