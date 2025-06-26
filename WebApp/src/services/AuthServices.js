@@ -16,7 +16,7 @@ export async function login(email, password, rememberMe = false) {
         // Stocke le token dans le cookie ici
         Cookies.set('token', response.data.token, {
             secure: true,
-            sameSite: 'Lax',
+            sameSite: 'lax',
             path: '/',
         });
 
@@ -48,13 +48,11 @@ export async function refreshToken() {
 
 export async function disconnect() {
     try {
-        token = Cookies.get('token');
+        const token = Cookies.get('token');
 
         if (!token) {
             throw new Error("Aucun token trouvé");
         }
-
-        Cookies.remove('token');
 
         await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/disconnect`, {}, 
             {headers: {Authorization: `Bearer ${token}`}, withCredentials: true}

@@ -15,7 +15,7 @@ async function withAuthRetry(requestFn) {
   } catch (err) {
     if (err.response && err.response.status === 401) {
       const newToken = await refreshToken();
-      return await requestFn({ Authorization: `${newToken}` });
+      return await requestFn({ Authorization: `Bearer ${newToken}` });
     }
     throw err;
   }

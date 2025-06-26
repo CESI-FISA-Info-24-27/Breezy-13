@@ -1,16 +1,27 @@
 "use client";
 
+<<<<<<< deconnexion
+import { disconnect } from "../../services/AuthServices"; //Import nécessaire pour la déconnexion avec gestion des revoked token
+import { useState, useRef, useEffect } from "react";
+=======
 import { useState, useRef, useEffect, useContext } from "react";
+>>>>>>> main
 import { HiMenu, HiSearch } from "react-icons/hi";
+import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import Link from "next/link";
 import { AuthContext } from '../../../context/UserContext';
 
+
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef(null);
   const buttonRef = useRef(null);
+<<<<<<< deconnexion
+  const menuRef = useRef(null);
+  const router = useRouter();
+=======
   const { token } = useContext(AuthContext);
+>>>>>>> main
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -22,16 +33,33 @@ export default function Header() {
       ) {
         setMenuOpen(false);
       }
+
+      if (menuOpen) {
+        document.addEventListener("mousedown", handleClickOutside);
+      } else {
+        document.removeEventListener("mousedown", handleClickOutside);
+      }
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
     }
-    if (menuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
   }, [menuOpen]);
+
+  //Fonction permettant la déconnexion avec la gestion de revoked token
+  const handleDisconnect = async (e) => {
+    e.preventDefault(); // Empêche le rechargement de la page
+    try {
+        await disconnect();
+        console.log('Déconnexion réussie');
+
+        // Rediriger l'utilisateur
+        router.push('/login');
+    } catch (error) {
+        console.error('Erreur lors de la déconnexion:', error);
+        alert(error.message || "Échec de la déconnexion");
+    }
+  }
+
 
   return (
     <header className="flex items-center justify-between w-full h-16 px-8 bg-[var(--color-celestial-blue-dark)] shadow z-50">
@@ -82,7 +110,7 @@ export default function Header() {
             <Link href="/profil-page" className="block px-4 py-2 hover:bg-sea-green/10">Privacy Policy</Link>
             <Link href="/profil-page" className="block px-4 py-2 hover:bg-sea-green/10">Contact</Link>
             <hr className="w-4/5 mx-auto h-0.5 border-0 bg-folly my-2 rounded" />
-            <Link href="/logout" className="block px-4 py-2 hover:bg-folly/10">Déconnexion</Link>
+            <button onClick={handleDisconnect} className="block px-4 py-2 hover:bg-folly/10">Déconnexion</button>
           </div>
         )}
       </div>

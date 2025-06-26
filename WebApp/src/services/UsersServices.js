@@ -6,7 +6,7 @@ const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/users`;
 
 function getAuthHeader() {
   const token = Cookies.get("token") || localStorage.getItem("token");
-  return token ? { Authorization: `${token}` } : {};
+  return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
 async function withAuthRetry(requestFn) {
