@@ -6,13 +6,8 @@ import MobileNavbar from "../comp/MobileNavbar";
 import Header from "../comp/Header";
 import { getMessages, createMessage } from "../../services/MessagesServices";
 import { getUsers } from "../../services/UsersServices";
-<<<<<<< Updated upstream
 import { uploadFile } from "../../services/FileServerService";
 import { FiImage, FiSend, FiUserPlus } from "react-icons/fi";
-=======
-import { uploadFile } from "../../services/FileServerServices";
-import { FiImage, FiSend } from "react-icons/fi";
->>>>>>> Stashed changes
 import { FaRegSmile } from "react-icons/fa";
 import Cookies from "js-cookie";
 import GifPicker from "../comp/GifPicker";
