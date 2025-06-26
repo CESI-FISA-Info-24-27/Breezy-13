@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { getFile } from "../../services/FileServerServices";
+import { getFile, isExternalUrl } from "../../services/FileServerServices";
 
 /**
  * Affiche une image ou une vidéo sécurisée selon l'extension du fichier.
- * @param {string} fileName - Nom du fichier sur le serveur
+ * @param {string} fileName - Nom du fichier sur le serveur ou URL externe
  * @param {string} type - "image" ou "video"
  * @param {string} className - Classes CSS
  * @param {string} alt - Texte alternatif (pour les images)
@@ -17,13 +17,27 @@ export default function SecureMedia({ fileName, type, className, alt }) {
             setSrc(type === "image" ? "/default-avatar.png" : null);
             return;
         }
+
+        // Si c'est une URL externe (Giphy, etc.), l'utiliser directement
+        if (isExternalUrl(fileName)) {
+            if (isMounted) setSrc(fileName);
+            return;
+        }
+
+        // Si c'est un fichier local, récupérer le blob
         getFile(fileName)
             .then(blob => {
-                if (isMounted) setSrc(URL.createObjectURL(blob));
+                if (isMounted && blob instanceof Blob) {
+                    setSrc(URL.createObjectURL(blob));
+                } else if (isMounted && typeof blob === 'string') {
+                    // Si getFile retourne une string (URL externe), l'utiliser directement
+                    setSrc(blob);
+                }
             })
             .catch(() => {
                 if (isMounted) setSrc(type === "image" ? "/default-avatar.png" : null);
             });
+
         return () => {
             isMounted = false;
             if (src && src.startsWith("blob:")) URL.revokeObjectURL(src);
@@ -33,7 +47,11 @@ export default function SecureMedia({ fileName, type, className, alt }) {
 
     if (type === "video") {
         if (!src) return null;
-        return <video src={src} controls className={className} />;
+        return (
+            <video src={src} controls className={className}>
+                <track kind="captions" src="" label="No captions available" />
+            </video>
+        );
     }
     // image
     return (

@@ -21,7 +21,32 @@ async function withAuthRetry(requestFn) {
   }
 }
 
+// Fonction utilitaire pour vérifier si c'est une URL externe
+export function isExternalUrl(url) {
+  if (!url) return false;
+  return url.startsWith('http://') || url.startsWith('https://');
+}
+
+// Fonction utilitaire pour construire l'URL complète d'un fichier
+export function getFileUrl(fileName) {
+  if (!fileName) return '';
+  
+  // Si c'est déjà une URL complète (externe), la retourner telle quelle
+  if (isExternalUrl(fileName)) {
+    return fileName;
+  }
+  
+  // Si c'est un fichier local, construire l'URL avec le serveur de fichiers
+  return `${API_URL}/files/${fileName}`;
+}
+
 export async function getFile(fileName) {
+  // Si c'est une URL externe (Giphy, etc.), la retourner directement
+  if (isExternalUrl(fileName)) {
+    return fileName;
+  }
+  
+  // Si c'est un fichier local, utiliser l'authentification
   return withAuthRetry(headers =>
     axios.get(`${API_URL}/files/${fileName}`, { headers, responseType: 'blob' })
       .then(res => res.data)
