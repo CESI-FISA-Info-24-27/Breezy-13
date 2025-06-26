@@ -21,9 +21,9 @@ async function withAuthRetry(requestFn) {
   }
 }
 
-export async function getPosts(filters) {
+export async function getPosts(filters = {}) {
   const params = Object.fromEntries(
-    Object.entries(filters).filter(
+    Object.entries(filters || {}).filter(
       ([, value]) => value !== undefined && value !== null && value !== ""
     )
   );
