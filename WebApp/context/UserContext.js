@@ -1,12 +1,31 @@
-'use client';
+"use client";
 
-import { createContext } from 'react';
+import { createContext, useCallback, useContext, useState } from "react";
 
-const UserContext = {
-  userAuthenticated : {} || null,
-  setUserAuth : () => {}
+export const AuthContext = createContext({
+  token: null,
+  login: () => {},
+  logout: () => {},
+});
+
+export function AuthProvider({ children }) {
+  const [token, setToken] = useState(null);
+
+  const login = useCallback((jwt) => {
+    setToken(jwt);
+  }, []);
+
+  const logout = useCallback(() => {
+    setToken(null);
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ token, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
-const AuthContext = createContext(UserContext)
-
-export {AuthContext};
+export function useAuth() {
+  return useContext(AuthContext);
+}

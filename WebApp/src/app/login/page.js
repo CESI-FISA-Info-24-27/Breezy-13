@@ -18,8 +18,6 @@ export default function Login() {
     const router = useRouter();
     const ctxUser = useContext(AuthContext)
 
-    console.log(ctxUser)
-
     useEffect(() => {
         const checkToken = async () => {
             const token = Cookies.get('token');
@@ -58,8 +56,8 @@ export default function Login() {
     e.preventDefault(); // Empêche le rechargement de la page
     try {
         const reponse = await login(email, password, rememberMe);
+        ctxUser.login(reponse.token);
         console.log('Connexion réussie');
-        ctxUser.setUserAuth(reponse.token);
         // Rediriger l'utilisateur
         router.push('/home-page');
     } catch (error) {

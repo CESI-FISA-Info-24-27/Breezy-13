@@ -1,13 +1,12 @@
 "use client";
 
-
+import { useAuth } from "../../../context/UserContext";
 import { disconnect } from "../../services/AuthServices"; //Import nécessaire pour la déconnexion avec gestion des revoked token
-import { useState, useRef, useEffect, useContext } from "react";
+import { useState, useRef, useEffect } from "react";
 import { HiMenu, HiSearch } from "react-icons/hi";
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import Link from "next/link";
-import { AuthContext } from '../../../context/UserContext';
 
 
 export default function Header() {
@@ -15,7 +14,6 @@ export default function Header() {
   const buttonRef = useRef(null);
   const menuRef = useRef(null);
   const router = useRouter();
-  const { token } = useContext(AuthContext);
 
 
   useEffect(() => {
@@ -61,7 +59,7 @@ export default function Header() {
       {/* Logo à gauche */}
       <div className="flex items-center gap-3">
         <Image src="/logo.png" alt="Logo" width={28} height={28} className="rounded-full" />
-        <span className="text-xl font-bold text-seasalt">TwiX {token}</span>
+        <span className="text-xl font-bold text-seasalt">TwiX</span>
       </div>
 
       {/* Barre de recherche centrée */}
