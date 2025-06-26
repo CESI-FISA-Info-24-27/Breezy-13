@@ -52,12 +52,12 @@ Breezy est un réseau social léger et réactif, inspiré de Twitter/X, conçu p
     1. Next.js
     2. Tailwind.css
     3. Interface utilisateur responsive
+    4. Axios pour effectuer les requêtes vers l'API
 
 - Back-End : 
-    1. Node.js avec Express
-    2. Axios pour effectuer les requêtes vers l'API
-    3. API RESTful pour gérer les opérations principales (authentification, publication, interactions, etc...)
-    4. JWT (JSON Web Tokens) pour l'authentification sécurisée de l'utilisateur et la gestion des sessions
+    1. Node.js avec Express 
+    2. API RESTful pour gérer les opérations principales (authentification, publication, interactions, etc...)
+    3. JWT (JSON Web Tokens) pour l'authentification sécurisée de l'utilisateur et la gestion des sessions
 
 - Infrastructure :
     1. Docker pour la containerisation des différents services (WebApp, API, FileServer)
@@ -66,6 +66,17 @@ Breezy est un réseau social léger et réactif, inspiré de Twitter/X, conçu p
 ## Fonctionnalités principales
 
 ## Structure du projet
+
+```bash
+
+breezy/
+├── webapp/             # Front-end 
+├── API/                # Back-end
+├── FileServer          # Stockage des ressources de l'application
+├── docker-compose.yml
+└── README.md
+
+```
 
 ## Technologies utilisées 
 - React
