@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { getUsers } from "../src/services/UsersServices";
 
 export const AuthContext = createContext({
@@ -30,6 +30,8 @@ export function AuthProvider({ children }) {
     async (jwt, id) => {
       setToken(jwt);
       setUserId(id);
+      localStorage.setItem("token", jwt);
+      localStorage.setItem("userId", id);
       await fetchUser(jwt, id);
     },
     [fetchUser]
@@ -39,7 +41,20 @@ export function AuthProvider({ children }) {
     setToken(null);
     setUserId(null);
     setUser(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
   }, []);
+
+  // Recharger les données depuis localStorage au premier rendu
+  useEffect(() => {
+    const savedToken = localStorage.getItem("token");
+    const savedUserId = localStorage.getItem("userId");
+
+    if (savedToken && savedUserId) {
+      // On utilise login ici pour garder la logique centralisée
+      login(savedToken, savedUserId);
+    }
+  }, [login]);
 
   return (
     <AuthContext.Provider value={{ token, userId, user, login, logout }}>

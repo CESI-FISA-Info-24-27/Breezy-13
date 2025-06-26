@@ -1,9 +1,12 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { createPost } from "../../services/PostsServices"
+import { useAuth } from "../../../context/UserContext";
 
 export default function Post({ onPostCreated }) {
   const contentRef = useRef(null);
+
+  const { userId } = useAuth()
 
   function generatePost(e) 
   {
@@ -17,7 +20,7 @@ export default function Post({ onPostCreated }) {
     }
 
     const post = {
-      author: "685c057e357c56a715532772",
+      author: userId,
       content: content,
       image: "",
       likes: [],

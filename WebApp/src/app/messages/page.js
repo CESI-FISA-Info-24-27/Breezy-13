@@ -6,7 +6,7 @@ import MobileNavbar from "../comp/MobileNavbar";
 import Header from "../comp/Header";
 import { getMessages, createMessage } from "../../services/MessagesServices";
 import { getUsers } from "../../services/UsersServices";
-import { uploadFile } from "../../services/FileServerService";
+import { uploadFile } from "../../services/FileServerServices";
 import { FiImage, FiSend, FiUserPlus } from "react-icons/fi";
 import { FaRegSmile } from "react-icons/fa";
 import Cookies from "js-cookie";

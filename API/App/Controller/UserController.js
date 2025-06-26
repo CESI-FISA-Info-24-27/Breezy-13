@@ -53,14 +53,14 @@ class UserController {
                 const user = await UsersServices.getUsers({ id: ids });
                 if (user.length === 0)
                 {
-                    res.status(404).json({ error: 'Id non trouvé' });
+                    return res.status(404).json({ error: 'Id non trouvé' });
                 }
             }
             else if (req.query.name) 
             {
                 const user = await UsersServices.getUsers({ name: req.query.name });
                 if (user.length === 0) {
-                    res.status(404).json({ error: 'Nom non trouvé' });
+                    return res.status(404).json({ error: 'Nom non trouvé' });
                 }
             }
 
@@ -73,10 +73,10 @@ class UserController {
             }
 
             const users = await UsersServices.getUsers(query);
-            res.json(users);
+            return res.json(users);
         }
         catch (error) {
-            res.status(500).json({ error: error.toString() });
+            return res.status(500).json({ error: error.toString() });
         }
     }
 

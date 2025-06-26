@@ -14,8 +14,7 @@ import { useState, useEffect } from "react";
 import { getUsers } from "../../services/UsersServices";
 import { updatePost } from "../../services/PostsServices";
 import SecureMedia from "../comp/SecureMedia";
-
-const userID = "685c057e357c56a715532772";
+import { useAuth } from "../../../context/UserContext";
 
 function timeAgo(dateString) {
   const date = new Date(dateString);
@@ -42,16 +41,18 @@ export function PostsList({ posts }) {
   const [displayPosts, setDisplayPosts] = useState([]);
   const [isClient, setIsClient] = useState(false);
 
+  const { userId } = useAuth()
+
   useEffect(() => {
     const fetchPosts = async () => {
       if (!posts || posts.length === 0) return;
 
       // On veut formatter les postes en fonction de ce qu'on doit afficher
       // On commence par récupérer la liste d'utilisateur
-      let userIDs = posts.map((item) => item.author);
+      let userIds = posts.map((item) => item.author);
 
       // On récupère les utilisateurs associés
-      let users = await getUsers({ id: userIDs });
+      let users = await getUsers({ id: userIds });
 
       // On fusionne les informations nécessaires dans displayPosts
       let tempDisplayPosts = posts.map((element) => {
@@ -81,8 +82,8 @@ export function PostsList({ posts }) {
       prevPosts.map((post) => 
       {
         if (post._id === postId) {
-          const hasLiked = post.likes.includes(userID);
-          const updatedLikes = hasLiked ? post.likes.filter(id => id !== userID) : [...post.likes, userID];
+          const hasLiked = post.likes.includes(userId);
+          const updatedLikes = hasLiked ? post.likes.filter(id => id !== userId) : [...post.likes, userId];
 
           // On met à jour l'API
           const updatedPost = {
@@ -177,7 +178,7 @@ export function PostsList({ posts }) {
               >
                   <div className="flex flex-col items-center">
                       {hovered === "heart" + post._id ||
-                      post.likes.includes(userID) ? (
+                      post.likes.includes(userId) ? (
                         <HiHeart className="text-[var(--color-celestial-blue)] text-2xl" />
                       ) : (
                         <HiOutlineHeart className="text-[var(--color-celestial-blue)] text-2xl" />

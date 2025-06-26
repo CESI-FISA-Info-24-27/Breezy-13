@@ -2,12 +2,14 @@ import { useState } from "react";
 import { HiPencil } from "react-icons/hi";
 import ProfilEditionModal from "./ProfilEditionModal";
 import SecureMedia from "./SecureMedia";
+import { useAuth } from "../../../context/UserContext";
 
 export default function ProfilPreview({user}) {
     const [modalOpen, setModalOpen] = useState(false);
 
     // On vérifie que l'utilisateur soit le même que l'utilisateur connecté
-    const canEdit = user._id === "685c057e357c56a7155326aa";
+    const { userId } = useAuth()
+    const canEdit = user._id === userId;
 
     return (
         <div className="w-full relative flex flex-col items-center bg-[var(--color-celestial-blue)] rounded-xl shadow-lg p-6">

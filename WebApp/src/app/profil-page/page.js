@@ -9,12 +9,13 @@ import { PostsList } from "../comp/PostsList";
 import MobileNavbar from "../comp/MobileNavbar";
 import { getUsers } from "../../services/UsersServices"
 import { getPosts } from "../../services/PostsServices"
+import { useAuth } from "../../../context/UserContext";
 
 const pagination = 5;
 
 export default function ProfilPage() 
 {
-  let userID = "685c057e357c56a715532772"
+  const { userId } = useAuth();
 
   const [headerStyle, setHeaderStyle] = useState({ opacity: 1, transform: "translateY(0)" });
   const [headerHeight, setHeaderHeight] = useState(64);
@@ -65,15 +66,15 @@ export default function ProfilPage()
 
   useEffect(() => {
     const fetchData = async () => {
-      const fetchedUser = await getUsers({ id: userID });
+      const fetchedUser = await getUsers({ id: userId });
       setUser(fetchedUser[0]);
 
-      const fetchedPost = await getPosts({ author: userID });
+      const fetchedPost = await getPosts({ author: userId });
       setMyPosts(fetchedPost);
     };
 
     fetchData();
-  }, [userID]);
+  }, [userId]);
 
   function fetchMorePosts()
   {

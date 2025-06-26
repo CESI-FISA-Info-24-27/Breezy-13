@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { getFollowsFrom } from "../../services/FollowsServices"
 import { getUsers } from "../../services/UsersServices"
 import SecureMedia from "../comp/SecureMedia"
+import { useAuth } from "../../../context/UserContext";
 
 const pagination = 5;
 
@@ -10,13 +11,14 @@ export default function SideBarFollow(props) {
 
 	const [follows, setFollows] = useState([]);
 	const [hasFollowersToFetch, setHasFollowersToFetch] = useState(true);
+	const { userId } = useAuth()
 
 	const fetchFollows = async () => 
 	{
 		try 
 		{
 			// On récupère les followers
-			let fetchedFollows = await getFollowsFrom("685c057e357c56a7155326aa");
+			let fetchedFollows = await getFollowsFrom(userId);
 			// On récupère les ids des followers
 			let usersID = fetchedFollows.map(item => item.follower);
 
@@ -38,7 +40,7 @@ export default function SideBarFollow(props) {
 		} 
 		catch (error) 
 		{
-		console.error("Erreur lors du chargement des follows :", error);
+			console.error("Erreur lors du chargement des follows :", error);
 		}
 	};
 
