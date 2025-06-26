@@ -35,7 +35,7 @@
 Le projet Breezy adopte une architecture microservices modulaire avec quatre services principaux :
 
 #### 🌐 WebApp (Frontend - Next.js)
-**Port : 3002** | **Framework : Next.js 15**
+**Port : 3001** | **Framework : Next.js 15**
 - **Technologies** : React 19, Next.js App Router, Tailwind CSS, Flowbite React
 - **État** : Context API pour l'authentification et gestion d'état globale
 - **HTTP Client** : Axios avec intercepteurs automatiques pour refresh tokens
@@ -43,7 +43,7 @@ Le projet Breezy adopte une architecture microservices modulaire avec quatre ser
 - **Intégrations** : API Giphy, React Force Graph 2D, Recharts pour analytics
 
 #### 🚀 API (Backend - Node.js)
-**Port : 3001** | **Framework : Express.js**
+**Port : 3000** | **Framework : Express.js**
 - **Architecture** : Pattern MVC avec DAO/Factory pour l'abstraction des données
 - **Base de données** : MongoDB avec Mongoose ODM
 - **Authentification** : JWT avec refresh tokens, révocation de tokens
@@ -102,7 +102,7 @@ BCRYPT_SALT=12
 
 # Configuration serveur
 PORT=3000
-WEBAPP_ORIGIN=http://localhost:3002
+WEBAPP_ORIGIN=http://localhost:3001
 
 # Email (pour vérification des comptes)
 SMTP_HOST=smtp.gmail.com
@@ -115,7 +115,7 @@ EMAIL_FROM=noreply@breezy.com
 #### WebApp (.env.local dans /webapp)
 ```env
 # URLs des services
-NEXT_PUBLIC_API_URL=http://localhost:3001
+NEXT_PUBLIC_API_URL=http://localhost:3000
 NEXT_PUBLIC_REFRESH_URL=http://localhost:3001/refresh-token
 NEXT_PUBLIC_LOGIN_URL=/login
 NEXT_PUBLIC_FILE_SERVER_URL=http://localhost:5000
@@ -242,6 +242,9 @@ Les données de test incluent un compte administrateur :
 ---
 
 ## 📡 API Documentation
+
+### 📖 Documentation complète
+**Documentation interactive disponible** : [https://cesi-fisa-info-24-27.github.io/Breezy-13/](https://cesi-fisa-info-24-27.github.io/Breezy-13/)
 
 ### Endpoints principaux
 
@@ -532,6 +535,7 @@ test(users): ajout tests création utilisateur
 
 ### Ressources
 - **Repository** : [GitHub - Breezy-13](https://github.com/CESI-FISA-Info-24-27/Breezy-13)
+- **Documentation API** : [https://cesi-fisa-info-24-27.github.io/Breezy-13/](https://cesi-fisa-info-24-27.github.io/Breezy-13/)
 - **Issues** : [GitHub Issues](https://github.com/CESI-FISA-Info-24-27/Breezy-13/issues)
 - **Postman Collections** : Disponibles dans `/API/` et `/FileServer/`
 
