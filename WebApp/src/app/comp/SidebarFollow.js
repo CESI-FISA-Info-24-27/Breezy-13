@@ -16,7 +16,7 @@ export default function SideBarFollow(props) {
 		try 
 		{
 			// On récupère les followers
-			let fetchedFollows = await getFollowsFrom("685bee8eb9d591366bb4d4ea");
+			let fetchedFollows = await getFollowsFrom("685c057e357c56a7155326aa");
 			// On récupère les ids des followers
 			let usersID = fetchedFollows.map(item => item.follower);
 
@@ -30,8 +30,6 @@ export default function SideBarFollow(props) {
 				// On récupère les infos sur ces utilisateurs
 				let newUsers = await getUsers({ id: filteredUsersID });
 				setFollows(prev => [...prev, ...newUsers]);
-
-				console.log(newUsers);
 			}
 			else
 			{

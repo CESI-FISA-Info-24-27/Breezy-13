@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Cookies from 'js-cookie';
 import { jwtDecode } from "jwt-decode";
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import {useEffect} from 'react';
 import { login, refreshToken } from '../../services/AuthServices.js';
 import { useRouter } from 'next/navigation';
@@ -16,6 +16,9 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
     const router = useRouter();
+    const ctxUser = useContext(AuthContext)
+
+    console.log(ctxUser)
 
     useEffect(() => {
         const checkToken = async () => {
@@ -54,9 +57,9 @@ export default function Login() {
     const handleSubmit = async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
     try {
-        await login(email, password, rememberMe);
+        const reponse = await login(email, password, rememberMe);
         console.log('Connexion réussie');
-
+        ctxUser.setUserAuth(reponse.token);
         // Rediriger l'utilisateur
         router.push('/home-page');
     } catch (error) {
