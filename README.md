@@ -49,5 +49,5 @@ Breezy est un réseau social léger et réactif, inspiré de Twitter/X, conçu p
 ## Contributors
 * **Sacha COLBERT-LISBONA** _alias_ [@Sunit34140](https://github.com/Sunit34140)
 * **Trystan JULIEN** _alias_ [@Trystancesi](https://github.com/trystancesi)
-* **Benjamin REPELLIN** _alias_ [@BenRep](https://github.com/BenRep)
+* **Sacha COLBERT** _alias_ [@Sunnit34140](https://github.com/Sunnit34140)
 * **Loïc SERRE** _alias_ [@LoicSERRE](https://github.com/LoicSERRE)
