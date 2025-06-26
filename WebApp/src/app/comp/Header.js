@@ -14,6 +14,7 @@ export default function Header() {
   const buttonRef = useRef(null);
   const menuRef = useRef(null);
   const router = useRouter();
+  const {token, userId} = useAuth()
 
 
   useEffect(() => {

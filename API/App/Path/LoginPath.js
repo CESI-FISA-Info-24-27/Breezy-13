@@ -65,7 +65,7 @@ loginPath.post('/', async (req, res) => {
         }
 
         // Retourne les tokens
-        return res.status(200).json({ token : accessToken });
+        return res.status(200).json({ token : accessToken , id: user[0]._id});
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

@@ -56,7 +56,7 @@ export default function Login() {
     e.preventDefault(); // Empêche le rechargement de la page
     try {
         const reponse = await login(email, password, rememberMe);
-        ctxUser.login(reponse.token);
+        ctxUser.login(reponse.token, reponse.id);
         console.log('Connexion réussie');
         // Rediriger l'utilisateur
         router.push('/home-page');
