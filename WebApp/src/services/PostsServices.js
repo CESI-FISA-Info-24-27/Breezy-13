@@ -21,9 +21,9 @@ async function withAuthRetry(requestFn) {
   }
 }
 
-export async function getPosts() {
+export async function getPosts(filters) {
   return withAuthRetry(headers =>
-    axios.get(API_URL, { headers }).then(res => res.data)
+    axios.get(API_URL, { headers, filters }).then(res => res.data)
   );
 }
 

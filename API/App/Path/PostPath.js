@@ -25,12 +25,12 @@ postRoutes.get('/:id', PostController.getPostComments);
 /**
  * Créer un nouveau post
  */
-postRoutes.post('/', fieldsRequired(["author", "content", "image", "likes" ]), PostController.createPost);
+postRoutes.post('/', fieldsRequired(["author", "content", "likes" ]), PostController.createPost);
 
 /**
  * Mettre à jour un post
  */
-postRoutes.patch('/:id', fieldsRequired(["content", "image", "likes"]), PostController.updatePost);
+postRoutes.patch('/:id', fieldsRequired(["content", "likes"]), PostController.updatePost);
 
 /**
  * Supprimer un post

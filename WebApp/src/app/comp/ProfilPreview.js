@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { HiPencil } from "react-icons/hi";
 import ProfilEditionModal from "./ProfilEditionModal";
+import SecureMedia from "./SecureMedia";
 
 export default function ProfilPreview({user}) {
     const [modalOpen, setModalOpen] = useState(false);
@@ -19,6 +20,7 @@ export default function ProfilPreview({user}) {
             >
                 <HiPencil className="text-xl" />
             </button>)}
+            <SecureMedia fileName={user?.avatar} type="image" alt="avatar" className="w-26 h-26 rounded-full object-cover border" />
             <div className="text-xl font-bold text-seasalt mb-1">
             {user?.username || "Nom d'utilisateur inconnu"}
             </div>
