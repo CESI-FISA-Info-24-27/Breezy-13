@@ -34,7 +34,7 @@ export default function MobileNavbar() {
           </Link>
         </li>
         <li className="relative">
-          <Link href="/notifiationspage">
+          <Link href="/homepage">
             {isNotifications ? <HiBell size={24} /> : <HiOutlineBell size={24} />}
             {/* Badge fictif */}
             <span className="absolute -top-1 -right-2 bg-folly text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
